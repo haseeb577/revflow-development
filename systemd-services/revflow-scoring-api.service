@@ -1,0 +1,27 @@
+[Unit]
+Description=RevFlow Scoring Engine API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-revenue-aligned-scoring-system/python
+Environment="PYTHONPATH=/opt/revflow-revenue-aligned-scoring-system/python"
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/usr/bin/python3 /opt/revflow-revenue-aligned-scoring-system/python/revflow_scoring_engine.py
+StandardOutput=journal
+StandardError=journal
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

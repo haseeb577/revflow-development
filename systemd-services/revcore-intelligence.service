@@ -1,0 +1,31 @@
+[Unit]
+Description=RevCore™ Module 12 - Intelligence Layer API
+Documentation=https://revflow.ai/docs/revcore
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revcore-intelligence
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revcore-intelligence/main.py
+StandardOutput=append:/var/log/revcore/intelligence-api.log
+StandardError=append:/var/log/revcore/intelligence-api-error.log
+
+# Resource limits (don't hog resources)
+CPUQuota=50%
+# MemoryLimit=512M (deprecated, using MemoryMax below)
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

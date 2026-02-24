@@ -1,0 +1,25 @@
+[Unit]
+Description=RevFlow OS - JSON Render API Service
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-modules/MODULE-B2B-JSON-RENDER/json-render-api
+Environment="NODE_ENV=production"
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/usr/bin/npm start
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

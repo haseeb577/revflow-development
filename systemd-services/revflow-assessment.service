@@ -1,0 +1,29 @@
+[Unit]
+Description=RevFlow Assessment API (Port 8350)
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-assessment
+EnvironmentFile=/opt/shared-api-engine/.env
+Environment="PATH=/opt/revflow-assessment/venv/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python revflow_app.py
+StandardOutput=append:/var/log/revflow-assessment.log
+StandardError=append:/var/log/revflow-assessment-error.log
+
+Environment="REVFLOW_PORT=8350"
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

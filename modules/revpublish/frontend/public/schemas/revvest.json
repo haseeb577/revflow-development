@@ -1,0 +1,230 @@
+{
+  "module": "revvest-iq",
+  "title": "RevVest IQ™ - Portfolio Analysis",
+  "version": "1.0.0",
+  "layout": {
+    "type": "dashboard",
+    "sections": [
+      {
+        "id": "stats-overview",
+        "title": "Portfolio Overview",
+        "type": "stats-grid",
+        "columns": 4,
+        "widgets": [
+          {
+            "id": "total-sites",
+            "title": "Total Sites",
+            "endpoint": "/api/stats/dashboard",
+            "dataPath": "portfolio.total_sites",
+            "icon": "🏠",
+            "color": "blue"
+          },
+          {
+            "id": "monthly-revenue",
+            "title": "Monthly Revenue",
+            "endpoint": "/api/stats/dashboard",
+            "dataPath": "portfolio.total_monthly_revenue",
+            "format": "currency",
+            "icon": "💰",
+            "color": "green"
+          },
+          {
+            "id": "avg-roi",
+            "title": "Average ROI",
+            "endpoint": "/api/stats/dashboard",
+            "dataPath": "portfolio.avg_roi",
+            "format": "percentage",
+            "icon": "📈",
+            "color": "purple"
+          },
+          {
+            "id": "active-sites",
+            "title": "Active Sites",
+            "endpoint": "/api/stats/dashboard",
+            "dataPath": "portfolio.active_sites",
+            "icon": "✅",
+            "color": "cyan"
+          }
+        ]
+      },
+      {
+        "id": "opportunities",
+        "title": "Top Opportunities",
+        "type": "table",
+        "endpoint": "/api/opportunities",
+        "params": {
+          "limit": 10,
+          "min_score": 60
+        },
+        "columns": [
+          {
+            "key": "niche",
+            "title": "Niche",
+            "width": "200px"
+          },
+          {
+            "key": "geographic_area",
+            "title": "Location",
+            "width": "150px"
+          },
+          {
+            "key": "opportunity_score",
+            "title": "Score",
+            "width": "80px",
+            "badge": true,
+            "badgeColors": {
+              "80-100": "green",
+              "60-79": "blue",
+              "40-59": "yellow",
+              "0-39": "red"
+            }
+          },
+          {
+            "key": "category",
+            "title": "Category",
+            "width": "100px"
+          },
+          {
+            "key": "revenue_forecast",
+            "title": "Est. Revenue",
+            "width": "120px",
+            "format": "currency"
+          },
+          {
+            "key": "confidence_score",
+            "title": "Confidence",
+            "width": "100px",
+            "format": "percentage"
+          }
+        ],
+        "actions": [
+          {
+            "label": "Create Blueprint",
+            "endpoint": "/api/blueprints/{opportunity_id}",
+            "method": "POST",
+            "icon": "📋"
+          }
+        ]
+      },
+      {
+        "id": "portfolio-sites",
+        "title": "Portfolio Sites",
+        "type": "table",
+        "endpoint": "/api/portfolio",
+        "columns": [
+          {
+            "key": "domain",
+            "title": "Domain",
+            "width": "250px",
+            "link": true
+          },
+          {
+            "key": "niche",
+            "title": "Niche",
+            "width": "150px"
+          },
+          {
+            "key": "monthly_revenue",
+            "title": "Revenue",
+            "width": "100px",
+            "format": "currency"
+          },
+          {
+            "key": "monthly_traffic",
+            "title": "Traffic",
+            "width": "100px",
+            "format": "number"
+          },
+          {
+            "key": "roi_percentage",
+            "title": "ROI",
+            "width": "80px",
+            "format": "percentage"
+          },
+          {
+            "key": "health_score",
+            "title": "Health",
+            "width": "80px",
+            "badge": true
+          },
+          {
+            "key": "status",
+            "title": "Status",
+            "width": "100px"
+          }
+        ]
+      },
+      {
+        "id": "recommendations",
+        "title": "Action Recommendations",
+        "type": "list",
+        "endpoint": "/api/recommendations",
+        "itemTemplate": {
+          "title": "{{title}}",
+          "description": "{{description}}",
+          "priority": "{{priority}}",
+          "impact": "{{impact_score}}/100"
+        }
+      }
+    ]
+  },
+  "forms": {
+    "analyze-opportunity": {
+      "title": "Analyze New Opportunity",
+      "endpoint": "/api/analyze-opportunity",
+      "method": "POST",
+      "fields": [
+        {
+          "name": "niche",
+          "label": "Niche/Industry",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., plumbing, legal, medical"
+        },
+        {
+          "name": "geographic_area",
+          "label": "Geographic Area",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g., Dallas, TX 75201"
+        },
+        {
+          "name": "keywords",
+          "label": "Target Keywords (comma-separated)",
+          "type": "textarea",
+          "placeholder": "emergency plumber, 24 hour plumber"
+        }
+      ]
+    },
+    "add-site": {
+      "title": "Add Site to Portfolio",
+      "endpoint": "/api/portfolio",
+      "method": "POST",
+      "fields": [
+        {
+          "name": "domain",
+          "label": "Domain",
+          "type": "text",
+          "required": true,
+          "placeholder": "example.com"
+        },
+        {
+          "name": "niche",
+          "label": "Niche",
+          "type": "text"
+        },
+        {
+          "name": "geographic_area",
+          "label": "Geographic Area",
+          "type": "text"
+        },
+        {
+          "name": "initial_investment",
+          "label": "Initial Investment",
+          "type": "number",
+          "format": "currency"
+        }
+      ]
+    }
+  }
+}

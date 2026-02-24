@@ -1,0 +1,23 @@
+[Unit]
+Description=RevFlow OS Configuration Service
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/shared-api-engine/config-service
+ExecStart=/usr/bin/python3 /opt/shared-api-engine/config-service/serve_config.py
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

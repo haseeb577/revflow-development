@@ -1,0 +1,26 @@
+[Unit]
+Description=RevVest IQ - Portfolio Intelligence
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revvest-iq
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revvest-iq/main.py
+StandardOutput=append:/var/log/revvest-iq/service.log
+StandardError=append:/var/log/revvest-iq/error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

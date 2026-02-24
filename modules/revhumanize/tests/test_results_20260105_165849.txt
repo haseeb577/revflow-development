@@ -1,0 +1,72 @@
+╔════════════════════════════════════════════════════════════════╗
+║     RevFlow Humanization Pipeline - Complete Test Suite       ║
+╚════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: High Quality Content - Should Score ≥70
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"Welcome to Dallas Pro Plumbing, your trusted plumbing experts serving the Dallas-Fort Worth metroplex for over 20 years.\n\nOur Comprehensive Services:\n\nEmergency Plumbing: Available 24/7 for urgent repairs including burst pipes, water heater failures, and severe leaks. Our rapid response team arrives within 60 minutes.\n\nResidential Plumbing: From simple faucet repairs to complete bathroom remodels, we handle all residential plumbing needs. Our licensed technicians use quality parts backed by a 2-year warranty.\n\nCommercial Plumbing: We serve restaurants, offices, and retail spaces with minimal disruption to your business operations. Our team works flexible hours to accommodate your schedule.\n\nWhy Choose Dallas Pro Plumbing:\n- Licensed and insured (License #TX-12345)\n- Upfront pricing with no hidden fees\n- Same-day service available\n- A+ BBB rating since 2005\n\nContact us today at (214) 555-1234 or visit our showroom at 123 Main Street, Dallas, TX 75201. Free estimates on all major installations.","metadata":{"title":"Professional Plumbing Services in Dallas, TX","business_name":"Dallas Pro Plumbing","license":"TX-12345","phone":"(214) 555-1234"}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Short Low Quality Content - Should Score <70
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"We do plumbing. Call us now for service!","metadata":{"title":"Plumbing"}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: AI Detection - Should Flag AI Content
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"As an AI language model, I would be happy to assist you with your plumbing needs. In todays fast-paced world, it is important to note that our comprehensive suite of plumbing solutions leverages cutting-edge technology to deliver unparalleled results. We utilize state-of-the-art equipment and methodologies to ensure optimal outcomes for our valued clients. Our team of highly skilled professionals is dedicated to providing exceptional service that exceeds expectations.","metadata":{"title":"AI Generated Content Test"},"checks":{"ai_detection":true}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Voice Consistency - Should Flag Tone Shifts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"Our certified plumbing technicians provide comprehensive drainage solutions using industry-standard methodologies and advanced equipment. All repairs are completed according to municipal code requirements and manufacturer specifications. Yo dude, we can totally fix that nasty pipe leak for super cheap! Just give us a ring and well hook you up!","metadata":{"title":"Voice Consistency Test"},"checks":{"voice_consistency":true}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: YMYL Verification - Should Verify Medical Credentials
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"Dr. Sarah Johnson, MD (Medical License: TX-MED-98765) specializes in emergency medicine at Dallas Memorial Hospital. Board-certified since 2010, Dr. Johnson has performed over 3,000 emergency procedures. For appointments, call (214) 555-9999. Our clinic is located at 456 Healthcare Drive, Dallas, TX 75202.","metadata":{"title":"Emergency Medical Services","business_type":"medical","license":"TX-MED-98765","phone":"(214) 555-9999"},"checks":{"ymyl_verification":true}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Structure Check - Should Flag Missing Structure
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"This is just a wall of text without any structure or organization. It goes on and on without any headings or bullet points or lists to break up the content. This makes it hard to read and scan. There are no clear sections or organization. Just one long paragraph that continues without any visual breaks or hierarchy. This is poor content structure and should be flagged by the tier 1 validators.","metadata":{"title":"Poor Structure Test"}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Complete Validation - All Checks
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"ABC Plumbing Services has been serving Austin, Texas for 15 years. Our licensed plumbers (TX-LIC-54321) handle residential and commercial projects.\n\nOur Services:\n- Emergency repairs 24/7\n- Water heater installation\n- Drain cleaning\n- Pipe repair and replacement\n\nWe use quality materials and provide warranties on all work. Call (512) 555-7777 for free estimates.\n\nVisit our office at 789 Service Road, Austin, TX 78701. Licensed, bonded, and insured.","metadata":{"title":"Austin Plumbing Services","business_name":"ABC Plumbing","license":"TX-LIC-54321"},"checks":{"voice_consistency":true,"ymyl_verification":true,"ai_detection":true}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Edge Case - Empty Content Should Be Rejected
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"","metadata":{"title":"Empty Test"}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: Edge Case - Long Content Processing
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;31m❌ FAIL[0m
+Response: {"detail":[{"type":"missing","loc":["body","content_id"],"msg":"Field required","input":{"content":"This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. This is a test paragraph about plumbing services. ","metadata":{"title":"Long Content Test"}},"url":"https://errors.pydantic.dev/2.5/v/missing"}]}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST: API Health Check
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;32m✅ PASS - API is healthy[0m
+
+╔════════════════════════════════════════════════════════════════╗
+║                        TEST SUMMARY                            ║
+╚════════════════════════════════════════════════════════════════╝
+
+Total Tests Run: 10
+[0;32m✅ Tests Passed: 1[0m
+[0;31m❌ Tests Failed: 9[0m
+
+[1;33m⚠️  Some tests failed. Review output above.[0m

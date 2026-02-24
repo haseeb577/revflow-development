@@ -1,0 +1,26 @@
+[Unit]
+Description=RevFlow llms.txt Generator Service
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-llmstxt
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/usr/bin/python3 /opt/revflow-llmstxt/app.py
+StandardOutput=append:/opt/revflow-llmstxt/llmstxt.log
+StandardError=append:/opt/revflow-llmstxt/llmstxt.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

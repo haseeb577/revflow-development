@@ -1,0 +1,81 @@
+{
+  "name": "Assessment Complete",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Assessment Complete"
+      },
+      {
+        "type": "text",
+        "content": "Your assessment has been completed successfully!",
+        "style": {
+          "color": "#10b981",
+          "marginBottom": "2rem",
+          "fontSize": "1.2rem"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "2rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "Assessment Results"
+          },
+          {
+            "type": "text",
+            "content": "View detailed results and download reports...",
+            "style": {
+              "color": "#94a3b8",
+              "marginTop": "1rem"
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "display": "flex",
+          "gap": "1rem"
+        },
+        "children": [
+          {
+            "type": "link",
+            "url": "#reports",
+            "label": "📄 View Full Report",
+            "icon": "📄",
+            "style": {
+              "padding": "0.75rem 1.5rem",
+              "background": "#3b82f6",
+              "color": "#fff",
+              "borderRadius": "6px",
+              "textDecoration": "none",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#dashboard",
+            "label": "← Back to Dashboard",
+            "style": {
+              "padding": "0.75rem 1.5rem",
+              "color": "#94a3b8",
+              "textDecoration": "none"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+

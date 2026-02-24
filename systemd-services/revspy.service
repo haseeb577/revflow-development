@@ -1,0 +1,19 @@
+[Unit]
+Description=RevSPY™ - Module 15 (Blind Spot Research & GBP Intelligence)
+After=network.target postgresql.service consul.service
+Wants=postgresql.service
+
+[Service]
+Environment="PYTHONPATH=/opt/shared-api-engine"
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-blind-spot-research
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn api:app --host 0.0.0.0 --port 8160
+StandardOutput=append:/var/log/revspy.log
+StandardError=append:/var/log/revspy.log
+Restart=on-failure
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target

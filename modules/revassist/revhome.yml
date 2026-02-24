@@ -1,0 +1,39 @@
+cat >/root/traefik/dynamic/revhome.yml <<'EOF'
+http:
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  services:
+    revhome-svc:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://127.0.0.1:5000"
+
+  routers:
+    revhome-http:
+      rule: Host(`automation.smarketsherpa.ai`)
+      entryPoints:
+        - web
+      middlewares:
+        - https-redirect
+      service: noop@internal
+
+    revhome-https:
+      rule: Host(`automation.smarketsherpa.ai`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      service: revhome-svc
+EOF
+
+# Force provider reload
+touch /root/traefik/dynamic/revhome.yml
+sleep 3
+
+# Confirm there are NO schema errors and NO references to 8081 or revhome_api@file
+docker logs root-traefik-1 --tail 200 | egrep -i 'error|ERR|health|8081|revhome_api|loaded|router|service' || true

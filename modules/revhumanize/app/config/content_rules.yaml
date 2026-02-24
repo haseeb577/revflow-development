@@ -1,0 +1,249 @@
+# RevFlow Humanization Pipeline - Content Rules Configuration
+# Based on AI-SEO/PPC Humanized CONTENT QA Framework
+
+# Tier 1: Kill List - Auto-Reject (Zero Tolerance)
+tier1_kill_words:
+  verbs:
+    - delve
+    - embark
+    - imagine
+    - unveil
+    - unlock
+    - unleash
+    - elucidate
+    - shed light
+    - strive
+    - ensure
+    - harness
+    - navigate
+    - elevate
+    - skyrocket
+  
+  adjectives:
+    - enlightening
+    - esteemed
+    - pivotal
+    - intricate
+    - ever-evolving
+    - disruptive
+    - groundbreaking
+    - remarkable
+    - game-changer
+    - top-notch
+    - comprehensive
+    - optimal
+    - daunting
+    - vital
+    - crucial
+    - captivating
+    - eager
+    - refreshing
+    - robust
+  
+  adverbs:
+    - just
+    - very
+    - really
+    - literally
+    - actually
+    - certainly
+    - probably
+    - basically
+    - maybe
+    - hence
+    - furthermore
+    - moreover
+    - however
+    - therefore
+    - thus
+    - notably
+    - significantly
+    - interestingly
+    - undoubtedly
+    - honestly
+  
+  phrases:
+    - "it is important to note"
+    - "in conclusion"
+    - "to summarize"
+    - "picture this"
+    - "look no further"
+    - "we have got you covered"
+    - "we've got you covered"
+    - "a wide range of"
+    - "it is worth mentioning"
+    - "one might argue"
+    - "in a nutshell"
+    - "breath of fresh air"
+    - "in today's fast-paced world"
+    - "in today's world"
+    - "in the realm of"
+    - "where style meets comfort"
+  
+  forbidden_patterns:
+    - pattern: 'whether you (?:are|were)'
+      description: "The 'Whether' pattern"
+    - pattern: 'from [\\w\\s]+ to [\\w\\s]+'
+      description: "The 'Range' pattern"
+    - pattern: 'where [\\w\\s]+ meets [\\w\\s]+'
+      description: "The 'Meets' pattern"
+    - pattern: 'have you ever wondered'
+      description: "The 'Question' opener"
+
+# Tier 2: Proof Required (Conditional Use Only)
+tier2_proof_required:
+  words:
+    - boost
+    - enhance
+    - optimize
+    - transform
+    - leverage
+    - streamline
+    - revolutionize
+  
+  proof_patterns:
+    - '\\d+%'                    # Percentage
+    - '\\d+\\s*(?:times|x)'      # Multiplier
+    - '\\d+\\s*(?:seconds|minutes|hours|days)'  # Time
+    - 'from\\s+\\d+.*to\\s+\\d+'  # Range with numbers
+    - '\\$\\d+'                   # Money
+    - '(?:increased|decreased|reduced)\\s+\\d+'  # Specific change
+  
+  proximity_words: 50  # Must find proof within 50 words
+
+# Tier 3: Pattern Replacement (Mandatory Alternatives)
+tier3_replacements:
+  - pattern: '\\bwhether you (?:are|were) [\\w\\s]+ or [\\w\\s]+\\b'
+    replacement: ''
+    description: "Delete 'whether you are X or Y' entirely"
+  
+  - pattern: '\\bfrom [\\w\\s]+ to [\\w\\s]+\\b'
+    replacement: 'options include'
+    description: "Replace 'from X to Y' with 'options include'"
+  
+  - pattern: '\\bwhere [\\w\\s]+ meets [\\w\\s]+\\b'
+    replacement: 'combining'
+    description: "Replace 'where X meets Y'"
+  
+  - pattern: '\\bhave you ever wondered\\b'
+    replacement: ''
+    description: "Delete 'have you ever wondered'"
+  
+  - pattern: "\\bin today's (?:fast-paced )?world\\b"
+    replacement: 'today'
+    description: "Replace 'in today's world' with 'today'"
+
+  - pattern: '\\bin the realm of\\b'
+    replacement: 'in'
+    description: "Replace 'in the realm of' with 'in'"
+
+  - pattern: "\\bit's important to note that\\b"
+    replacement: ''
+    description: "Delete 'it's important to note'"
+
+# E-E-A-T Requirements
+eeat_requirements:
+  experience:
+    required_markers: 1
+    patterns:
+      - "i've (?:worked|found|tested|seen)"
+      - "in my experience"
+      - "last (?:week|month|year), (?:i|we|a client)"
+      - "i (?:prefer|recommend|suggest)"
+      - "i'm biased (?:toward|because)"
+  
+  expertise:
+    indicators:
+      - "certified"
+      - "licensed"
+      - "\\d+ years of experience"
+      - "completed \\d+ projects"
+      - "trained in"
+      - "specializing in"
+  
+  authoritativeness:
+    citation_worthy:
+      - "unique data"
+      - "original research"
+      - "case study"
+      - "tested"
+      - "measured"
+  
+  trustworthiness:
+    voice_check:
+      required: "first_person"  # Must use "we" or "I"
+      forbidden: "third_person_passive"
+
+# GEO (Generative Engine Optimization) Requirements
+geo_requirements:
+  answer_frontload:
+    max_words: 100
+    check: "first_100_words_contain_answer"
+  
+  structure:
+    faq_required: true
+    faq_min_questions: 7
+    faq_max_questions: 10
+    faq_format: "bold_question_no_labels"
+  
+  snippet_optimization:
+    headings: ["h2", "h3"]
+    no_headings: ["h1", "h4", "h5", "h6"]
+    definition_format: "clear_direct"
+
+# Structural Requirements
+structural_requirements:
+  reading_level:
+    target: "5th_grade"
+    flesch_kincaid_min: 60
+    flesch_kincaid_max: 70
+  
+  paragraph:
+    max_lines: 3
+    vary_rhythm: true
+  
+  sentence:
+    one_idea_per_sentence: true
+    vary_length: true
+  
+  punctuation:
+    forbidden:
+      - "—"  # Em dash
+    alternatives:
+      em_dash: [",", ":"]
+  
+  seo:
+    keyword_density_min: 0.010  # 1.0%
+    keyword_density_max: 0.015  # 1.5%
+    internal_links_anchor: "strategic_keywords"
+    external_links_allowed: ["gov", "edu", "manufacturer"]
+    no_naked_urls: true
+
+# Scoring Weights
+scoring_weights:
+  tier1_violation: 0  # Instant fail (score = 0)
+  tier2_violation: -25  # Major penalty
+  tier3_violation: -5   # Minor penalty per instance
+  eeat_score_weight: 20  # Out of 100
+  geo_compliance: 10
+  structural_compliance: 5
+
+# Quality Gates
+quality_gates:
+  minimum_score: 70
+  critical_fail_on:
+    - "tier1_violations"
+    - "missing_experience_marker"
+    - "missing_faq_section"
+  
+  auto_fix_enabled:
+    - "tier3_violations"
+  
+  manual_review_required:
+    - "tier2_violations"
+
+# Cost Tracking
+cost_targets:
+  per_page_usd: 0.03
+  model: "claude-sonnet-4"
+  optimization: "batch_processing"

@@ -1,0 +1,30 @@
+[Unit]
+Description=RevAudit Backend API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/shared-api-engine/revaudit
+Environment="DB_HOST=localhost"
+Environment="DB_PORT=5432"
+Environment="DB_NAME=revflow_db"
+Environment="DB_USER=postgres"
+Environment="DB_PASSWORD=GDeJsi1D4y5hLZY3KmZSbBM+nlyomuMMokihZfRSojk="
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn revaudit_v4:app --host 0.0.0.0 --port 8950
+StandardOutput=append:/opt/shared-api-engine/revaudit/logs/backend.log
+StandardError=append:/opt/shared-api-engine/revaudit/logs/backend-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

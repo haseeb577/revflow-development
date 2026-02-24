@@ -1,0 +1,142 @@
+{
+  "module": {
+    "id": "revimage",
+    "name": "RevImage Engine",
+    "number": 8,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevImage Engine Dashboard",
+    "description": "AI-powered image generation and optimization",
+    "icon": "image",
+    "color": "#6366F1"
+  },
+  "dataSource": {
+    "endpoint": "/api/revimage/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevImage API on port 8610"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "daily-remaining",
+      "props": {
+        "title": "Daily Budget Left",
+        "icon": "💰",
+        "dataKey": "costs.daily_remaining",
+        "defaultValue": "$50.00"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "monthly-spent",
+      "props": {
+        "title": "Monthly Spent",
+        "icon": "📊",
+        "dataKey": "costs.monthly_spent",
+        "defaultValue": "$0.00"
+      }
+    },
+    {
+      "type": "Form",
+      "id": "generate-image",
+      "position": { "span": 2 },
+      "props": {
+        "title": "Generate AI Image",
+        "endpoint": "/api/revimage/generate",
+        "method": "POST",
+        "fields": [
+          {
+            "name": "prompt",
+            "type": "textarea",
+            "label": "Image Prompt",
+            "placeholder": "Describe the image you want to generate...",
+            "required": true,
+            "rows": 3,
+            "help": "Be specific about style, colors, composition, and subject matter"
+          },
+          {
+            "name": "size",
+            "type": "select",
+            "label": "Image Size",
+            "options": [
+              { "value": "1024x1024", "label": "Square (1024x1024)" },
+              { "value": "1792x1024", "label": "Landscape (1792x1024)" },
+              { "value": "1024x1792", "label": "Portrait (1024x1792)" }
+            ]
+          },
+          {
+            "name": "style",
+            "type": "select",
+            "label": "Style",
+            "options": [
+              { "value": "natural", "label": "Natural" },
+              { "value": "vivid", "label": "Vivid" }
+            ]
+          }
+        ],
+        "submitButton": "Generate Image",
+        "resultKey": "image_url"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Image Features",
+        "items": [
+          "DALL-E 3 integration",
+          "WordPress auto-upload",
+          "Automatic alt text generation",
+          "Image optimization",
+          "Bulk processing support",
+          "Cost tracking"
+        ]
+      }
+    },
+    {
+      "type": "Alert",
+      "id": "budget-info",
+      "position": { "span": 3 },
+      "props": {
+        "variant": "info",
+        "title": "Budget Controls",
+        "message": "Daily budget: $50.00 | Monthly budget: $1,000.00. Images cost approximately $0.04-0.12 each depending on size."
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8610, 8601]
+      }
+    },
+    {
+      "type": "LinkList",
+      "id": "quick-links",
+      "props": {
+        "title": "Quick Actions",
+        "links": [
+          { "label": "View Gallery", "url": "/api/revimage/gallery", "icon": "🖼️" },
+          { "label": "Manage Sites", "url": "/api/revimage/sites", "icon": "🌐" },
+          { "label": "API Documentation", "url": "http://217.15.168.106:8610/docs", "icon": "📚", "external": true }
+        ]
+      }
+    }
+  ]
+}

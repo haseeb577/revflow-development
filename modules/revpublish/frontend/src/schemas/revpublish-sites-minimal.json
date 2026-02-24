@@ -1,0 +1,12 @@
+{
+  "name": "Sites Test",
+  "version": "1.0.0",
+  "dataSource": {
+    "endpoint": "/api/sites?per_page=10",
+    "method": "GET"
+  },
+  "layout": {
+    "type": "text",
+    "content": "If you see this, the schema loads. Check browser console for data."
+  }
+}

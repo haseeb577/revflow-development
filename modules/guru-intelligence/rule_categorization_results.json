@@ -1,0 +1,2883 @@
+{
+  "total_rules": 359,
+  "tier_distribution": {
+    "1": 264,
+    "2": 0,
+    "3": 95
+  },
+  "timestamp": "December 28, 2025",
+  "rules": [
+    {
+      "rule_id": "BLUF-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "BLUF-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "BLUF-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:BLUF-003",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "BLUF-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "BLUF-005",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "CHUNK-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:CHUNK-001",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "CHUNK-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:CHUNK-002",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "CHUNK-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "CHUNK-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:CHUNK-004",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "ENTITY-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "ENTITY-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "ENTITY-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:ENTITY-003",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "ENTITY-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "ENTITY-005",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:ENTITY-005",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FORMAT-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:2",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FORMAT-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FORMAT-002",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "FORMAT-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FORMAT-003",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FORMAT-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FORMAT-004",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FRESH-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FRESH-001",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FRESH-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FRESH-002",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FRESH-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FRESH-003",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "FRESH-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:FRESH-004",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "LOCAL-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "LOCAL-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:LOCAL-002",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "LOCAL-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:LOCAL-003",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "LOCAL-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "NUM-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:NUM-001",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "NUM-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "NUM-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:NUM-003",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "NUM-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:NUM-004",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "NUM-005",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:NUM-005",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "QA-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "QA-002",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "QA-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "QA-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "QA-005",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:QA-005",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "QUOTE-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:QUOTE-001",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "QUOTE-002",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "QUOTE-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "QUOTE-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:QUOTE-004",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "SCHEMA-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:SCHEMA-001",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "SCHEMA-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:SCHEMA-002",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "SCHEMA-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:SCHEMA-003",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "SCHEMA-004",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:SCHEMA-004",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "SCHEMA-005",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:SCHEMA-005",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "VOICE-001",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "VOICE-002",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "VOICE-003",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "VOICE-004",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "VOICE-005",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "VSEARCH-001",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "VSEARCH-002",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:VSEARCH-002",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "VSEARCH-003",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:VSEARCH-003",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "bluf-01c45fc2",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-0ae6653c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-0c8a7443",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "bluf-0e0a02e0",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-21799c6e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-3c9e8746",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-50d2c303",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:bluf-50d2c303",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-594e511a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-60a29cec",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-6b01f528",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.833,
+      "reasoning": "Semantic indicators: 5 Tier 3 keywords"
+    },
+    {
+      "rule_id": "bluf-72dcf580",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-bcc5c333",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.857,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-c49be404",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-ce91d0d7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-d6bfd3f7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "bluf-dc554f82",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "chunking-005ad21a",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 5 Tier 3 keywords"
+    },
+    {
+      "rule_id": "chunking-41b9b28a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-5f8b7cbf",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-6e99231d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-86e91e69",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-bb39a879",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-ce91d0d7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "chunking-dc554f82",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "chunking-efd287a2",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-0161fbc8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-08e6b9f5",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-0a8c429d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-0d051033",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-17d2726c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-17d2726c",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-29393beb",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_h2:1",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-2aefa63a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-2aefa63a",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-2cfea818",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "eeat-2ef971f8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-34e3208d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-3e187c05",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-434aaa92",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-47cea902",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-53002584",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-53002584",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-55e9dd90",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-5a91621b",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-5adacd81",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-5c2e9170",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-5f2451e1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "eeat-64b612fc",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-6795efcf",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-67cd51ea",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-6a3b824c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-6a3b824c",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-71da87d9",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-71da87d9",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-72d5a409",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-72d5a409",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-764fe22e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-773fb6f5",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-799a5185",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-799a5185",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-82ba5703",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:800:1000",
+      "confidence": 0.8,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-862dca00",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-8b2ff544",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-98b7bdf4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-9ab4e091",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-9f51d139",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-9f51d139",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-a2cef13e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-a94c97e7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-abfa312a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-abfa312a",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-ad2e2495",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-ad2e2495",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-b53d0344",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.6,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-c8c6a5bd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-c9ad053f",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-c9ad053f",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-cb6d64b4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-cb6d64b4",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-d2700406",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-db3062c4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-f0c3e0a1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:eeat-f0c3e0a1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-f20674e8",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "keyword_check:eeat-f20674e8",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-f39bac37",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "eeat-f916f544",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-fb01cb3a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "eeat-fcf0f102",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-01c45fc2",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-09f485c8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-401555ea",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-5070292c",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "entity-5596673b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-82f2478f",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-9d8a7a0c",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.833,
+      "reasoning": "Semantic indicators: 5 Tier 3 keywords"
+    },
+    {
+      "rule_id": "entity-ce91d0d7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "entity-d9286d18",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:entity-d9286d18",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "entity-fe2c6604",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-0b61f78e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-1232778e",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "format-31a87f4b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-345849c6",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "format-377fcc1c",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-892fbedd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-a1588f1c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-b13059d0",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_h2:1",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "format-b3f9ed85",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:2",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-243c747b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-29af30b8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-2f4405cf",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:freshness-2f4405cf",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-4ed9c318",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-506cd4ca",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-5e5325c5",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:freshness-5e5325c5",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-614c115b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-6eff34b8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-7f26153a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-821bc493",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-862dca00",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-99358a29",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-9ac4797d",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "freshness-a9ca0b99",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "freshness-ac5ff4f8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:freshness-ac5ff4f8",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "freshness-af906bf4",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "freshness-b16c171f",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-c35497fb",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-d509ff48",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "freshness-dba128bd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:freshness-dba128bd",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-e3d13604",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-edb68e5b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "freshness-f20674e8",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "keyword_check:freshness-f20674e8",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "geo-28cc5752",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "geo-32d0e73b",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "geo-5f0ea493",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "geo-89cd34d1",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "geo-8cb9abe0",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "geo-91f46c63",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "geo-f9f95613",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-0248b625",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-025d747f",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-05990f2d",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-05b3b51f",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.6,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-07fd315a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-095c3cf9",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-09f485c8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-0a2b45b1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-0cdf8d2e",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-0dd2bce9",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-1155a330",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:local-1155a330",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-12a4a3e3",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-20d0974a",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-22d83bd8",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_phone",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-27b2f42a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-31ffdb80",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-3d2de14c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-3f03ac52",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-3fcc460e",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-40852a69",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-4499a613",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-4626ec7e",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-4c743ab8",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-4e636714",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-4f9de78d",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-530e9ac6",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-55c02868",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-593bb549",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-5d51be80",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-5e687380",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-5e6c2f00",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-5fb796fd",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-6f45ff1b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-6f4d36b1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-775b9b1d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:local-775b9b1d",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-7b935014",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:local-7b935014",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-7d4a3674",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-81d7b0c6",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-8735cfb2",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-873c1b0e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-8d29c7bc",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-8e98d485",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-977d8666",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-9959778f",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-99e47bdd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-9a87e44b",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_license",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-9abf8011",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-9d01cf7a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-9d41baa3",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-9ea1394c",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-a3a6a3b4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-a3f94a2c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-a41351fd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-a63dcb2b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-ab4d5b45",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-b4a5c566",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-b52dd480",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-b789d51d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-b8eb1bf7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-ba3ab8f4",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-bd4eabc1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-bd5805d1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-bf036bb4",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-caaffbcd",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-cb9870bb",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-cbebb0f8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-d3d0c063",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-d4e2600c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-d5c3e482",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-d7cafa80",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-da7b6faf",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-db00329f",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-e5aec896",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-e7ae38f6",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-ece46690",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-f019c61d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:local-f019c61d",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-f07fc1b2",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-f2037016",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_license",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-f31776bb",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-f66f2df3",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-f7bf501e",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "local-fc7647e3",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "local-fd40e714",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_phone",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "local-fe5aab99",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "numeric-193d499a",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "numeric-42173669",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "numeric-8f97c0ba",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:2",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "numeric-f98c9f75",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "qa-headers-0e0a02e0",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-19ccbd74",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.714,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-21799c6e",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-27ecdd05",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-320bebfa",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-60a29cec",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.5,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-72dcf580",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-7ba689a7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "qa-headers-db5fdc33",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "qa-headers-dc554f82",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "qa-headers-eda4e18c",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 4 Tier 3 keywords"
+    },
+    {
+      "rule_id": "quotable-0599a5a7",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-0ae6653c",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-1946f227",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.429,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "quotable-2b1828bc",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "quotable-3c276dec",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-50d2c303",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:quotable-50d2c303",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-72dcf580",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-78f427b4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-7d7d6cdd",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-ad53adc6",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-ae27ed33",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-b948a145",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "quotable-bb39a879",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.833,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-cd98b013",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:80",
+      "confidence": 0.556,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-da64b85f",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.571,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-ec81d34e",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "quotable-f915112f",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 0.714,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "quotable-f98c9f75",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "schema-043f5363",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-0f9a3376",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-0f9a3376",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-258127ec",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-258127ec",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-25f40f65",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-25f40f65",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-270875d3",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-270875d3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "schema-2c4e3ba6",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-2d3a3148",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-412fbc14",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.429,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-472cb8d0",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "schema-4eb3f491",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-4eb3f491",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-4fd08a52",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-6a333436",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-7a8e872b",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_phone",
+      "confidence": 0.8,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-80efb86f",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-973c1c56",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-973c1c56",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-cc531071",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-d811d515",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-d811d515",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-e8b969b1",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-e8d4ed16",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-f1db1de9",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 1 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-f265c61b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "schema-f4f974dd",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "schema-f70e680a",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:schema-f70e680a",
+      "confidence": 0.3,
+      "reasoning": "No strong indicators - defaulting to Tier 1"
+    },
+    {
+      "rule_id": "schema-f8196dfe",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-032f7ace",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-092a4a17",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-0e71f33d",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-112a70ff",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-157dfba4",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-15ac73fa",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-1c8c2c5d",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-3b0b6a1c",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-3db0cdb4",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-473e5475",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 4 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-4c5ac3f2",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-56a0af34",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.714,
+      "reasoning": "Structural indicators: 5 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-6441aab9",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.833,
+      "reasoning": "Semantic indicators: 5 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-70510056",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-70e3eb18",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.75,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-8fa62975",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.75,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-95c032b8",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-9d32df91",
+      "complexity_level": 1,
+      "validation_type": "count",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-aa916ef7",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.444,
+      "reasoning": "Semantic indicators: 4 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-be7707fa",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.667,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-c93a3b3b",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:40:60",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 6 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-ccb641af",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_license",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-ce91d0d7",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-dd27cac8",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.75,
+      "reasoning": "Semantic indicators: 3 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-eebe1692",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_bullets:3",
+      "confidence": 0.6,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-fc343c0e",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 1.0,
+      "reasoning": "Semantic indicators: 2 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-02ecd812",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_price",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-1852e5ad",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 0.667,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-218e8d30",
+      "complexity_level": 1,
+      "validation_type": "keyword",
+      "validation_pattern": "keyword_check:voice-search-218e8d30",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-22c40492",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-247f2030",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "has_cities:3",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-3237dd57",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-3401bfb1",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:voice-search-3401bfb1",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-3fe8ff29",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "keyword_check:voice-search-3fe8ff29",
+      "confidence": 1.0,
+      "reasoning": "Structural indicators: 2 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-52d663e2",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:25:35",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-5e075d09",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-6222e25e",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 1 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-809b70da",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:800:1000",
+      "confidence": 0.8,
+      "reasoning": "Structural indicators: 4 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-c14aa620",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:25:35",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    },
+    {
+      "rule_id": "voice-search-dfb7e8ad",
+      "complexity_level": 3,
+      "validation_type": "llm",
+      "validation_pattern": "",
+      "confidence": 0.5,
+      "reasoning": "Semantic indicators: 4 Tier 3 keywords"
+    },
+    {
+      "rule_id": "voice-search-ef4d4366",
+      "complexity_level": 1,
+      "validation_type": "regex",
+      "validation_pattern": "word_count_range:25:35",
+      "confidence": 0.75,
+      "reasoning": "Structural indicators: 3 Tier 1 keywords"
+    }
+  ]
+}

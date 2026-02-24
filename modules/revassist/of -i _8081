@@ -1,0 +1,13 @@
+[0;1;32m●[0m revhome_api.service - RevHome Assessment Engine (Privacy-Protected)
+     Loaded: loaded (]8;;file://srv1078604/etc/systemd/system/revhome_api.service/etc/systemd/system/revhome_api.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Sun 2025-10-26 18:25:11 UTC; 17ms ago
+    Process: 151934 ExecStartPre=/usr/bin/bash -c ss -ltnp | grep ':8080' && sudo kill -9 $(ss -ltnp | grep ':8080' | awk -F',' '{print $2}' | awk '{print $1}') || true (code=exited, status=0/SUCCESS)
+   Main PID: 151937 (python3)
+      Tasks: 1 (limit: 9483)
+     Memory: 3.5M (peak: 3.5M)
+        CPU: 19ms
+     CGroup: /system.slice/revhome_api.service
+             └─[0;38;5;245m151937 /root/revhome_assessment_engine_v2/venv/bin/python3 /root/revhome_assessment_engine_v2/run_revhome_with_privacy.py[0m
+
+Oct 26 18:25:11 srv1078604 systemd[1]: Starting revhome_api.service - RevHome Assessment Engine (Privacy-Protected)...
+Oct 26 18:25:11 srv1078604 systemd[1]: Started revhome_api.service - RevHome Assessment Engine (Privacy-Protected).

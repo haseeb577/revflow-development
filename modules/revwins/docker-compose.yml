@@ -1,0 +1,30 @@
+services:
+  quick-wins-api:
+    build: .
+    container_name: quick-wins-api
+    ports:
+      - "8150:8100"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=knowledge-postgres
+      - DB_PORT=5432
+      - DB_NAME=knowledge_graph_db
+      - DB_USER=knowledge_admin
+      - DB_PASSWORD=ZYsCjjdy2dzIwrKKM4TY7Vc0Z8ryoR1V
+      - GSC_CLIENT_SECRETS=/opt/config/gsc_credentials.json
+      - GSC_TOKEN_PATH=/opt/config/gsc_token.pickle
+      - GSC_REDIRECT_URI=http://217.15.168.106.nip.io:8150/api/gsc/oauth/callback
+      - OAUTHLIB_INSECURE_TRANSPORT=1
+    volumes:
+      - /opt/quick-wins-api/config:/opt/config
+    networks:
+      - smarketsherpa-network
+      - knowledge-system_knowledge-network
+    restart: unless-stopped
+    command: gunicorn --bind 0.0.0.0:8100 --workers 2 --timeout 120 app:app
+networks:
+  smarketsherpa-network:
+    external: true
+  knowledge-system_knowledge-network:
+    external: true

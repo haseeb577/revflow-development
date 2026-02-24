@@ -1,0 +1,4 @@
+site_url,business_name,niche,city,state,phone,email,address,years_experience,services_offered,emergency_available,page_content_doc_url
+test-site-1.com,Dallas Garage Experts,Garage Door Repair,Dallas,TX,2145550100,info@dallasgarage.com,"123 Main St, Dallas, TX 75201",15,Emergency Repairs|||Installations|||Maintenance,yes,https://docs.google.com/document/d/1G-EdmVt1xe-8zupBoT926rE32S5yQlg5bN4qIhDWZUc/edit
+test-site-2.com,Houston Plumbing Pros,Plumbing Services,Houston,TX,7135550200,contact@houstonplumbing.com,"456 Oak Ave, Houston, TX 77001",12,Pipe Repair|||Drain Cleaning|||Water Heater Service,yes,https://docs.google.com/document/d/YOUR_DOC_ID_2/edit
+test-site-3.com,Austin Electric Co,Electrical Services,Austin,TX,5125550300,hello@austinelectric.com,"789 Pine Rd, Austin, TX 78701",20,Wiring|||Panel Upgrades|||Lighting Installation,no,

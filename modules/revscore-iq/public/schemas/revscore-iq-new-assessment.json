@@ -1,0 +1,91 @@
+{
+  "name": "New Assessment - Input Form",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "New Prospect Assessment"
+      },
+      {
+        "type": "text",
+        "content": "Step 1 of 4: Prospect Details",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "form",
+        "action": "/api/assessments",
+        "method": "POST",
+        "fields": [
+          {
+            "type": "text",
+            "name": "prospect_name",
+            "label": "Prospect Name",
+            "placeholder": "e.g., ABC Plumbing Services",
+            "required": true
+          },
+          {
+            "type": "text",
+            "name": "prospect_url",
+            "label": "Prospect URL",
+            "placeholder": "https://example.com",
+            "required": true
+          },
+          {
+            "type": "select",
+            "name": "industry",
+            "label": "Industry",
+            "required": true,
+            "options": [
+              {"value": "home_services", "label": "Home Services (HVAC, Plumbing, Electrical, Roofing, etc.)"},
+              {"value": "marketing_agencies", "label": "Marketing Agencies"},
+              {"value": "legal_services", "label": "Legal Services"},
+              {"value": "medical_healthcare", "label": "Medical/Healthcare"},
+              {"value": "ecommerce_retail", "label": "E-commerce/Retail"},
+              {"value": "real_estate", "label": "Real Estate"},
+              {"value": "financial_services", "label": "Financial Services"},
+              {"value": "automotive", "label": "Automotive"},
+              {"value": "construction", "label": "Construction"},
+              {"value": "professional_services", "label": "Professional Services (Accounting, Consulting, etc.)"}
+            ]
+          },
+          {
+            "type": "text",
+            "name": "business_location",
+            "label": "Business Location",
+            "placeholder": "City, State, ZIP",
+            "required": true
+          },
+          {
+            "type": "text",
+            "name": "phone",
+            "label": "Business Phone",
+            "placeholder": "(XXX) XXX-XXXX"
+          },
+          {
+            "type": "text",
+            "name": "email",
+            "label": "Business Email",
+            "placeholder": "email@example.com"
+          },
+          {
+            "type": "textarea",
+            "name": "notes",
+            "label": "Notes",
+            "rows": 4,
+            "placeholder": "Additional information about this prospect..."
+          }
+        ],
+        "submitButton": {
+          "text": "Next: Competitor Selection →"
+        }
+      }
+    ]
+  }
+}
+

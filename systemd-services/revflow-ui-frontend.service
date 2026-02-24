@@ -1,0 +1,25 @@
+[Unit]
+Description=RevFlow OS React Frontend
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-real-ui/frontend/dist
+ExecStart=/usr/bin/bash -c 'cd /opt/revflow-real-ui/frontend/dist && /usr/bin/npx serve -s . -l 8202 --no-clipboard'
+StandardOutput=append:/var/log/revflow-frontend.log
+StandardError=append:/var/log/revflow-frontend-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

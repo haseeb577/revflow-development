@@ -1,0 +1,25 @@
+[Unit]
+Description=RevGuard - Nginx Configuration Health Check
+After=network.target
+Before=nginx.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/revguard/health-checks/nginx_config_health.py
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

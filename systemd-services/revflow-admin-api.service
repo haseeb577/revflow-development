@@ -1,0 +1,25 @@
+[Unit]
+Description=RevFlow Admin API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-admin-api
+ExecStart=/usr/bin/python3 /opt/revflow-admin-api/main.py
+StandardOutput=journal
+StandardError=journal
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

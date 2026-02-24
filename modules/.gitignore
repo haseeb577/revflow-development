@@ -1,0 +1,36 @@
+# Virtual environments
+venv/
+.venv/
+env/
+*.venv/
+venv.*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Node modules
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Local data
+*.db
+*.sqlite3
+data/
+
+# Secrets
+.env
+.env.*
+!.env.example

@@ -1,0 +1,10 @@
+---
+site_url: [SITE_URL]
+page_type_id: service_page
+color_scheme: professional
+field_data:
+  business_name: [BUSINESS_NAME]
+  niche: [NICHE]
+  city: [CITY]
+  state: [STATE]
+  phone: [PHONE]

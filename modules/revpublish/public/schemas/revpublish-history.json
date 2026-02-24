@@ -1,0 +1,81 @@
+{
+  "name": "RevPublish History",
+  "version": "2.1.0",
+  "dataSource": {
+    "endpoint": "/api/deployments",
+    "method": "GET",
+    "dataPath": "deployments"
+  },
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "📊 Deployment History",
+        "style": {
+          "marginBottom": "1.5rem",
+          "color": "#fff"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Track all content deployments across your WordPress sites. Each row shows when content was published, to which site, and the result.",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "1.5rem",
+          "lineHeight": "1.6"
+        }
+      },
+      {
+        "type": "dataTable",
+        "dataPath": ".",
+        "columns": [
+          {
+            "key": "id",
+            "label": "ID",
+            "width": "80px"
+          },
+          {
+            "key": "title",
+            "label": "Content Title",
+            "width": "300px"
+          },
+          {
+            "key": "site_id",
+            "label": "Site",
+            "width": "150px"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "badge",
+            "width": "120px",
+            "colorMap": {
+              "success": "#28a745",
+              "failed": "#dc3545",
+              "pending": "#ffc107"
+            }
+          },
+          {
+            "key": "created_at",
+            "label": "Deployed At",
+            "type": "datetime",
+            "width": "200px"
+          },
+          {
+            "key": "wordpress_post_id",
+            "label": "WP Post ID",
+            "width": "120px"
+          }
+        ],
+        "emptyMessage": "📭 No deployments yet.\n\nOnce you deploy content using the Deploy or Import tabs, you'll see the history here.\n\n💡 Tip: Go to the Deploy tab to publish your first piece of content!",
+        "pagination": true,
+        "itemsPerPage": 20
+      }
+    ]
+  }
+}

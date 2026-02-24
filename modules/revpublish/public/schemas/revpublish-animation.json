@@ -1,0 +1,326 @@
+{
+  "name": "Animation Template Manager",
+  "version": "1.0.0",
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Animation Template Manager",
+        "style": {
+          "marginBottom": "0.5rem"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Browse, configure, and deploy Elementor animations across your WordPress sites",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "1.5rem"
+        }
+      },
+      {
+        "type": "statsGrid",
+        "dataSource": {
+          "endpoint": "/revflow_os/revpublish/api/animation/stats",
+          "method": "GET"
+        },
+        "columns": 4,
+        "gap": "1rem",
+        "cards": [
+          {
+            "label": "Total Templates",
+            "dataKey": "stats.total_templates",
+            "color": "#8B5CF6",
+            "icon": "grid"
+          },
+          {
+            "label": "Animation Types",
+            "dataKey": "stats.animation_types",
+            "color": "#22c55e",
+            "icon": "layers"
+          },
+          {
+            "label": "Page Types",
+            "dataKey": "stats.page_types",
+            "color": "#3b82f6",
+            "icon": "file-text"
+          },
+          {
+            "label": "Total Deployments",
+            "dataKey": "stats.total_deployments",
+            "color": "#f59e0b",
+            "icon": "upload"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "1.5rem"
+      },
+      {
+        "type": "container",
+        "style": {
+          "display": "grid",
+          "gridTemplateColumns": "2fr 1fr",
+          "gap": "1.5rem"
+        },
+        "children": [
+          {
+            "type": "container",
+            "style": {
+              "background": "#1e293b",
+              "padding": "1.5rem",
+              "borderRadius": "8px"
+            },
+            "children": [
+              {
+                "type": "header",
+                "level": 3,
+                "text": "Browse Templates",
+                "style": {
+                  "marginBottom": "1rem"
+                }
+              },
+              {
+                "type": "dataTable",
+                "title": "",
+                "dataSource": {
+                  "endpoint": "/revflow_os/revpublish/api/animation/templates?per_page=20",
+                  "method": "GET",
+                  "dataPath": "templates"
+                },
+                "columns": [
+                  {
+                    "key": "id",
+                    "label": "ID",
+                    "width": "60px"
+                  },
+                  {
+                    "key": "name",
+                    "label": "Template Name",
+                    "width": "280px",
+                    "bold": true
+                  },
+                  {
+                    "key": "animation_type",
+                    "label": "Type",
+                    "type": "badge",
+                    "width": "100px",
+                    "colorMap": {
+                      "fade": "#3b82f6",
+                      "slide": "#8B5CF6",
+                      "zoom": "#f59e0b",
+                      "bounce": "#ec4899",
+                      "scroll": "#22c55e"
+                    }
+                  },
+                  {
+                    "key": "page_type",
+                    "label": "Page Type",
+                    "width": "100px"
+                  },
+                  {
+                    "key": "performance_score",
+                    "label": "Score",
+                    "width": "80px",
+                    "type": "badge",
+                    "colorMap": {
+                      "default": "#22c55e"
+                    }
+                  },
+                  {
+                    "key": "usage_count",
+                    "label": "Uses",
+                    "width": "60px"
+                  }
+                ],
+                "emptyMessage": "No templates found",
+                "pagination": true,
+                "itemsPerPage": 10
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "children": [
+              {
+                "type": "container",
+                "style": {
+                  "background": "#1e293b",
+                  "padding": "1.5rem",
+                  "borderRadius": "8px",
+                  "marginBottom": "1rem"
+                },
+                "children": [
+                  {
+                    "type": "header",
+                    "level": 3,
+                    "text": "Quick Deploy",
+                    "style": {
+                      "marginBottom": "1rem"
+                    }
+                  },
+                  {
+                    "type": "form",
+                    "action": "/revflow_os/revpublish/api/animation/deploy",
+                    "method": "POST",
+                    "fields": [
+                      {
+                        "type": "number",
+                        "name": "template_id",
+                        "label": "Template ID",
+                        "required": true,
+                        "placeholder": "Enter template ID"
+                      },
+                      {
+                        "type": "text",
+                        "name": "site_ids",
+                        "label": "Site IDs (comma-separated)",
+                        "required": true,
+                        "placeholder": "1, 2, 3"
+                      },
+                      {
+                        "type": "select",
+                        "name": "entrance_animation",
+                        "label": "Entrance Animation",
+                        "defaultValue": "fadeIn",
+                        "options": [
+                          {"value": "fadeIn", "label": "Fade In"},
+                          {"value": "fadeInUp", "label": "Fade In Up"},
+                          {"value": "fadeInDown", "label": "Fade In Down"},
+                          {"value": "slideInLeft", "label": "Slide In Left"},
+                          {"value": "slideInRight", "label": "Slide In Right"},
+                          {"value": "zoomIn", "label": "Zoom In"},
+                          {"value": "bounceIn", "label": "Bounce In"}
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "name": "animation_duration",
+                        "label": "Duration (ms)",
+                        "defaultValue": 800,
+                        "min": 200,
+                        "max": 2000
+                      },
+                      {
+                        "type": "checkbox",
+                        "name": "scroll_triggered",
+                        "label": "Scroll Triggered",
+                        "defaultValue": true
+                      }
+                    ],
+                    "submitButton": {
+                      "text": "Deploy Animation"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "style": {
+                  "background": "#1e293b",
+                  "padding": "1.5rem",
+                  "borderRadius": "8px"
+                },
+                "children": [
+                  {
+                    "type": "header",
+                    "level": 3,
+                    "text": "Animation Types",
+                    "style": {
+                      "marginBottom": "1rem"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "dangerouslySetInnerHTML": true,
+                    "content": "<div style='display:flex;flex-direction:column;gap:0.5rem;'><div style='display:flex;justify-content:space-between;padding:0.5rem;background:#0f172a;border-radius:4px;'><span style='color:#3b82f6;'>Fade</span><span style='color:#94a3b8;'>Elegant opacity transitions</span></div><div style='display:flex;justify-content:space-between;padding:0.5rem;background:#0f172a;border-radius:4px;'><span style='color:#8B5CF6;'>Slide</span><span style='color:#94a3b8;'>Dynamic sliding effects</span></div><div style='display:flex;justify-content:space-between;padding:0.5rem;background:#0f172a;border-radius:4px;'><span style='color:#f59e0b;'>Zoom</span><span style='color:#94a3b8;'>Attention-grabbing scaling</span></div><div style='display:flex;justify-content:space-between;padding:0.5rem;background:#0f172a;border-radius:4px;'><span style='color:#ec4899;'>Bounce</span><span style='color:#94a3b8;'>Playful bounce effects</span></div><div style='display:flex;justify-content:space-between;padding:0.5rem;background:#0f172a;border-radius:4px;'><span style='color:#22c55e;'>Scroll</span><span style='color:#94a3b8;'>Scroll-triggered animations</span></div></div>"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "1.5rem"
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "1.5rem",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "Performance by Animation Type",
+            "style": {
+              "marginBottom": "1rem"
+            }
+          },
+          {
+            "type": "dataTable",
+            "dataSource": {
+              "endpoint": "/revflow_os/revpublish/api/analytics/animation-performance",
+              "method": "GET",
+              "dataPath": "performance_by_type"
+            },
+            "columns": [
+              {
+                "key": "animation_type",
+                "label": "Type",
+                "width": "120px",
+                "bold": true
+              },
+              {
+                "key": "template_count",
+                "label": "Templates",
+                "width": "100px"
+              },
+              {
+                "key": "avg_performance",
+                "label": "Avg. Score",
+                "width": "120px"
+              },
+              {
+                "key": "total_usage",
+                "label": "Total Uses",
+                "width": "100px"
+              }
+            ],
+            "emptyMessage": "No analytics data available"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "1rem"
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "rgba(139, 92, 246, 0.1)",
+          "border": "1px solid rgba(139, 92, 246, 0.3)",
+          "padding": "1rem",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "type": "text",
+            "dangerouslySetInnerHTML": true,
+            "content": "<div style='display:flex;align-items:center;gap:0.75rem;'><span style='font-size:1.5rem;'>✨</span><div><strong style='color:#a78bfa;'>626 Animation Templates</strong><span style='color:#94a3b8;'> - Ready for deployment across 68 WordPress sites. Each template is optimized for Elementor with configurable entrance animations, scroll triggers, and performance scoring.</span></div></div>"
+          }
+        ]
+      }
+    ]
+  }
+}

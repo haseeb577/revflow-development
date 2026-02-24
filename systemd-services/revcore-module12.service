@@ -1,0 +1,28 @@
+[Unit]
+Description=RevCore Module 12 - Service Management API
+After=network.target postgresql.service
+Wants=postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=postgres
+WorkingDirectory=/opt/revcore-module12/api
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revcore-module12/api/main.py
+StandardOutput=journal
+StandardError=journal
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

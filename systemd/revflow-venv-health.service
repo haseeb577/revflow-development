@@ -1,0 +1,9 @@
+[Unit]
+Description=RevFlow Venv Health Monitor
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/revflow-os/scripts/venv-health-monitor.sh
+StandardOutput=journal
+StandardError=journal

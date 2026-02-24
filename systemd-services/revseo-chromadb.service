@@ -1,0 +1,26 @@
+[Unit]
+Description=RevSEO Intelligence - ChromaDB Integration
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revseo-intelligence
+Environment="PATH=/opt/revseo-intelligence/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8765
+StandardOutput=append:/opt/revseo-intelligence/logs/service.log
+StandardError=append:/opt/revseo-intelligence/logs/service.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

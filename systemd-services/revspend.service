@@ -1,0 +1,17 @@
+[Unit]
+Description=RevSpend IQ™ - Module 16 Tech Spend Intelligence (Port 8016)
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-os/modules/revspend/api
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8016
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

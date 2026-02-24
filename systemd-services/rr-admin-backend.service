@@ -1,0 +1,15 @@
+[Unit]
+Description=R&R Admin Dashboard Backend
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/rr-admin-dashboard/backend
+Environment="PATH=/opt/rr-admin-dashboard/backend/venv/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python3 -m flask run --host=0.0.0.0 --port=8350
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

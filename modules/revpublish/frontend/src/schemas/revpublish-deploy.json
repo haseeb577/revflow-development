@@ -1,0 +1,108 @@
+{
+  "name": "RevPublish Deploy",
+  "version": "3.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "🚀 Deploy Content to WordPress"
+      },
+      {
+        "type": "alert",
+        "variant": "info",
+        "title": "Bulk Deployment Available",
+        "message": "Use the Import tab to upload CSV + Google Doc for bulk deployment to multiple sites at once."
+      },
+      {
+        "type": "spacer",
+        "height": "1rem"
+      },
+      {
+        "type": "form",
+        "title": "Single Page Deployment",
+        "endpoint": "/api/deploy",
+        "method": "POST",
+        "submitText": "🚀 Deploy Now",
+        "fields": [
+          {
+            "name": "title",
+            "type": "text",
+            "label": "📝 Page Title",
+            "required": true,
+            "help": "The main headline for your page"
+          },
+          {
+            "name": "content",
+            "type": "textarea",
+            "label": "📄 Content (HTML or Plain Text)",
+            "required": true,
+            "rows": 15,
+            "help": "Main body content - HTML, markdown, or plain text"
+          },
+          {
+            "name": "page_type",
+            "type": "select",
+            "label": "📑 Page Type",
+            "required": true,
+            "options": [
+              { "value": "service_page", "label": "Service Page (Garage Door, Plumbing, HVAC, etc.)" },
+              { "value": "location_page", "label": "Location Page (City/State Landing Page)" },
+              { "value": "blog_post", "label": "Blog Post" },
+              { "value": "about_page", "label": "About Us" },
+              { "value": "contact_page", "label": "Contact Page" },
+              { "value": "legal_page", "label": "Legal Page (Privacy, Terms)" },
+              { "value": "faq_page", "label": "FAQ Page" },
+              { "value": "testimonials_page", "label": "Testimonials" },
+              { "value": "gallery_page", "label": "Gallery/Portfolio" },
+              { "value": "landing_page", "label": "PPC Landing Page" },
+              { "value": "emergency_page", "label": "Emergency Services" },
+              { "value": "financing_page", "label": "Financing Options" },
+              { "value": "warranty_page", "label": "Warranty Info" },
+              { "value": "careers_page", "label": "Careers/Jobs" },
+              { "value": "areas_served", "label": "Areas We Serve" },
+              { "value": "commercial_services", "label": "Commercial Services" },
+              { "value": "residential_services", "label": "Residential Services" },
+              { "value": "comparison_page", "label": "Service Comparison" },
+              { "value": "calculator_page", "label": "Cost Calculator" },
+              { "value": "checklist_page", "label": "Service Checklist" }
+            ],
+            "help": "Select page template type"
+          },
+          {
+            "name": "meta_description",
+            "type": "textarea",
+            "label": "🔍 SEO Meta Description",
+            "rows": 3,
+            "maxLength": 160,
+            "help": "Search engine description (160 chars max)"
+          },
+          {
+            "name": "target_sites",
+            "type": "multiselect",
+            "label": "🎯 Target Sites",
+            "dataSource": {
+              "endpoint": "/api/sites?status=active"
+            },
+            "valueKey": "site_url",
+            "labelKey": "site_name",
+            "required": true,
+            "help": "Select sites to receive this content"
+          },
+          {
+            "name": "post_status",
+            "type": "select",
+            "label": "📊 Publication Status",
+            "options": [
+              { "value": "draft", "label": "Save as Draft" },
+              { "value": "publish", "label": "Publish Immediately" },
+              { "value": "pending", "label": "Pending Review" }
+            ],
+            "default": "draft"
+          }
+        ]
+      }
+    ]
+  }
+}

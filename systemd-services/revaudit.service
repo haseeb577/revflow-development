@@ -1,0 +1,16 @@
+[Unit]
+Description=RevAudit v5.0 Backend API
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revaudit-complete/backend
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+EnvironmentFile=-/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 3100
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,29 @@
+[Unit]
+Description=RevFlow OS™ | RevCore™ Sub-Module: RevShield™ (AI Safety & Brand Protection)
+After=network.target postgresql.service
+Wants=network-online.target
+PartOf=revcore-governance.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revcore-governance/shield/backend
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revcore/backend/app/venv-revcore-shield/bin/python -m uvicorn main:app --host 0.0.0.0 --port 9200 --log-level info
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=revcore-shield
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

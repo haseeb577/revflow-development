@@ -1,0 +1,84 @@
+{
+  "type": "div",
+  "props": {
+    "className": "revrank-dashboard"
+  },
+  "children": [
+    {
+      "type": "header",
+      "props": {
+        "className": "dashboard-header",
+        "style": {
+          "background": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+          "color": "white",
+          "padding": "2rem",
+          "marginBottom": "2rem"
+        }
+      },
+      "children": [
+        {
+          "type": "h1",
+          "children": ["RevRank Admin Dashboard"]
+        },
+        {
+          "type": "p",
+          "children": ["Rank tracking and SEO performance monitoring"]
+        }
+      ]
+    },
+    {
+      "type": "div",
+      "props": {
+        "style": {
+          "padding": "0 2rem"
+        }
+      },
+      "children": [
+        {
+          "type": "div",
+          "props": {
+            "style": {
+              "background": "white",
+              "padding": "2rem",
+              "borderRadius": "8px",
+              "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+            }
+          },
+          "children": [
+            {
+              "type": "h2",
+              "props": { "style": { "marginTop": "0", "color": "#f5576c" } },
+              "children": ["Dashboard Status"]
+            },
+            {
+              "type": "p",
+              "children": ["RevRank monitoring system is running. Configure backend connection for live rank data."]
+            },
+            {
+              "type": "div",
+              "props": {
+                "style": {
+                  "marginTop": "2rem",
+                  "padding": "1rem",
+                  "background": "#f8f9fa",
+                  "borderRadius": "4px",
+                  "borderLeft": "4px solid #f5576c"
+                }
+              },
+              "children": [
+                {
+                  "type": "strong",
+                  "children": ["Note:"]
+                },
+                {
+                  "type": "span",
+                  "children": [" Backend API connection required for full functionality."]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "name": "RevPublish Import",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Bulk Import"
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#667eea",
+          "padding": "2rem",
+          "borderRadius": "8px",
+          "margin": "2rem 0"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 2,
+            "text": "Download Test Files",
+            "style": {"color": "#fff"}
+          },
+          {
+            "type": "text",
+            "content": "Click the links below to download test files:",
+            "style": {"color": "#fff", "marginTop": "1rem"}
+          },
+          {
+            "type": "container",
+            "style": {
+              "background": "#1e293b",
+              "padding": "1rem",
+              "borderRadius": "4px",
+              "marginTop": "1rem",
+              "display": "flex",
+              "alignItems": "center",
+              "gap": "0.5rem"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Test CSV (5 sites):",
+                "style": {"color": "#fff"}
+              },
+              {
+                "type": "link",
+                "url": "/templates/Test_Import_Sample_Data.csv",
+                "label": "Download CSV",
+                "download": true,
+                "downloadName": "Test_Import_Sample_Data.csv",
+                "style": {"color": "#60a5fa", "fontWeight": "bold"}
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "style": {
+              "background": "#1e293b",
+              "padding": "1rem",
+              "borderRadius": "4px",
+              "marginTop": "0.5rem",
+              "display": "flex",
+              "alignItems": "center",
+              "gap": "0.5rem"
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "Content Template:",
+                "style": {"color": "#fff"}
+              },
+              {
+                "type": "link",
+                "url": "/templates/Test_Import_Sample_Content.txt",
+                "label": "Download Template",
+                "download": true,
+                "downloadName": "Content_Template.txt",
+                "style": {"color": "#60a5fa", "fontWeight": "bold"}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "level": 3,
+        "text": "Upload Files",
+        "style": {"marginTop": "2rem"}
+      },
+      {
+        "type": "form",
+        "title": "Import CSV + Content",
+        "endpoint": "/api/import",
+        "method": "POST",
+        "submitText": "Import & Deploy",
+        "fields": [
+          {
+            "name": "csv_file",
+            "type": "file",
+            "label": "CSV File (site list)",
+            "accept": ".csv",
+            "required": true,
+            "help": "CSV with columns: site_url, site_name, etc."
+          },
+          {
+            "name": "content_file",
+            "type": "file",
+            "label": "Content File (markdown/text)",
+            "accept": ".md,.txt,.html",
+            "required": true,
+            "help": "The content template to deploy"
+          },
+          {
+            "name": "page_type",
+            "type": "select",
+            "label": "Page Type",
+            "required": true,
+            "options": [
+              { "value": "service_page", "label": "Service Page" },
+              { "value": "location_page", "label": "Location Page" },
+              { "value": "blog_post", "label": "Blog Post" },
+              { "value": "landing_page", "label": "Landing Page" }
+            ]
+          },
+          {
+            "name": "post_status",
+            "type": "select",
+            "label": "Publish Status",
+            "options": [
+              { "value": "draft", "label": "Save as Draft" },
+              { "value": "publish", "label": "Publish Immediately" }
+            ],
+            "default": "draft"
+          }
+        ]
+      }
+    ]
+  }
+}

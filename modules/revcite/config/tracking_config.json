@@ -1,0 +1,8 @@
+{
+  "clarity_project_id": "REPLACE_WITH_YOUR_CLARITY_PROJECT_ID",
+  "indexnow_key": "d83b0f5bd90f0c42fab4cb59222ae3c16bbdb50f9ce0e12ff1ee58e159efea70",
+  "default_host": "example.com",
+  "citation_velocity_threshold": 2.0,
+  "deployment_date": "2026-01-07",
+  "sites_count": 53
+}

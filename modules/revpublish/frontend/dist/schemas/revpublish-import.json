@@ -1,0 +1,119 @@
+{
+  "name": "RevPublish Import",
+  "version": "16.3.0",
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "\ud83d\udce5 Bulk Import"
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "1.5rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "\ud83d\udce6 Download Test Files",
+            "style": {
+              "marginBottom": "1rem"
+            }
+          },
+          {
+            "type": "text",
+            "dangerouslySetInnerHTML": true,
+            "content": "<div style='display:flex;gap:1rem;flex-wrap:wrap;'><a href='https://automation.smarketsherpa.ai/revflow_os/revpublish/templates/Sample_12_Sites.csv' download='Sample_12_Sites.csv' style='display:inline-block;background:#22c55e;color:#fff;padding:0.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;'>\u2b07\ufe0f CSV Template (Includes ALL Content)</a></div>"
+          }
+        ]
+      },
+      {
+        "type": "form",
+        "action": "/api/import",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "fields": [
+          {
+            "type": "file",
+            "name": "csv_file",
+            "label": "\ud83d\udccb Site Registry & Content (CSV with everything)",
+            "required": true,
+            "accept": ".csv"
+          },
+          {
+            "type": "select",
+            "name": "animation_style",
+            "label": "\ud83c\udfac Animation Style (Level 3 Override)",
+            "required": false,
+            "options": [
+              {
+                "value": "",
+                "label": "Use Page Type Default"
+              },
+              {
+                "value": "professional",
+                "label": "Professional"
+              },
+              {
+                "value": "subtle",
+                "label": "Subtle"
+              },
+              {
+                "value": "dynamic",
+                "label": "Dynamic"
+              },
+              {
+                "value": "energetic",
+                "label": "Energetic"
+              },
+              {
+                "value": "none",
+                "label": "None"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "name": "enable_smart_corrections",
+            "label": "\u2728 Smart Corrections",
+            "defaultValue": true
+          },
+          {
+            "type": "checkbox",
+            "name": "preview_mode",
+            "label": "\ud83d\udc41\ufe0f Preview",
+            "defaultValue": true
+          },
+          {
+            "type": "select",
+            "name": "post_status",
+            "label": "\ud83d\udccb Status",
+            "defaultValue": "draft",
+            "options": [
+              {
+                "value": "draft",
+                "label": "Draft"
+              },
+              {
+                "value": "publish",
+                "label": "Publish"
+              }
+            ]
+          }
+        ],
+        "submitButton": {
+          "text": "\ud83d\ude80 Import"
+        }
+      }
+    ]
+  }
+}

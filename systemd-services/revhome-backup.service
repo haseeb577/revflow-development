@@ -1,0 +1,18 @@
+[Unit]
+Description=RevHome Database Backup
+Wants=revhome-backup.timer
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/revhome-backup.sh
+User=root
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G

@@ -1,0 +1,163 @@
+{
+  "name": "RevScore IQ Dashboard",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Assessment Dashboard"
+      },
+      {
+        "type": "text",
+        "content": "Professional Website Assessment Platform",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "statsGrid",
+        "stats": [
+          {
+            "icon": "📊",
+            "value": "0",
+            "label": "Assessments This Month"
+          },
+          {
+            "icon": "✅",
+            "value": "0",
+            "label": "Completed Assessments"
+          },
+          {
+            "icon": "📈",
+            "value": "0",
+            "label": "Average Score"
+          },
+          {
+            "icon": "📄",
+            "value": "0",
+            "label": "Total Reports"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Recent Assessments"
+      },
+      {
+        "type": "dataTable",
+        "dataSource": {
+          "endpoint": "/api/assessments",
+          "dataPath": "assessments"
+        },
+        "columns": [
+          {
+            "key": "assessment_id",
+            "label": "ID"
+          },
+          {
+            "key": "prospect_name",
+            "label": "Prospect Name"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "badge"
+          },
+          {
+            "key": "overall_score",
+            "label": "Score"
+          },
+          {
+            "key": "created_at",
+            "label": "Created"
+          }
+        ],
+        "style": {
+          "width": "100%",
+          "background": "#1e293b",
+          "borderRadius": "8px",
+          "overflow": "hidden",
+          "marginTop": "1rem"
+        }
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Quick Actions"
+      },
+      {
+        "type": "container",
+        "style": {
+          "display": "grid",
+          "gridTemplateColumns": "repeat(auto-fit, minmax(200px, 1fr))",
+          "gap": "1rem",
+          "marginTop": "1rem"
+        },
+        "children": [
+          {
+            "type": "link",
+            "url": "#new-assessment",
+            "label": "+ New Assessment",
+            "icon": "➕",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#3b82f6",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "color": "#fff",
+              "fontWeight": "600",
+              "textAlign": "center"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#reports",
+            "label": "View Reports Library",
+            "icon": "📊",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "color": "#fff",
+              "fontWeight": "600",
+              "textAlign": "center",
+              "border": "1px solid #334155"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#settings",
+            "label": "Settings",
+            "icon": "⚙️",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "color": "#fff",
+              "fontWeight": "600",
+              "textAlign": "center",
+              "border": "1px solid #334155"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

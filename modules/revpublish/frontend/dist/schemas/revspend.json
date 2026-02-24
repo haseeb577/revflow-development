@@ -1,0 +1,88 @@
+{
+  "module": {
+    "id": "revspend",
+    "name": "RevSpend IQ",
+    "number": 16,
+    "suite": "Tech Efficiency",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevSpend IQ Dashboard",
+    "description": "Marketing spend optimization and ROI tracking",
+    "icon": "dollar-sign",
+    "color": "#22C55E"
+  },
+  "dataSource": {
+    "endpoint": null,
+    "refreshInterval": null
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "status": "planned",
+        "description": "Coming Soon - Q2 2026"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "total-spend",
+      "props": {
+        "title": "Total Spend Tracked",
+        "icon": "💰",
+        "defaultValue": "—"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "roi",
+      "props": {
+        "title": "Average ROI",
+        "icon": "📈",
+        "defaultValue": "—"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "planned-features",
+      "props": {
+        "title": "Planned Features",
+        "items": [
+          "PPC spend tracking",
+          "Content cost analysis",
+          "ROI calculation",
+          "Budget optimization",
+          "Cross-channel attribution"
+        ]
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "roadmap",
+      "props": {
+        "title": "Development Status",
+        "content": "RevSpend IQ will integrate with advertising platforms to provide comprehensive spend analytics and optimization recommendations."
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "integrations-planned",
+      "props": {
+        "title": "Planned Integrations",
+        "items": [
+          "Google Ads",
+          "Meta Ads",
+          "LinkedIn Ads",
+          "Microsoft Ads"
+        ]
+      }
+    }
+  ]
+}

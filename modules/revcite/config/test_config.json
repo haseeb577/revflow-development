@@ -1,0 +1,8 @@
+{
+  "clarity_project_id": "test-project-id",
+  "indexnow_key": "d83b0f5bd90f0c42fab4cb59222ae3c16bbdb50f9ce0e12ff1ee58e159efea70",
+  "default_host": "testsite.com",
+  "citation_velocity_threshold": 2.0,
+  "deployment_date": "2026-01-07",
+  "sites_count": 53
+}

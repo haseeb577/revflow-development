@@ -1,0 +1,360 @@
+{
+  "schema_version": "1.0",
+  "schema_type": "integration_wizard",
+  "integration_name": "GoHighLevel",
+  "integration_shortname": "GHL",
+  "total_steps": 3,
+  "steps": [
+    {
+      "step": 1,
+      "title": "Connect GoHighLevel (GHL) to RevFlow",
+      "subtitle": "Step 1 of 3: Authorize RevFlow Access",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "description",
+          "text": "RevFlow needs permission to send leads to your GHL account. You'll be redirected to GoHighLevel to authorize."
+        },
+        {
+          "type": "card",
+          "icon": "📱",
+          "title": "GoHighLevel CRM",
+          "content": {
+            "type": "list",
+            "sections": [
+              {
+                "title": "This integration allows RevFlow to:",
+                "items": [
+                  {
+                    "icon": "✓",
+                    "text": "Access your GHL CRM locations"
+                  },
+                  {
+                    "icon": "✓",
+                    "text": "Create and update contacts"
+                  },
+                  {
+                    "icon": "✓",
+                    "text": "Route leads to specific locations"
+                  },
+                  {
+                    "icon": "✓",
+                    "text": "Track contact interactions"
+                  }
+                ]
+              },
+              {
+                "title": "GHL will NOT:",
+                "items": [
+                  {
+                    "icon": "✗",
+                    "text": "Delete or modify existing contacts"
+                  },
+                  {
+                    "icon": "✗",
+                    "text": "Access your email or calendars"
+                  },
+                  {
+                    "icon": "✗",
+                    "text": "Make purchases or charges"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "button_group",
+          "alignment": "center",
+          "buttons": [
+            {
+              "label": "🔗 Authorize with GoHighLevel",
+              "action": "initiate_ghl_oauth",
+              "style": "primary",
+              "size": "large",
+              "help_text": "You'll be redirected to ghl.com"
+            }
+          ]
+        },
+        {
+          "type": "help_section",
+          "title": "Detailed permissions",
+          "link": "https://support.gohighlevel.com/privacy",
+          "link_text": "Privacy Policy"
+        }
+      ],
+      "actions": {
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "title": "Connect GoHighLevel (GHL) to RevFlow",
+      "subtitle": "Step 2 of 3: Select GHL Locations",
+      "layout": "vertical",
+      "conditional_show": "oauth_success",
+      "sections": [
+        {
+          "type": "success_banner",
+          "icon": "✅",
+          "title": "Authorization successful!",
+          "description_template": "Connected as: {ghl_user_name} ({ghl_user_email})"
+        },
+        {
+          "type": "description",
+          "text": "Select which GHL locations should receive RevFlow leads:"
+        },
+        {
+          "type": "location_selector",
+          "name": "ghl_locations",
+          "label": "Available Locations",
+          "multiple": true,
+          "required": true,
+          "locations_source": "ghl_api",
+          "location_fields": [
+            {
+              "name": "name",
+              "label": "Location Name",
+              "type": "string"
+            },
+            {
+              "name": "location_id",
+              "label": "ID",
+              "type": "uuid",
+              "hidden": true
+            },
+            {
+              "name": "city_state",
+              "label": "Location",
+              "type": "string"
+            },
+            {
+              "name": "contact_count",
+              "label": "Contacts",
+              "type": "integer",
+              "format": "number"
+            },
+            {
+              "name": "tags",
+              "label": "Tags",
+              "type": "array",
+              "format": "tags"
+            }
+          ],
+          "selection_actions": [
+            {
+              "label": "Select All",
+              "action": "select_all_locations"
+            },
+            {
+              "label": "Deselect All",
+              "action": "deselect_all_locations"
+            }
+          ],
+          "help_text": "You can change this later in Integration Settings"
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next Step >",
+          "action": "next_step",
+          "validation": ["ghl_locations"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 3,
+      "title": "Connect GoHighLevel (GHL) to RevFlow",
+      "subtitle": "Step 3 of 3: Lead Routing Rules",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "description",
+          "text": "Define how leads are routed from RevFlow to GHL locations."
+        },
+        {
+          "type": "routing_rules_builder",
+          "name": "ghl_routing_rules",
+          "rules_source": "default",
+          "allow_add_rules": true,
+          "allow_delete_rules": true,
+          "allow_reorder_rules": true,
+          "rule_template": {
+            "rule_id": "auto_generate",
+            "enabled": true,
+            "name": "Unnamed Rule",
+            "conditions": [],
+            "actions": []
+          },
+          "default_rules": [
+            {
+              "rule_id": "default_ghl_route",
+              "name": "Default - All Leads",
+              "description": "Route all leads not matched by other rules",
+              "enabled": true,
+              "conditions": [
+                {
+                  "field": "source_id",
+                  "operator": "exists",
+                  "value": null
+                }
+              ],
+              "actions": [
+                {
+                  "type": "route_to_location",
+                  "location_id": "auto_select_first",
+                  "location_selector": true
+                },
+                {
+                  "type": "add_tags",
+                  "tags": ["incoming", "revflow-imported"],
+                  "tag_editor": true
+                }
+              ],
+              "editable": true
+            }
+          ],
+          "available_fields": [
+            {
+              "name": "source_id",
+              "label": "Lead Source",
+              "type": "string",
+              "operators": ["equals", "contains", "in"]
+            },
+            {
+              "name": "email",
+              "label": "Email",
+              "type": "email",
+              "operators": ["exists", "contains"]
+            },
+            {
+              "name": "company_name",
+              "label": "Company Name",
+              "type": "string",
+              "operators": ["equals", "contains"]
+            },
+            {
+              "name": "company_size",
+              "label": "Company Size",
+              "type": "enum",
+              "operators": ["equals", "gte", "lte"],
+              "values": ["1-10", "11-50", "51-200", "201-500", "500+"]
+            },
+            {
+              "name": "phone",
+              "label": "Phone Number",
+              "type": "phone",
+              "operators": ["exists"]
+            },
+            {
+              "name": "contact_role",
+              "label": "Contact Role",
+              "type": "string",
+              "operators": ["equals", "contains"]
+            },
+            {
+              "name": "industry",
+              "label": "Industry",
+              "type": "string",
+              "operators": ["equals", "in"]
+            }
+          ],
+          "available_operators": {
+            "equals": { "label": "equals", "description": "Exact match" },
+            "contains": { "label": "contains", "description": "Substring match" },
+            "startswith": { "label": "starts with", "description": "Prefix match" },
+            "exists": { "label": "exists", "description": "Field not empty" },
+            "in": { "label": "in", "description": "Array contains any" },
+            "gte": { "label": "greater than or equal", "description": ">=" },
+            "lte": { "label": "less than or equal", "description": "<=" }
+          },
+          "available_actions": [
+            {
+              "type": "route_to_location",
+              "label": "Route to Location",
+              "description": "Send lead to specific GHL location",
+              "params": [
+                {
+                  "name": "location_id",
+                  "type": "selector",
+                  "source": "ghl_locations",
+                  "required": true
+                }
+              ]
+            },
+            {
+              "type": "add_tags",
+              "label": "Add Tags",
+              "description": "Add tags in GHL when lead arrives",
+              "params": [
+                {
+                  "name": "tags",
+                  "type": "tag_input",
+                  "multiple": true,
+                  "required": true
+                }
+              ]
+            },
+            {
+              "type": "set_priority",
+              "label": "Set Priority",
+              "description": "Mark as high priority in GHL",
+              "params": [
+                {
+                  "name": "priority",
+                  "type": "enum",
+                  "values": ["low", "medium", "high", "critical"],
+                  "required": true
+                }
+              ]
+            },
+            {
+              "type": "add_to_workflow",
+              "label": "Add to Workflow",
+              "description": "Trigger GHL automation workflow",
+              "params": [
+                {
+                  "name": "workflow_id",
+                  "type": "selector",
+                  "source": "ghl_workflows",
+                  "required": true
+                }
+              ]
+            }
+          ],
+          "help_text": "Rules execute in order. First match wins. Use 'Default' rule as fallback."
+        },
+        {
+          "type": "info_banner",
+          "severity": "info",
+          "icon": "ℹ️",
+          "title": "Rule Priority",
+          "description": "Rules execute in order. First match wins. You can reorder rules by dragging."
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "✅ Complete Setup",
+          "action": "enable_ghl_integration",
+          "confirmation": "Enable GHL integration? Leads will start routing to your GHL locations.",
+          "style": "success"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+# Sensitive files
+*.key
+*.pem
+.env
+.env.*
+*.env
+*_secret*
+*_password*
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
+*.sublime-*
+
+# Virtual environments
+venv/
+*.corrupted.*
+shared-venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+.npm
+
+# Other venv-style folders
+venv_health/
+**/venv_*/
+
+# Credentials and tokens (do not commit)
+**/gsc_credentials.json
+**/gsc_token.pickle
+modules/revwins/config/gsc_*

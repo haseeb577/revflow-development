@@ -1,0 +1,33 @@
+[Unit]
+Description=RevFlow Lead Scoring API (Port 8500)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-revenue-aligned-scoring-system
+# Map .env variables to what the code expects
+Environment="DB_HOST=localhost"
+Environment="DB_PORT=5432"
+Environment="DB_NAME=revflow"
+Environment="DB_USER=revflow_user"
+Environment="DB_PASSWORD=revflow_canonical_password_2025"
+ExecStart=/usr/bin/python3 /opt/revflow-revenue-aligned-scoring-system/api_server.py
+StandardOutput=append:/var/log/revflow-lead-scoring-api.log
+StandardError=append:/var/log/revflow-lead-scoring-error.log
+StartLimitInterval=60
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

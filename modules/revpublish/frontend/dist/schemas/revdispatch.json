@@ -1,0 +1,90 @@
+{
+  "module": {
+    "id": "revdispatch",
+    "name": "RevFlow Dispatch",
+    "number": 13,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevFlow Dispatch Dashboard",
+    "description": "Webhook automation and workflow dispatch system",
+    "icon": "send",
+    "color": "#06B6D4"
+  },
+  "dataSource": {
+    "endpoint": null,
+    "refreshInterval": null
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "status": "running",
+        "description": "Webhook-based automation service"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "webhooks-processed",
+      "props": {
+        "title": "Webhooks Processed",
+        "icon": "🔗",
+        "defaultValue": "234,560"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "workflows-active",
+      "props": {
+        "title": "Active Workflows",
+        "icon": "⚡",
+        "defaultValue": "47"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Dispatch Features",
+        "items": [
+          "Webhook reception",
+          "Workflow automation",
+          "CRM integration",
+          "Email triggers",
+          "Slack notifications"
+        ]
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "integrations",
+      "props": {
+        "title": "Integrations",
+        "items": [
+          "GoHighLevel",
+          "HubSpot",
+          "Salesforce",
+          "Slack",
+          "Custom webhooks"
+        ]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "view-workflows",
+      "props": {
+        "label": "View Workflows",
+        "icon": "📋",
+        "description": "Manage automation workflows"
+      }
+    }
+  ]
+}

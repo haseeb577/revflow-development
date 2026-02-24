@@ -1,0 +1,25 @@
+[Unit]
+Description=RevMetrics AI Visibility API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/revflow-metrics/ai_visibility
+ExecStart=/usr/bin/python3 api.py
+Environment=PYTHONPATH=/opt/revflow-metrics/ai_visibility
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

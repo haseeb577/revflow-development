@@ -1,0 +1,40 @@
+{
+  "name": "Appendix Viewer",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Appendix Viewer"
+      },
+      {
+        "type": "text",
+        "content": "View detailed appendix content",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "2rem",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Appendix content will be displayed here...",
+            "style": {
+              "color": "#94a3b8"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+

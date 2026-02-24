@@ -1,0 +1,27 @@
+[Unit]
+Description=RevFlow RevScore IQ - Content Quality Scoring (MODULE_11 V2)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-modules/MODULE_11_RevScore_IQ
+Environment="PATH=/opt/revflow-modules/MODULE_11_RevScore_IQ/venv/bin"
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/usr/bin/python33 score_service.py
+StandardOutput=append:/var/log/revflow-revscore-iq.log
+StandardError=append:/var/log/revflow-revscore-iq.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

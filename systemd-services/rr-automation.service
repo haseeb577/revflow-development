@@ -1,0 +1,19 @@
+[Unit]
+Description=R&R Content Automation System (Port 8400)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/smarketsherpa-rr-automation
+EnvironmentFile=/opt/shared-api-engine/.env
+Environment="PATH=/opt/smarketsherpa-rr-automation/venv/bin"
+Environment="FLASK_APP=app.py"
+ExecStart=/opt/revflow-os/shared-venv/bin/python app.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/rr-automation.log
+StandardError=append:/var/log/rr-automation-error.log
+
+[Install]
+WantedBy=multi-user.target

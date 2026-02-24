@@ -1,0 +1,16 @@
+[Unit]
+Description=RevScore IQ™ API v2.0 with RevAudit
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-modules/MODULE_2_RevScore_IQ
+EnvironmentFile=/opt/shared-api-engine/.env
+Environment="PYTHONPATH=/opt/shared-api-engine"
+ExecStart=/opt/revflow-os/venv/bin/uvicorn score_service:app --host 127.0.0.1 --port 8100
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

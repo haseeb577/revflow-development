@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revassist",
+    "name": "RevAssist",
+    "number": 18,
+    "suite": "Tech Efficiency",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevAssist Dashboard",
+    "description": "AI-powered assessment and recommendation engine",
+    "icon": "help-circle",
+    "color": "#0EA5E9"
+  },
+  "dataSource": {
+    "endpoint": "/api/revassist/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevAssist engine on port 8105"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "assessments",
+      "props": {
+        "title": "Assessments Run",
+        "icon": "📝",
+        "dataKey": "stats.assessments",
+        "defaultValue": "4,560"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "recommendations",
+      "props": {
+        "title": "Recommendations",
+        "icon": "💡",
+        "dataKey": "stats.recommendations",
+        "defaultValue": "12,340"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Assist Features",
+        "items": [
+          "Site health assessment",
+          "SEO audit automation",
+          "Performance analysis",
+          "Security scanning",
+          "Actionable recommendations"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8105]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "run-assessment",
+      "props": {
+        "label": "Run Assessment",
+        "icon": "🔬",
+        "description": "Start comprehensive site analysis"
+      }
+    }
+  ]
+}

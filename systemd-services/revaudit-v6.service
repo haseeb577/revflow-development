@@ -1,0 +1,24 @@
+[Unit]
+Description=RevAudit v6.0 Backend API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revaudit-v6/backend
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 3100
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

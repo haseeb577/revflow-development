@@ -1,0 +1,36 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routes.dashboard import router as dashboard_router
+from routes.deployment_enhanced import router as deploy_router
+from routes.v2_routes import router as v2_router
+
+app = FastAPI(title="RevPublish API v2.1", version="2.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {
+        "app": "RevPublish™ v2.1",
+        "status": "operational",
+        "backend_port": 8550
+    }
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "revpublish"}
+
+# TOP-LEVEL routes (NO prefix doubling!)
+app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
+
+# DEPLOYMENT routes (fixed prefixes)
+app.include_router(deploy_router, tags=["deployment"])
+
+# V2 routes (AI, conflicts, OAuth)
+app.include_router(v2_router, tags=["v2.0"])

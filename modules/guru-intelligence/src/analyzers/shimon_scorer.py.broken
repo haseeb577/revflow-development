@@ -1,0 +1,103 @@
+# analyzers/shimon_scorer.py
+import psycopg2
+from typing import Dict, List
+
+class ShimonScorer:
+    """
+    Shimon's Normalized Scoring Methodology integrated with 359 Guru rules.
+    """
+    
+    def __init__(self, db_config):
+        self.db_config = db_config
+        self.category_weights = {
+            'content_quality': 25,
+            'user_experience': 35,
+            'seo_technical': 25,
+            'conversion': 15
+        }
+    
+    def score_content(self, content: str, page_type: str) -> Dict:
+        """Score content using Shimon's methodology with Guru's 359 rules."""
+        
+        # Get applicable rules from Guru knowledge graph
+        rules = self._get_applicable_rules(page_type)
+        
+        # Run validation using Guru's tier system
+        results = self._validate_against_rules(content, rules)
+        
+        # Apply Shimon's normalization
+        category_scores = self._calculate_category_scores(results)
+        
+        # Calculate final score
+        final_score = self._calculate_final_score(category_scores)
+        
+        return {
+            'final_score': final_score,
+            'methodology': "Shimon's Normalized Scoring + Guru Intelligence (359 rules)",
+            'category_scores': category_scores,
+            'rules_checked': len(rules),
+            'rules_passed': sum(1 for r in results if r['passed'])
+        }
+    
+    def _get_applicable_rules(self, page_type: str) -> List[Dict]:
+        """Query Guru database for applicable rules."""
+        conn = psycopg2.connect(**self.db_config)
+        cur = conn.cursor()
+        
+        cur.execute("""
+            SELECT rule_id, rule_name, rule_category, shimon_category, 
+                   shimon_weight, shimon_ranking, validation_type, validation_pattern
+            FROM extracted_rules
+            WHERE complexity_level <= 2  -- Tier 1 & 2 rules
+            ORDER BY shimon_ranking DESC, shimon_weight DESC
+        """)
+        
+        rules = cur.fetchall()
+        conn.close()
+        
+        return [
+            {
+                'id': r[0],
+                'name': r[1],
+                'category': r[3],  # shimon_category
+                'weight': r[4],    # shimon_weight
+                'ranking': r[5],   # shimon_ranking
+                'validation': r[6],
+                'pattern': r[7]
+            }
+            for r in rules
+        ]
+    
+    def _calculate_category_scores(self, results: List[Dict]) -> List[Dict]:
+        """Apply Shimon's normalization per category."""
+        category_results = {}
+        
+        for category in self.category_weights.keys():
+            category_rules = [r for r in results if r['category'] == category]
+            
+            if not category_rules:
+                continue
+            
+            # Calculate earned vs max points
+            max_points = sum(r['weight'] * r['ranking'] for r in category_rules)
+            earned_points = sum(
+                r['weight'] * r['ranking'] 
+                for r in category_rules 
+                if r['passed']
+            )
+            
+            # Normalize to 0-100
+            normalized = (earned_points / max_points * 100) if max_points > 0 else 0
+            
+            # Apply category weight
+            contribution = normalized * (self.category_weights[category] / 100)
+            
+            category_results[category] = {
+                'normalized_score': round(normalized, 1),
+                'contribution': round(contribution, 1),
+                'earned': earned_points,
+                'max': max_points,
+                'category_weight': self.category_weights[category]
+            }
+        
+        return category_results

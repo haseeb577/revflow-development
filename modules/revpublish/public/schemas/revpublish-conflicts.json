@@ -1,0 +1,75 @@
+{
+  "name": "RevPublish Conflicts",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "⚠️ Deployment Conflicts & Quality Issues"
+      },
+      {
+        "type": "alert",
+        "variant": "info",
+        "title": "What This Tab Does",
+        "message": "Detects problems across your portfolio: duplicate content (same text on multiple sites), SEO conflicts (multiple sites targeting same keywords), broken links, deployment errors, and content inconsistencies. Use this to maintain quality and avoid Google penalties."
+      },
+      {
+        "type": "spacer",
+        "height": "1rem"
+      },
+      {
+        "type": "statsGrid",
+        "dataSource": {
+          "endpoint": "/api/conflicts"
+        },
+        "dataPath": ".",
+        "columns": 4,
+        "gap": "1rem",
+        "cards": [
+          {
+            "label": "Duplicate Content",
+            "dataKey": "duplicate_content",
+            "color": "#ef4444"
+          },
+          {
+            "label": "SEO Conflicts",
+            "dataKey": "seo_conflicts",
+            "color": "#f59e0b"
+          },
+          {
+            "label": "Broken Links",
+            "dataKey": "broken_links",
+            "color": "#f59e0b"
+          },
+          {
+            "label": "Deploy Errors",
+            "dataKey": "deployment_errors",
+            "color": "#ef4444"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "dataTable",
+        "dataSource": {
+          "endpoint": "/api/conflicts?per_page=50"
+        },
+        "dataPath": "conflicts",
+        "columns": [
+          { "key": "type", "label": "Type", "type": "badge" },
+          { "key": "site_url", "label": "Affected Site" },
+          { "key": "description", "label": "Issue Description" },
+          { "key": "severity", "label": "Severity", "type": "badge" },
+          { "key": "detected_at", "label": "Detected" }
+        ],
+        "sortable": true,
+        "searchable": true
+      }
+    ]
+  }
+}

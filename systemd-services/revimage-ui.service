@@ -1,0 +1,23 @@
+[Unit]
+Description=RevImage Web UI
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revimage-ui
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m http.server 8601 --bind 0.0.0.0
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

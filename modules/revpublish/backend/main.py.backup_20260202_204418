@@ -1,0 +1,172 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routes.dashboard import router as dashboard_router
+from routes.deployment_enhanced import router as deploy_router
+from routes.v2_routes import router as v2_router
+from fastapi import UploadFile, File, Form, HTTPException
+from typing import Optional, List, Dict, Any
+import pandas as pd
+import io
+import re
+from datetime import datetime
+import requests
+from requests.auth import HTTPBasicAuth
+
+app = FastAPI(title="RevPublish API v2.1", version="2.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {
+        "app": "RevPublish™ v2.1",
+        "status": "operational",
+        "backend_port": 8550
+    }
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "revpublish"}
+
+# TOP-LEVEL routes (NO prefix doubling!)
+app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
+
+# DEPLOYMENT routes (fixed prefixes)
+app.include_router(deploy_router, tags=["deployment"])
+
+# V2 routes (AI, conflicts, OAuth)
+app.include_router(v2_router, tags=["v2.0"])
+# ═══════════════════════════════════════════════
+  # BULK IMPORT ENDPOINT
+  # ═══════════════════════════════════════════════
+
+
+# ═══════════════════════════════════════════════════════════════
+# BULK IMPORT ENDPOINT
+# ═══════════════════════════════════════════════════════════════
+
+def normalize_phone_number(phone: str) -> tuple[str, bool]:
+    if not phone or pd.isna(phone):
+        return "", False
+    original = str(phone)
+    digits = re.sub(r'\D', '', original)
+    if len(digits) == 11 and digits.startswith('1'):
+        digits = digits[1:]
+    if len(digits) != 10:
+        return original, False
+    normalized = f"{digits[0:3]}-{digits[3:6]}-{digits[6:10]}"
+    return normalized, (normalized != original)
+
+def merge_template_fields(template: str, row_data: Dict[str, Any]) -> str:
+    merged = template
+    for field_name, field_value in row_data.items():
+        field_placeholder = f"[{field_name.upper()}]"
+        if pd.isna(field_value) or field_value is None:
+            field_value = ""
+        else:
+            field_value = str(field_value)
+        merged = merged.replace(field_placeholder, field_value)
+    
+    def evaluate_condition(match):
+        condition = match.group(1)
+        content_if_true = match.group(2)
+        if '=' in condition:
+            field, expected_value = condition.split('=', 1)
+            field = field.strip()
+            expected_value = expected_value.strip()
+            actual_value = str(row_data.get(field.lower(), '')).strip().lower()
+            expected_value = expected_value.lower()
+            if actual_value == expected_value:
+                return content_if_true
+        return ""
+    
+    merged = re.sub(r'\[IF\s+([^\]]+)\](.*?)\[/IF\]', evaluate_condition, merged, flags=re.DOTALL | re.IGNORECASE)
+    merged = re.sub(r'^### (.+)$', r'<h3>\1</h3>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'^## (.+)$', r'<h2>\1</h2>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'^# (.+)$', r'<h1>\1</h1>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', merged)
+    return merged
+
+@app.post("/api/import")
+async def bulk_import_csv_template(
+    csv_file: UploadFile = File(...),
+    template_file: UploadFile = File(None),
+    enable_smart_corrections: bool = Form(True),
+    use_llm_assistance: bool = Form(False),
+    preview_mode: bool = Form(True),
+    post_status: str = Form("draft")
+):
+    try:
+        csv_content = await csv_file.read()
+        df = pd.read_csv(io.BytesIO(csv_content))
+        # Handle optional template file (CSV-only mode)
+        if template_file is None:
+            # CSV-only mode - use CSV data directly without template
+            template_text = ""
+        else:
+                    template_content = await template_file.read()
+            template_text = template_content.decode('utf-8')
+        
+        if 'site_url' not in df.columns:
+            raise HTTPException(status_code=400, detail="CSV must have 'site_url' column")
+        
+        results = {
+            "status": "success",
+            "timestamp": datetime.now().isoformat(),
+            "preview_mode": preview_mode,
+            "summary": {"total_rows": len(df), "successful_deployments": 0, "failed_deployments": 0, "auto_corrections": 0},
+            "corrections_summary": {"phone_normalized": 0},
+            "deployments": []
+        }
+        
+        for index, row in df.iterrows():
+            row_number = index + 1
+            row_dict = row.to_dict()
+            target_site = row_dict.get('site_url', '').strip()
+            
+            if not target_site:
+                results["deployments"].append({"row_number": row_number, "status": "error", "message": "Missing site_url"})
+                results["summary"]["failed_deployments"] += 1
+                continue
+            
+            corrections_applied = []
+            if enable_smart_corrections and 'phone' in row_dict and row_dict['phone']:
+                normalized, changed = normalize_phone_number(row_dict['phone'])
+                if changed:
+                    corrections_applied.append({"field": "phone", "from": row_dict['phone'], "to": normalized})
+                    row_dict['phone'] = normalized
+                    results["corrections_summary"]["phone_normalized"] += 1
+                    results["summary"]["auto_corrections"] += 1
+            
+            # Skip template merge if no template provided
+            if template_text:
+                merged_content = merge_template_fields(template_text, row_dict)
+            else:
+                # CSV-only: use row data directly
+                merged_content = str(row_dict)
+            niche = row_dict.get('niche', 'Services')
+            city = row_dict.get('city', '')
+            state = row_dict.get('state', '')
+            page_title = f"Professional {niche} Services in {city}, {state}".strip()
+            page_slug = f"{niche.lower().replace(' ', '-')}-{city.lower().replace(' ', '-')}-{state.lower()}".strip('-')
+            
+            results["deployments"].append({
+                "row_number": row_number,
+                "status": "preview" if preview_mode else "deployed",
+                "site_info": {"site_url": target_site, "business_name": row_dict.get('business_name', ''), "niche": niche, "city": city, "state": state},
+                "page_info": {"title": page_title, "slug": page_slug, "page_url": f"https://{target_site}/{page_slug}", "wp_admin_url": f"https://{target_site}/wp-admin/post.php?post=NEW&action=edit", "post_status": post_status},
+                "merged_fields": {k.upper(): v for k, v in row_dict.items()},
+                "corrections_applied": corrections_applied,
+                "message": "Preview only" if preview_mode else "Deployed"
+            })
+            results["summary"]["successful_deployments"] += 1
+        
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}")

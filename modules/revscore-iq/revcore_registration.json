@@ -1,0 +1,48 @@
+{
+  "service_name": "revscore",
+  "module_number": 2,
+  "display_name": "RevScore IQ™",
+  "version": "2.0.0",
+  "internal_url": "http://localhost:8100",
+  "external_route": "/api/modules/revscore",
+  "health_check": "http://localhost:8100/health",
+  "endpoints": [
+    {
+      "path": "/api/v1/assess",
+      "method": "POST",
+      "description": "Create assessment",
+      "public": true
+    },
+    {
+      "path": "/api/v1/assessments/{id}",
+      "method": "GET",
+      "description": "Get assessment",
+      "public": true
+    },
+    {
+      "path": "/api/v1/assessments",
+      "method": "GET",
+      "description": "List assessments",
+      "public": true
+    },
+    {
+      "path": "/api/v1/reports/{filename}",
+      "method": "GET",
+      "description": "Download report",
+      "public": true
+    }
+  ],
+  "capabilities": [
+    "website_assessment",
+    "p0_p3_scoring",
+    "gap_analysis",
+    "report_generation"
+  ],
+  "dependencies": [],
+  "load_balancing": false,
+  "timeout": 300,
+  "retry_policy": {
+    "max_retries": 2,
+    "retry_delay": 5
+  }
+}

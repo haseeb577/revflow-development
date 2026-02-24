@@ -1,0 +1,1570 @@
+THE COMPLETE AI-SEO/AEO/GEO PLAYBOOK
+
+2026 Edition - SmarketSherpa Operations
+
+*Entity-First Strategy • Answer Engine Optimization • Authority Systems*
+
+Table of Contents
+
+This playbook consolidates 9 source documents into a comprehensive
+operational guide for achieving AI-first search dominance.
+
+1.  Glossary (Canonical Terms)
+
+2.  Source Integration & Conflict Resolution
+
+3.  Executive Summary & The 2026 Landscape
+
+4.  Mental Models: How AI Answers Are Built
+
+5.  Strategic Foundations
+
+6.  Content Architecture for AI-SEO
+
+7.  Editorial System & Quality Control
+
+8.  Technical Foundations
+
+9.  Measurement & KPIs
+
+10. Operations & Team Structure
+
+11. Vertical Playbooks (Legal, SaaS, Home Services)
+
+12. 30/60/90-Day Implementation Plan
+
+Section 1: Glossary (Canonical Terms)
+
+This section defines all key terminology used throughout the playbook.
+These are the canonical definitions that resolve conflicts between
+source documents.
+
+Core Concepts
+
+**AI-SEO**
+
+Search Engine Optimization specifically designed for AI-powered answer
+engines (ChatGPT, Perplexity, Google AI Overviews, Gemini). Focuses on
+entity recognition, passage extraction, and quotability rather than
+traditional keyword ranking.
+
+**AEO (Answer Engine Optimization)**
+
+The practice of optimizing content for direct answers in AI systems.
+Emphasizes BLUF structure (Bottom Line Up Front), semantic chunking, and
+QA-style headers to maximize AI citation probability.
+
+**GEO (Generative Engine Optimization)**
+
+Optimization specifically for Large Language Models (LLMs) like ChatGPT
+and Claude. Prioritizes quotability, entity density, numeric
+specificity, and self-contained answer blocks that AI can extract and
+synthesize.
+
+**Entity**
+
+A distinct, identifiable thing or concept in the Knowledge Graph
+(business, person, service, location, mechanism). Entities have
+attributes and relationships. Example: \'SmarketSherpa\' is an entity
+with attributes (location: Dallas, services: SEO) and relationships
+(worksFor, offers, areaServed).
+
+**Entity Association**
+
+The strength of connection between two entities in the Knowledge Graph.
+Strong association means AI models predictably link the entities (e.g.,
+\'Dallas Truck Accident\' → \'MR.LAW\'). Built through co-occurrence,
+structured data, and citation patterns.
+
+**Knowledge Graph**
+
+Google\'s database of entities and their relationships. Think of it as a
+massive network where nodes are entities (businesses, people, concepts)
+and edges are relationships (worksFor, locatedIn, expertIn). AI models
+query this graph to understand context and recommend authoritative
+sources.
+
+Content Architecture Terms
+
+**BLUF (Bottom Line Up Front)**
+
+Content structure requirement: first sentence after every H2 header must
+directly answer the question in 40-60 words. Critical for AI Relevance
+scoring (35% weight in LLM evaluation). Example: Q: \'How much does bee
+removal cost?\' A: \'Bee removal in Allen, Texas costs \$150-\$500 for
+most residential jobs. Larger hives in walls run \$300-\$800.\'
+
+**Quotability**
+
+The degree to which a content passage can be extracted and cited by AI.
+Requirements: 40-80 words, self-contained (no external context needed),
+entity-rich opening (business + service + location in first 10 words),
+numeric specificity, declarative voice with no hedging.
+
+**Semantic Chunking**
+
+Three-sentence pattern: (1) Claim/Answer - state the fact directly, (2)
+Evidence - support with data/statute/location/example, (3) Relevance -
+explain why it matters (risk, benefit, local context). This structure
+optimizes for AI fluency scoring.
+
+**Voice Modality System**
+
+Three distinct writing tones matched to user intent:
+
+-   **Professor**: Technical/legal content, citation-heavy, neutral. Use
+    for Branch 2 (Technical) pages.
+
+-   **Peer**: Comparative content, empathetic, validating. Use for
+    Branch 3 (Comparative) pages.
+
+-   **Partner**: Transactional/emergency, directive, confident. Use for
+    Root and Branch 1 (Financial) pages.
+
+***CRITICAL:** Choose ONE voice per page. Never mix voices within a
+page.*
+
+Technical Terms
+
+**Schema Markup (JSON-LD)**
+
+Structured data code that tells search engines what your content means,
+not just what it says. Required types: Organization (global footer),
+Person (author bios with hasCredential), LocalBusiness (GBP alignment),
+Service (areaServed + offers), FAQPage (FAQ sections).
+
+**NAP (Name, Address, Phone)**
+
+Business identity that must be 100% identical across ALL platforms
+(website footer, schema markup, Google Business Profile, citations,
+social profiles). Even minor differences (abbreviations, punctuation,
+Suite vs Ste) break entity recognition.
+
+**E-E-A-T (Experience, Expertise, Authoritativeness, Trust)**
+
+Google\'s quality framework for YMYL (Your Money Your Life) topics like
+legal, medical, financial content. Requirements: visible author
+credentials (bar license #s), case results with proof, verifiable
+expertise signals, cross-platform corroboration.
+
+**IndexNow**
+
+Protocol for instant URL indexing. Push changes directly to search
+engines (Bing direct, Google indirect) rather than waiting for crawlers.
+Triggers: new publish, content update, URL change, new backlink
+acquired. Implementation: WordPress plugin or API POST to
+api.indexnow.org.
+
+**llms.txt**
+
+AI agent instruction file at yourdomain.com/llms.txt (similar to
+robots.txt). Markdown format listing primary service pages, pricing,
+About/Team/Contact with brief context. Tells ChatGPT, Claude, Perplexity
+what your site offers and where to find information.
+
+**HTML Density**
+
+Ratio of actual text content vs HTML/CSS/JavaScript code. Target: \>65%
+text. Low density means AI wastes tokens reading boilerplate code.
+Fixes: semantic HTML (article/nav/aside), externalize CSS/JS, reduce DOM
+depth, remove page builder bloat.
+
+**Core Web Vitals**
+
+Google\'s UX metrics: LCP (Largest Contentful Paint) \<2.5s, FID (First
+Input Delay) \<100ms, CLS (Cumulative Layout Shift) \<0.1. Ranking
+factors affecting both traditional SEO and user behavior signals AI
+systems monitor.
+
+**Ghost Link**
+
+Backlink visible in Ahrefs but NOT in Bing Webmaster Tools = filtered by
+search engines. Indicates low-quality link Google ignores. Action:
+Don\'t count in reports, add toxic links to Disavow file. Audit monthly
+using Ahrefs vs Bing comparison.
+
+Local SEO Terms
+
+**GBP (Google Business Profile)**
+
+Google\'s local business listing (formerly Google My Business). Primary
+ranking factors: Review Velocity (weekly cadence), Visual Saturation
+(100+ photos), Primary Category (hyper-specific), Address Visibility
+(physical \> hidden), Hard-to-Fake Signals (real driving directions).
+
+**Map Pack (Local 3-Pack)**
+
+Top 3 map listings shown for local queries. Ranking factors: Proximity
+to searcher, Review Velocity, Photo/Video Saturation, NAP Consistency,
+Primary Category, Engagement Signals (clicks, calls, direction
+requests).
+
+**Review Velocity**
+
+Frequency of new reviews. A business with 500 recent reviews outranks
+one with 5,000 stale reviews. Target: weekly review cadence. Google
+rewards listings appearing \'active right now.\' Implementation: ask
+EVERY customer, SMS + email combination.
+
+**Visual Saturation**
+
+Photo/video quantity and quality on GBP. Target: 100+ photos minimum.
+Mix: 20 exterior, 30 team, 30 project/job, 20 equipment. All must be
+geotagged (EXIF GPS data). Videos (15-45 seconds) autoplay in Maps,
+providing major conversion advantage.
+
+**Hard-to-Fake Signals**
+
+User actions difficult to manipulate: real driving directions via Google
+Maps, actual phone calls from Maps, website visits from GBP. Google
+heavily weights these over easily-gamed signals like check-ins or
+reviews.
+
+**Primary Category**
+
+Single most important GBP signal. Must be hyper-specific, not generic.
+Example: \'Furnace Repair Service\' (specific) vs \'HVAC Contractor\'
+(too broad). Controls what business ranks for. Set incorrectly = Google
+fails to associate business with core services.
+
+**Centroid**
+
+Geographic center point of a city or search area. Proximity to centroid
+affects rankings for searches outside city (e.g., searching \'Chicago
+plumber\' from LA) or searches mentioning city name. Physical address
+near downtown/centroid provides ranking advantage.
+
+Authority Stack Terms
+
+**Google Authority Stack (GATS)**
+
+Interconnected network of Google properties (Google Drive, Google Sites,
+Google My Maps, Google Docs) that reinforce entity authority. Benefits:
+Fast indexing, trusted domain authority, link equity flowing to Money
+Site. Implementation: 4 phases over 6-8 hours.
+
+**Money Site**
+
+Your primary business website (e.g., smarketsherpa.ai or mrlaw.com).
+Receives authority from Google Authority Stack and Tier 2 backlinks
+indirectly. Never send low-quality links directly to Money Site.
+
+**Drive Stack**
+
+Phase 1 of GATS. Public Google Drive folder containing: Google Doc
+(1,000 words + NAP), PDF (converted from Doc), Google Sheet (keyword
+list), Google Slides (5-slide deck), geotagged photos. All assets
+interlink and point to Money Site.
+
+**Map Stack**
+
+Phase 2 of GATS. Google My Maps showing business location, driving
+directions from 3 landmarks, 500-word description with keywords and
+links to Money Site + Drive folder.
+
+**Link Loop**
+
+Interconnection pattern where all Google properties link to each other:
+Drive Doc → Google Site → My Map → Google Site → Drive Doc. Creates
+authority flow within Google ecosystem before pointing to Money Site.
+
+**Tier 2 Backlinks**
+
+Links sent ONLY to Google Site (not Money Site) to trigger indexing and
+amplify stack authority. Protects Money Site from potential penalties.
+Source: directories, web 2.0s, social bookmarks (10-50 links minimum).
+
+Operations Terms
+
+**Rage Click**
+
+User behavior: rapidly clicking same element 3+ times in \<2 seconds,
+indicating frustration. Detected by Microsoft Clarity. Most common:
+broken tel: links (phone number displayed as text instead of clickable
+link). Causes 60-80% mobile lead loss.
+
+**LSA (Local Services Ads)**
+
+Google\'s pay-per-lead platform for home services. Appears above Map
+Pack. Ranking factors: Review count, Response time, Background check
+completion. Critical: Dispute invalid leads within 3-day window or pay
+for spam.
+
+**RevFlow™**
+
+Automated lead capture and conversion system. Components: RevVoice
+Advisor (24/7 AI phone answering), RevNurture Follow (instant SMS after
+form submission), RevTrust Pulse (automated review requests), RevClient
+Reignite (database reactivation).
+
+**Crush/Meh/Fail Portfolio Model**
+
+Expected outcome distribution for rank-and-rent microsites: ⅓ Crush
+(consistent leads, strong rankings), ⅓ Meh (some leads, okay rankings),
+⅓ Fail (few leads, poor rankings). Baked into economics - don\'t try to
+fix every site. Build more instead.
+
+Section 2: Source Integration & Conflict Resolution
+
+This playbook consolidates 9 source documents totaling 200+ pages. This
+section documents how redundancies were eliminated and conflicts
+resolved.
+
+Source Document Inventory
+
+  -----------------------------------------------------------------------
+  **Doc \#**  **Source Name**         **Primary Focus**
+  ----------- ----------------------- -----------------------------------
+  Doc 1       53-Site Factory         Rank Expand Academy prompting
+              Operations Manual       system, WordPress workflow, content
+                                      production at scale
+
+  Doc 2       SEO Strategy for        E-commerce keyword mapping,
+              Keyword Grouping        internal competition avoidance, URL
+                                      structure for product sites
+
+  Doc 3       Rank Expand Academy     Microsite portfolio SOP, VA
+              Merged Master Summary   delegation, ⅓ crush/meh/fail
+                                      economics, content templates
+
+  Doc 4       SEO Guru - Darren Shaw  Local search best practices, GBP
+              & Whitespark            optimization tactics, hard-to-fake
+                                      signals, video autoplay advantage
+
+  Doc 5       Enhanced AI-SEO Content Gap analysis showing R&R Automation
+              Guide                   delivers 0% AI visibility without
+                                      Doc 6 guidelines
+
+  **Doc 6**   **AI-SEO/AEO/AGE        **GOLD STANDARD: BLUF, voice
+              Content Guide**         modalities, semantic chunking,
+                                      quotability, E-E-A-T**
+
+  Doc 7       Top 25 Local Search     Whitespark 2026 survey data,
+              Ranking Factors         prioritization framework, Primary
+                                      Category emphasis
+
+  Doc 8       Master AI-SEO & GEO     Comprehensive operations, vertical
+              Blueprint               modules (Legal/SaaS/Home Services),
+                                      12 outreach scripts, SERP matrix
+
+  Doc 9       Google Authority Stack  GATS tactical implementation,
+              SOP                     4-phase execution, pricing
+                                      framework, Tier 2 backlinks
+                                      strategy
+  -----------------------------------------------------------------------
+
+Major Conflicts Resolved
+
+Content Quality Standards
+
+**Conflict:** Doc 1/3 Rank Expand methodology accepts \'thin content\'
+(800-1000 words, template-driven). Doc 6 AI-SEO Guide requires strict
+quality (BLUF, quotability, entity density).
+
+**Resolution:** Doc 6 is mandatory. Doc 5 gap analysis confirms: \'60%
+research + 0% AI writing guidelines = 0% AI visibility.\' Doc 1 Rank
+Expand prompts enhanced with Doc 6\'s 7-layer stack (Base + Context +
+Structure + Component + GEO + Entity + Trust). Maintains production
+velocity while achieving AI citation capability.
+
+Authority Building Approaches
+
+**Conflict:** Doc 3 teaches minimal backlinks (\'Authority is
+citations + NAP, not links\'). Doc 8/9 teach comprehensive link building
+(GATS + Tier 2 backlinks + 12 outreach scripts).
+
+**Resolution:** Both approaches work for different contexts. Doc 3
+strategy valid for portfolio microsites where speed \> perfection. Doc
+8/9 strategy required for competitive verticals (Legal YMYL, B2B SaaS).
+This playbook documents BOTH, labeled by use case.
+
+Voice & Tone Guidance
+
+**Conflict:** Doc 1 says \'friendly tone throughout.\' Doc 6 defines 3
+distinct voice modalities (Professor/Peer/Partner) with strict selection
+rules.
+
+**Resolution:** Doc 6 voice system is canonical. \'Friendly\' is too
+vague. Intent-first voice selection mandatory: Emergency/Transactional =
+Partner, Technical/Legal = Professor, Comparative/Pain = Peer. ONE voice
+per page.
+
+Integration Strategy
+
+Each section of this playbook indicates source documents with
+superscript tags:
+
+-   \[Executive\]: For business owners, agency principals,
+    decision-makers
+
+-   \[Technical\]: For developers, system administrators
+
+-   \[SEO Lead\]: For SEO managers, strategists
+
+-   \[Content Team\]: For writers, editors, content managers
+
+-   \[Ops\]: For operations managers, VAs, coordinators
+
+Section 3: Executive Summary & The 2026 Landscape
+
+*\[Executive\]*
+
+What Changed in Search
+
+The era of \'10 blue links\' is over. In 2026, users don\'t click search
+results---they consume AI-generated answers directly. Platforms like
+Google\'s AI Overviews, ChatGPT, Perplexity, and Gemini now act as the
+\'First Page\' of the internet.
+
+**The Strategic Shift:**
+
+-   **Old SEO (2015-2023):** Rank a specific URL for a specific keyword.
+    Metric: Position #1-10. Tactic: Keyword density, backlinks.
+
+-   **AI-SEO (2025-2026):** Establish entity association so AI
+    recommends your brand. Metric: AI Citation Share (how often
+    mentioned in answers). Tactic: Semantic context, entity schema,
+    quotability.
+
+The 6-Surface Monopoly Model
+
+Success is no longer measured by ranking #1 for a keyword. Success means
+appearing on ALL surfaces a user encounters when searching for your
+category.
+
+**The 6 Surfaces:**
+
+  ------------------------------------------------------------------------
+  **Surface**       **How to Win**          **Key Strategy**
+  ----------------- ----------------------- ------------------------------
+  1\. Paid Ads      Click-fraud prevention, Instant visibility for
+                    landing page speed      high-intent keywords
+
+  2\. AI Overview   Schema density, direct  Generative text box at top of
+  (SGE)             answer format           results
+
+  3\. Local Map     Review velocity, visual Top 3 GBP listings with map
+  Pack              saturation              
+
+  4\. Organic       Semantic branching,     Traditional blue link rankings
+  Listings          content depth           
+
+  5\. Video         VideoObject schema,     YouTube/TikTok shorts in
+  Carousel          transcripts             results
+
+  6\. Third-Party   Piggyback protocol,     \'Best Of\' lists,
+  Citations         outreach scripts        directories, Reddit
+  ------------------------------------------------------------------------
+
+**Success Target:** Brand presence on 4+ surfaces for each primary
+keyword.
+
+Expected Outcomes
+
+When this playbook is implemented fully, expect these measurable results
+within 90 days:
+
+-   **30-50% AI Citation Share:** Your brand mentioned in 30-50% of
+    AI-generated answers for primary keywords (measured via manual
+    testing in ChatGPT, Perplexity, Google AI)
+
+-   **Top 3 Map Pack:** Consistent Top 3 position for 80-200 local
+    keywords
+
+-   **12-18% Conversion Rate:** Lead capture rate (calls + forms) from
+    organic traffic
+
+-   **\>65% HTML Density:** Technical health score ensuring AI can
+    efficiently crawl content
+
+-   **100% Mobile Pass:** Core Web Vitals meeting Google\'s \'Good\'
+    thresholds (LCP \<2.5s, FID \<100ms, CLS \<0.1)
+
+Resource Requirements
+
+**Team Requirements:**
+
+-   **SEO Lead:** Strategic oversight, competitor analysis, technical QA
+    (15-20 hrs/month)
+
+-   **Content Team:** Writers trained on BLUF/voice modalities (40-60
+    hrs/month for 20-30 pages)
+
+-   **Developer:** Schema implementation, technical fixes (10-15 hrs
+    initial setup, 5 hrs/month maintenance)
+
+-   **Operations:** GBP management, review responses, QA checks (20-30
+    hrs/month)
+
+**Technology Stack:**
+
+-   Required: Google Search Console, Google Business Profile, Microsoft
+    Clarity (rage click tracking), Ahrefs or SEMrush
+    (competitor/backlink analysis)
+
+-   Recommended: IndexNow (instant indexing), CallRail (call tracking),
+    DataForSEO (LLM Mentions API for AI citation tracking)
+
+Section 4: Mental Models - How AI Answers Are Built
+
+*\[Technical\] \[SEO Lead\]*
+
+The LLM Evaluation Pipeline
+
+Understanding how Large Language Models (LLMs) select and synthesize
+content is critical for optimization. When a user asks a question, the
+AI doesn\'t search the entire web---it evaluates pre-indexed passages
+through a 5-stage pipeline.
+
+Stage 1: Retrieval (Semantic Search)
+
+The AI performs semantic search across indexed content, retrieving
+20-100 candidate passages that match the query intent (not just
+keywords). Passages are typically 100-300 words.
+
+Stage 2: Evaluation Scoring
+
+Each retrieved passage receives a weighted score across 5 dimensions:
+
+  ------------------------------------------------------------------------
+  **Dimension**     **Weight**   **What It Measures**
+  ----------------- ------------ -----------------------------------------
+  Relevance         **35%**      How directly does this answer the
+                                 question? BLUF structure maximizes this
+                                 score.
+
+  Authority         **25%**      Entity density, credentials, citations to
+                                 primary sources (gov/edu).
+
+  Fluency           **20%**      Clean structure with clear semantic
+                                 boundaries. Semantic chunking improves
+                                 score.
+
+  Freshness         **12%**      Visible dates, schema dateModified,
+                                 recent publication.
+
+  Corroboration     **8%**       Alignment with consensus across multiple
+                                 sources.
+  ------------------------------------------------------------------------
+
+**Formula:** Citation Score = (Relevance × 0.35) + (Authority × 0.25) +
+(Fluency × 0.20) + (Freshness × 0.12) + (Corroboration × 0.08)
+
+Stage 3: Ranking & Selection
+
+Top 5-10 passages (highest scores) are selected for potential inclusion
+in the answer.
+
+Stage 4: Synthesis
+
+The AI combines selected passages, removing redundancy and resolving
+conflicts. This is why quotable, self-contained blocks perform better
+than long-form prose.
+
+Stage 5: Output with Attribution
+
+The final answer is generated with citations. Different platforms handle
+attribution differently: Google (inline links), Perplexity (numbered
+citations), ChatGPT (prose attribution).
+
+Key Implications for Content Strategy
+
+-   **Optimize for Passage Extraction:** Goal is not \'page ranking\'
+    but \'passage extraction.\' Content must be engineered as quotable
+    blocks.
+
+-   **Relevance is King:** 35% weight on how directly you answer the
+    question. BLUF structure non-negotiable.
+
+-   **Authority Requires Proof:** 25% weight means generic \'we are
+    experienced\' fails. Need license numbers, case results, citations.
+
+-   **Freshness Beats Age:** Content updated 6 months ago outranks
+    \'better\' content from 2 years ago.
+
+SECTION 5: STRATEGIC FOUNDATIONS
+
+*\[Audience: Executive + SEO Lead + Content Team\]*
+
+This section covers the five core strategic principles that
+differentiate AI-SEO from legacy SEO tactics.
+
+5.1 Entity-First Strategy
+
+Traditional SEO optimized for keyword strings. AI-SEO optimizes for
+Entity Association---the strength of connection between your brand
+entity and topic entities in the Knowledge Graph.
+
+The Knowledge Graph
+
+Google stores information as a graph of nodes (entities) connected by
+edges (relationships). When a user asks \'best truck accident lawyer
+Dallas,\' the AI calculates probability scores for which entity to
+recommend based on:
+
+-   Co-occurrence frequency (brand + topic mentions together)
+
+-   Sentiment (positive context around mentions)
+
+-   Authority (citations from trusted sources)
+
+Implementation
+
+**Narrow & Deep Approach:** Focus on ONE entity per 90-day sprint.
+Publishing 50 blog posts across 50 topics dilutes entity signals.
+Publishing 50 posts on ONE topic (e.g., truck accidents) saturates the
+Knowledge Graph with your brand-topic association.
+
+5.2 Authority Signals & E-E-A-T
+
+For YMYL (Your Money Your Life) topics---legal, medical,
+financial---Google applies trust filters. Content without verifiable
+credentials gets suppressed.
+
+Required Authority Signals
+
+-   **Credentials Display:** Bar numbers, license IDs, certifications
+    visible on author bios
+
+-   **Proof of Work:** Case results database, client testimonials,
+    project portfolios
+
+-   **Schema Markup:** Person schema with hasCredential property linking
+    to verified credentials
+
+-   **Editorial Standards:** Published \'Content Standards\' page
+    explaining review process
+
+5.3 Topical Authority Architecture
+
+Build content clusters around pillar pages using the 4-Layer Semantic
+Model.
+
+The 4-Layer Semantic Model
+
+-   **Layer 1 (Root):** Transactional pillar page (e.g., \'Dallas Truck
+    Accident Lawyer\')
+
+-   **Layer 2 (Financial Branch):** ROI intent---settlement calculators,
+    cost guides, fee structures
+
+-   **Layer 3 (Technical Branch):** Expertise intent---regulations,
+    processes, compliance requirements
+
+-   **Layer 4 (Comparative Branch):** Evaluation intent---\'vs\' pages,
+    symptoms, alternatives
+
+**Internal Linking Rule:** All branch pages link UP to root with
+keyword-rich anchors. Root links OUT to all branches.
+
+5.4 Coining the Mechanism (Proprietary Naming)
+
+Force branded search volume by inventing proprietary names for standard
+services. This psychological tactic creates a \'digital catcher\'s
+mitt\'---users Google your specific term, sending massive behavioral
+signals.
+
+The Pattern
+
+-   **Identify the Fear:** What invisible risk keeps prospects awake?
+    (e.g., \'Black box data disappearing after crashes\')
+
+-   **Name the Solution:** Create a trademark-style name (e.g.,
+    \'ECM-Preservation Protocol™\')
+
+-   **Withhold Details:** In ads/posts, mention the mechanism exists but
+    don\'t explain it---tell them to Google it
+
+-   **Build Landing Page:** Create dedicated page explaining the
+    mechanism with comparison charts
+
+Examples by Vertical
+
+-   **Legal:** \'ECM-Preservation Protocol™\' for truck crash black box
+    data
+
+-   **Trades:** \'Thermal-Guard Audit™\' for electrical safety
+    inspections
+
+-   **SaaS:** \'Zero-Loss Migration Framework™\' for database
+    transitions
+
+5.5 Demand Capture vs. Demand Creation
+
+Most SEO focuses on capturing existing search demand. AI-SEO includes
+creating new demand through offline assets.
+
+The Sticker Strategy (Trades)
+
+Physical equipment installed in homes becomes your most valuable SEO
+asset. Replace generic service stickers with \'curiosity stickers\' that
+drive branded searches.
+
+**Old:** \'Service by Leon Electric: 555-0100\' (ignored)
+
+**New:** \'Certified Safe via Arc-Defense™ Protocol • System Tripped?
+Google Leon Electric Trip Guide\'
+
+When homeowner\'s power goes out, they Google the branded term, sending
+massive user-behavior signals that the brand is the authority.
+
+SECTION 6: CONTENT ARCHITECTURE
+
+*\[Audience: Content Team + SEO Lead\]*
+
+These writing protocols transform standard content into
+AI-citation-worthy passages. Every protocol is mandatory for AI
+visibility.
+
+6.1 BLUF Structure (Bottom Line Up Front)
+
+**Rule:** The first sentence after every H2 must directly answer the
+user\'s question in 40-60 words. No throat-clearing, no context-setting
+preambles.
+
+Examples
+
+**❌ Wrong:** \'When it comes to bee removal, many homeowners wonder
+about the cost. There are several factors to consider\...\'
+
+**✓ Right:** \'Bee removal in Allen, Texas costs \$150-\$500 for most
+residential jobs. Larger hives in walls run \$300-\$800.\'
+
+6.2 QA-Style H2 Headings
+
+**Rule:** Headers must mirror natural language questions that users
+actually search. This aligns with how LLMs are trained on QA pairs.
+
+Examples
+
+**❌ Wrong:** \'Pricing\' or \'Our Services\' or \'About Our Process\'
+
+**✓ Right:** \'How Much Does Bee Removal Cost in Allen, TX?\' or \'What
+Services Does Allen Bee Rescue Offer?\'
+
+6.3 The 60-Word Snippet Constraint
+
+Provide a concise, 40-60 word block immediately under each H2. This
+becomes both your featured snippet candidate and the canonical answer
+chunk LLMs will reuse.
+
+6.4 Three-Sentence Semantic Chunking
+
+After the initial snippet, structure remaining content in 3-sentence
+chunks following this pattern:
+
+-   **Sentence 1 (Claim):** State the fact or recommendation directly
+
+-   **Sentence 2 (Evidence):** Support with data, statute, location, or
+    specific example
+
+-   **Sentence 3 (Relevance):** Explain why this matters---risk,
+    benefit, or local context
+
+6.5 Voice Modality System
+
+**Critical Rule:** One dominant voice per page. Do not mix voices across
+sections.
+
+The Three Voices
+
+-   **Professor (High Authority, Low Emotion):**
+    Technical/legal/regulatory content. Citation-heavy. \'According
+    to\...,\' \'The statute states\...\'
+
+    -   *Use for:* Branch 2 (Technical) pages
+
+-   **Peer (High Empathy, Moderate Authority):** Comparative content,
+    pain-driven queries. Validating, side-by-side comparisons. \'Many
+    homeowners feel\...\'
+
+    -   *Use for:* Branch 3 (Comparative) pages
+
+-   **Partner (Directive, Confident, Action-Oriented):** Root
+    transactional pages, pricing, emergency. Commands, urgency. \'Call
+    now,\' \'Don\'t wait\'
+
+    -   *Use for:* Root pages and Branch 1 (Financial) pages
+
+6.6 The Specificity Hierarchy
+
+Home services purchases are high-stakes. Generic content signals \'we
+could be anyone.\' Specific content signals \'we are real, local, and
+accountable.\'
+
+The Hierarchy (Most to Least Powerful)
+
+-   **1. Names:** \'Marcus Chen, our lead specialist\' beats \'our
+    experienced team\'
+
+-   **2. Numbers:** \'847 hives relocated in 2024\' beats \'hundreds of
+    removals\'
+
+-   **3. Locations:** \'Stacy Ridge subdivision\' beats \'the Allen
+    area\'
+
+-   **4. Timeframes:** \'Within 2 hours\' beats \'fast response\'
+
+-   **5. Credentials:** \'Texas Registration #TX-BK-2847\' beats \'fully
+    licensed\'
+
+The High-Resolution Test
+
+Could a competitor copy-paste this and use it by just changing the
+company name? If yes, it\'s not specific enough.
+
+6.7 The Quotability Framework
+
+LLMs quote specific passages. \'Quotable\' content is engineered for
+extraction:
+
+-   **Self-contained:** Each paragraph answers one question completely
+
+-   **Optimal length:** 40-80 words. Shorter lacks context; longer needs
+    truncation
+
+-   **Entity-rich opening:** First 10 words contain primary entity
+
+-   **Numeric specificity:** At least one concrete number per block
+
+-   **Declarative:** Active voice, present tense, no hedging (\'may,\'
+    \'could\')
+
+6.8 Multi-Format Coverage
+
+Different query types demand different content formats. Each page should
+include multiple formats:
+
+-   **BLUF Paragraphs:** For direct answer queries and featured snippets
+
+-   **Numbered Steps:** For \'how to\' queries with HowTo schema
+
+-   **Comparison Tables:** For \'vs\' queries and evaluation intent
+
+-   **FAQ Blocks:** For PAA (People Also Ask) and voice search with
+    FAQPage schema
+
+SECTION 7: EDITORIAL SYSTEM & QUALITY CONTROL
+
+*\[Audience: Content Team + Ops\]*
+
+7.1 Content Brief Template
+
+Every piece of content must start with a structured brief to prevent AI
+slop and ensure strategic alignment.
+
+Required Brief Elements
+
+-   **Target Keyword:** Primary keyword (from research phase)
+
+-   **Layer Assignment:** Root, Financial, Technical, or Comparative
+
+-   **Voice Selection:** Professor, Peer, or Partner (with
+    justification)
+
+-   **Core Question:** The H1 phrased as a question
+
+-   **BLUF Answer:** 40-60 word direct answer to core question
+
+-   **Supporting H2s:** 3-5 H2 questions that support the H1
+
+-   **Entity Requirements:** Specific names, numbers, locations,
+    credentials to include
+
+-   **Internal Links:** 3-5 target pages to link to with suggested
+    anchors
+
+7.2 GEO Quality Checklist (10-Point)
+
+Before publishing, content must pass all 10 checkpoints:
+
+-   **□ BLUF Compliance:** First sentence after H2 directly answers the
+    question
+
+-   **□ Entity Density:** 5+ distinct entities (business, location,
+    service, person, mechanism)
+
+-   **□ Quotable Blocks:** 3+ self-contained 40-60 word paragraphs
+
+-   **□ Numeric Specificity:** 5+ concrete numbers throughout content
+
+-   **□ Local Proof:** 3+ neighborhoods/landmarks verified via Maps
+
+-   **□ Mechanism Presence:** Proprietary method mentioned 2+ times (if
+    applicable)
+
+-   **□ Voice Consistency:** Single voice modality throughout (no
+    mixing)
+
+-   **□ Schema Alignment:** On-page claims match structured data
+
+-   **□ Multi-Format:** 2+ bullet lists, 1 table, 1 numbered sequence
+
+-   **□ Uniqueness:** Content differs from other pages (Row 5 vs Row 15
+    test)
+
+7.3 Content Refresh SOP
+
+Freshness signal decays after 6 months. Implement quarterly refresh
+cycles:
+
+Refresh Triggers
+
+-   Content \>6 months old showing declining rankings
+
+-   Regulatory or legal changes affecting accuracy
+
+-   Competitor content outranking due to fresher dates
+
+Refresh Actions
+
+-   Update statistics to current year (e.g., \'847 hives relocated in
+    2024\' → 2025)
+
+-   Add new case study or example from past quarter
+
+-   Update schema dateModified field
+
+-   Trigger IndexNow to force immediate re-crawl
+
+-   Do NOT change URL or title (preserves link equity)
+
+7.4 AI vs. Human Content Governance
+
+AI can draft, but humans must verify. The \'Zero-Hallucination
+Protocol\':
+
+-   Create ChatGPT Project with uploaded Brand Voice Guide, Price
+    Sheets, and Legal Docs
+
+-   Every prompt must reference uploaded files: \'Reference the uploaded
+    Brand Voice Guide\...\'
+
+-   Human expert (attorney/engineer) verifies all facts before
+    publishing
+
+-   Run Originality.ai check to ensure \<30% AI detection score
+
+SECTION 8: TECHNICAL FOUNDATIONS
+
+*\[Audience: Technical + Developer\]*
+
+These technical protocols ensure the site is readable by both Google
+crawlers and LLM agents. Missing any of these creates blind spots in AI
+visibility.
+
+8.1 Entity Schema Markup
+
+Schema (JSON-LD) is the language AI models use to understand entity
+relationships. Required implementations:
+
+Organization Schema (Site-Wide)
+
+Establishes root entity in Knowledge Graph. Place in site footer:
+
+\@type: LegalService or LocalBusiness
+
+**Required fields:** name, url, logo, telephone, address (with geo
+coordinates), sameAs (social profiles)
+
+Person Schema (Author/Attorney Bios)
+
+Links individual to organization and credentials:
+
+\@type: Person with worksFor, hasCredential, alumniOf, knowsAbout
+
+**Critical:** hasCredential property must link to Bar
+License/Certification with identifier field
+
+Service Schema (Per Service Page)
+
+\@type: Service with provider, areaServed, offers (price range)
+
+FAQPage Schema
+
+For AI Overview eligibility. Wrap FAQ sections with FAQPage schema
+containing mainEntity array of Question/Answer objects.
+
+8.2 IndexNow Protocol
+
+Waiting for natural crawls is obsolete. IndexNow pushes URL updates to
+search engines instantly.
+
+-   **Install:** IndexNow WordPress plugin or Cloudflare integration
+
+-   **Configure:** Auto-ping on publish and update
+
+-   **Verify:** Upload API key text file to root directory
+
+-   **Impact:** Content indexes in minutes vs. days, enabling
+    newsjacking strategies
+
+8.3 llms.txt Protocol
+
+The robots.txt equivalent for AI agents. Creates clean Markdown map of
+site\'s truth.
+
+Implementation
+
+-   Create plain text file: llms.txt
+
+-   Use strict Markdown (no HTML/CSS)
+
+-   Upload to root directory: domain.com/llms.txt
+
+Required Sections
+
+-   H1: Brand Name + one-sentence value prop
+
+-   H2: Core Services (links to pillar pages)
+
+-   H2: Pricing/Fees (link to transparent pricing)
+
+-   H2: Company Info (About/Contact links)
+
+8.4 Core Web Vitals Optimization
+
+AI models and users both abandon slow sites. Target scores:
+
+-   **LCP (Largest Contentful Paint):** \<2.5s on mobile
+
+    -   Fix: Convert PNG/JPG to WebP, lazy-load below-fold images,
+        preload hero image
+
+-   **FID (First Input Delay):** \<100ms
+
+    -   Fix: Defer non-critical JavaScript, minimize third-party scripts
+
+-   **CLS (Cumulative Layout Shift):** \<0.1
+
+    -   Fix: Specify image dimensions, preload fonts
+
+8.5 Mobile Conversion Infrastructure
+
+**Critical P1:** 60-80% of leads come from mobile. Broken mobile = lost
+revenue.
+
+The tel: Link Protocol
+
+ALL phone numbers must use active tel: links with event tracking:
+
+\<a href=\"tel:+12145550100\" onclick=\"gtag(\'event\',
+\'click_to_call\')\"\>Call Now\</a\>
+
+Sticky Mobile CTA
+
+Fixed-position footer on mobile with prominent Call button in thumb zone
+(bottom 30% of screen).
+
+Microsoft Clarity Rage Click Audit
+
+Weekly check for rage clicks (3+ rapid clicks) indicating frustration.
+Most common issue: non-linked phone numbers.
+
+8.6 HTML Density & Code Hygiene
+
+AI tokens are expensive. Sites with \>80% code bloat get deprioritized.
+
+-   **Target:** \>65% text-to-code ratio
+
+-   **Fix:** Replace generic \<div\> tags with semantic HTML
+    (\<article\>, \<section\>, \<aside\>)
+
+-   **Fix:** Strip unnecessary wrapper DIVs from page builders
+
+8.7 Google Authority Stack (GATS) Implementation
+
+Leverage Google\'s own properties to build authority. Google trusts its
+own platforms.
+
+Phase 1: Drive Stack
+
+-   Create Google Doc with NAP + services overview, linking to Money
+    Site
+
+-   Upload PDF version of same content
+
+-   Create Google Sheet with service pricing table, linking to Money
+    Site
+
+-   Create Google Slides presentation with service overview
+
+-   Organize all in single Google Drive folder with clear naming
+
+Phase 2: Map Stack
+
+-   Create Google My Maps with service area boundaries and office
+    location
+
+-   Add pins for key neighborhoods served
+
+-   Include driving directions from each pin to office
+
+-   Link Map description to Money Site and Drive Stack docs
+
+Phase 3: Google Site
+
+-   Create Google Site (not Money Site) with service pages
+
+-   Embed Drive Stack docs, Map, and link to Money Site
+
+-   Create interlinks between all Google properties (the \'Link Loop\')
+
+Critical Rules
+
+-   **NAP Consistency:** Exact match across all properties
+
+-   **No Direct Tier 2:** External backlinks point to Google Site ONLY,
+    never Money Site
+
+-   **Public Visibility:** All Google properties set to public/anyone
+    with link
+
+SECTION 9: MEASUREMENT & KPI FRAMEWORK
+
+*\[Audience: Executive + SEO Lead\]*
+
+9.1 The AI Citation Share Metric
+
+Primary success metric for AI-SEO. Measures how often your brand appears
+in AI-generated answers.
+
+Measurement Method
+
+-   Identify 10-20 core queries relevant to your services
+
+-   Query ChatGPT, Perplexity, and Google AI Overview weekly
+
+-   Track: Brand mentioned (1 point), cited with link (2 points),
+    recommended as top choice (3 points)
+
+-   Calculate citation share: (Your mentions / Total queries) × 100
+
+Target Benchmarks
+
+-   **Month 3:** 5-15% citation share
+
+-   **Month 6:** 30-50% citation share
+
+-   **Month 12:** 70-90% citation share
+
+9.2 The 24-Surface SERP Matrix
+
+Track brand presence across all possible surfaces. Fill weekly, marking:
+WIN (1-3), PRESENT (4-10), WEAK (Page 2+), MISSING.
+
+**Core surfaces to track:**
+
+-   AI Overview (SGE) • Local Map Pack • Google Organic (service pages)
+    • Google Organic (city pages) • YouTube Carousel • GBP Profile • LSA
+    Rankings • Yelp • Angi • HomeAdvisor • BBB • Nextdoor • Facebook
+    Groups • Reddit Mentions • Third-Party \'Best Of\' Lists
+
+9.3 RevFlow Conversion Metrics
+
+If using automated lead capture systems, track:
+
+-   **RevVoice Advisor:** Missed call capture rate (target: \>60%
+    after-hours calls booked)
+
+-   **RevNurture Follow:** Lead recovery rate (target: \>15% of \'dead\'
+    leads revived)
+
+-   **RevTrust Pulse:** Review conversion (target: \>20% of customers
+    leave review)
+
+9.4 The 22-Point Technical Audit
+
+Monthly technical health check. All items must pass:
+
+Critical P1 Items
+
+-   □ Mobile call button active (tel: link working)
+
+-   □ IndexNow plugin active and pushing URLs
+
+-   □ HTML Density \>65%
+
+-   □ Core Web Vitals passing (LCP \<2.5s, CLS \<0.1)
+
+-   □ Organization/Person/Service schema validating
+
+Authority P2 Items
+
+-   □ Verdict/proof database live with schema
+
+-   □ Author bios include license numbers or certifications
+
+-   □ NAP consistent across footer, GBP, citations
+
+-   □ llms.txt file present and accurate
+
+SECTION 10: OPERATIONS & TEAM STRUCTURE
+
+*\[Audience: Ops + All Teams\]*
+
+10.1 Role Definitions
+
+SEO Lead (15-20 hrs/month)
+
+-   **Responsibilities:** Strategy, keyword research, competitive
+    analysis, monthly reporting
+
+-   **Key Output:** Monthly strategy memo + SERP matrix updates
+
+Content Team (40-60 hrs/month)
+
+-   **Responsibilities:** Brief creation, content production, QA
+    checklist enforcement
+
+-   **Key Output:** 20-30 optimized pages per month
+
+Technical/Developer (10-15 hrs initial, 5 hrs/month maintenance)
+
+-   **Responsibilities:** Schema implementation, Core Web Vitals fixes,
+    mobile optimization
+
+-   **Key Output:** Technical audit fixes, monthly performance reports
+
+Operations Manager (20-30 hrs/month)
+
+-   **Responsibilities:** GBP management, review responses, visual asset
+    coordination
+
+-   **Key Output:** Weekly GBP updates, 100+ photos uploaded per quarter
+
+10.2 The Daily Pulse Checklist
+
+Consistency beats intensity. These daily actions prevent degradation:
+
+-   □ Respond to all new reviews within 24 hours
+
+-   □ Check/respond to GBP messages
+
+-   □ Upload 1 real-time job photo to GBP (for trades)
+
+-   □ Tag new leads in CRM (source attribution)
+
+10.3 The Weekly Build Checklist
+
+-   □ Publish 2-4 GBP posts or 1 blog article
+
+-   □ Upload batch of 10-20 geotagged photos
+
+-   □ Publish 1 new neighborhood or city page
+
+-   □ Audit LSA lead quality, dispute invalid leads
+
+-   □ Check Microsoft Clarity for rage clicks
+
+10.4 The Monthly Strategy Checklist
+
+-   □ Publish 10+ new content pieces (mix of service/location/guides)
+
+-   □ Run 22-point technical audit
+
+-   □ Update SERP matrix and competitive analysis
+
+-   □ Audit NAP consistency across all citations
+
+-   □ Refresh 3-5 pages \>6 months old
+
+-   □ Calculate AI Citation Share for core queries
+
+10.5 Quality Assurance Gates
+
+Content QA (Before Publishing)
+
+-   □ Passes 10-point GEO checklist
+
+-   □ No stock photos (real images only)
+
+-   □ Local references verified on Google Maps
+
+-   □ CTA visible above fold on mobile
+
+GBP QA (Photo Uploads)
+
+-   □ Bright, well-lit, no filters
+
+-   □ Shows real team members (not just equipment)
+
+-   □ Geotagged with EXIF data
+
+10.6 Training: 30-Day New Hire Plan
+
+-   **Week 1:** Review glossary, study example content, shadow SEO Lead
+
+-   **Week 2:** Master content templates, learn PPC dashboards
+
+-   **Week 3:** Build 1 service page and 1 city page (draft mode)
+
+-   **Week 4:** Publish 5 pages independently, pass final QA audit
+
+SECTION 11: VERTICAL-SPECIFIC TACTICS
+
+*\[Audience: All Teams - Reference by Vertical\]*
+
+These tactics supplement core strategies for specific industries. Apply
+the relevant vertical to your business.
+
+11.1 Legal (YMYL) Vertical
+
+Verdict Database Protocol
+
+Build structured case results database with:
+
+-   Case type (specific, not generic)
+
+-   Injury details (medical specifics)
+
+-   Exact settlement/verdict amount
+
+-   Date resolved (freshness proof)
+
+-   Attorney who handled case
+
+-   Wrap in ClaimReview or LegalService schema
+
+Bar Number Mandate
+
+Display on every attorney bio and blog author box: State Bar License
+Number, Admittance Date, Law School, Board Certifications. Include in
+Person schema hasCredential property.
+
+URL Structure Fix
+
+Migrate from date-based (/blog/2024/08/article) to topic-based
+(/practice-area/article) to avoid time-decay signals. Use 301 redirects.
+
+11.2 Home Services (Trades) Vertical
+
+Visual Saturation Strategy
+
+Execute 100-Photo Sprint in first month:
+
+-   20 exterior/office shots
+
+-   30 team/staff shots (uniformed techs)
+
+-   30 project/job site shots (before/after)
+
+-   20 equipment/fleet shots
+
+-   All photos geotagged with EXIF GPS data
+
+Field Team Media Collection SOP
+
+Mandatory 5 shots per job:
+
+-   Before: The problem
+
+-   During: Work in progress
+
+-   After: Completed result
+
+-   Equipment: Installed unit close-up
+
+-   Context: Exterior/street shot for location proof
+
+Sticker Strategy (Offline-to-Online)
+
+Replace generic service stickers on installed equipment with branded
+mechanism stickers that drive searches. Example: \'Certified Safe via
+Arc-Defense™ • System Tripped? Google \[Brand\] Trip Guide\'
+
+11.3 B2B SaaS Vertical
+
+Integration SEO Strategy
+
+Create dedicated landing page for every integration you support:
+
+-   URL: /integrations/\[partner-name\]
+
+-   H1: \'Connect \[Your Tool\] with \[Partner Tool\] to Automate
+    \[Outcome\]\'
+
+-   Include: Use cases, setup video, link to partner marketplace
+
+Developer Documentation Indexation
+
+Ensure /docs folder is indexable. Use clear versioning (/docs/v2/) with
+canonical tags pointing deprecated versions to current. Add TechArticle
+or APIReference schema.
+
+Trust Center Requirements
+
+Create /trust or /security page with: SOC2/ISO badges, live uptime
+status link, Terms/Privacy/DPA links, sub-processor list.
+
+SECTION 12: 30/60/90-DAY IMPLEMENTATION PLAN
+
+*\[Audience: Executive + All Teams\]*
+
+Phase 1: Foundation (Days 1-30)
+
+Week 1: Technical Audit & Fixes
+
+-   Run 22-point technical audit
+
+-   Fix Critical P1s: mobile tel: links, IndexNow setup, Core Web Vitals
+
+-   Install Microsoft Clarity
+
+-   Create llms.txt file
+
+Week 2: Schema & Entity Setup
+
+-   Implement Organization schema (site-wide)
+
+-   Add Person schema to attorney/team bios with credentials
+
+-   Add Service schema to service pages
+
+-   Validate all schema in Rich Results Test
+
+Week 3: Content Audit & Planning
+
+-   Audit existing content against GEO 10-point checklist
+
+-   Create 12-month content calendar with specific titles
+
+-   Define proprietary mechanisms to coin
+
+-   Build content brief template
+
+Week 4: Team Training & GBP Kickoff
+
+-   Train content team on BLUF, voice modalities, semantic chunking
+
+-   Train ops team on daily pulse checklist
+
+-   Start 100-Photo Sprint (Trades vertical)
+
+-   Optimize GBP: primary category, service list, business description
+
+Month 1 Deliverables
+
+-   All P1 technical issues resolved
+
+-   Schema fully implemented and validated
+
+-   Content calendar with 50+ specific titles
+
+-   GBP optimized with 20+ new photos
+
+Phase 2: Content Saturation (Days 31-60)
+
+Focus: Build Topical Authority
+
+-   Publish pillar page for primary topic (3,000+ words)
+
+-   Publish 4-6 branch pages (Financial, Technical, Comparative layers)
+
+-   Create 5-10 neighborhood/city pages
+
+-   Build proprietary mechanism landing pages
+
+-   Implement strong internal linking between pillar and branches
+
+GBP & Local Momentum
+
+-   Complete 100-Photo Sprint (total 100+ photos uploaded)
+
+-   Post 2-4 GBP updates weekly
+
+-   Establish review request automation (post-service)
+
+-   Begin GATS implementation (Drive Stack)
+
+Month 2 Deliverables
+
+-   15-20 new optimized pages published
+
+-   100+ photos in GBP gallery
+
+-   Review velocity established (weekly new reviews)
+
+-   Drive Stack complete with all documents interlinked
+
+Phase 3: Authority & Momentum (Days 61-90)
+
+Continue Content Expansion
+
+-   Publish second pillar topic cluster (another 5-8 pages)
+
+-   Add 10+ more neighborhood/city pages
+
+-   Refresh 5 oldest pages with updated stats and dates
+
+-   Begin FAQ schema implementation on key pages
+
+Authority Building
+
+-   Complete GATS (Map Stack + Google Site)
+
+-   Execute \'correction pitch\' outreach to 10 authority sites
+
+-   Claim/optimize profiles on Avvo, Justia, or relevant directories
+
+-   Begin systematic Reddit/forum participation (if applicable)
+
+Measurement & Optimization
+
+-   Calculate baseline AI Citation Share (10-20 core queries)
+
+-   Complete first SERP matrix mapping
+
+-   Analyze Microsoft Clarity heatmaps, fix identified UX issues
+
+-   Review Core Web Vitals, address any degradation
+
+Month 3 Deliverables
+
+-   30-40 total new pages published (cumulative)
+
+-   GATS fully operational with interlinked Google properties
+
+-   5-15% AI Citation Share achieved
+
+-   Top 3 Map Pack for 15-40 local keywords
+
+-   Review velocity: 4-8 new reviews per month
+
+Success Metrics at 90 Days
+
+Expected outcomes after full 90-day implementation:
+
+-   **Technical Health:** 100% Mobile Pass, \>65% HTML Density, all
+    schema validating
+
+-   **Content Depth:** 30-50 optimized pages covering primary topics
+
+-   **AI Visibility:** 5-15% AI Citation Share (baseline established)
+
+-   **Local Presence:** Top 3 Map Pack for 15-40 keywords, 100+ GBP
+    photos
+
+-   **Authority:** GATS complete, 3-5 external citations secured
+
+-   **Conversion:** Mobile conversion infrastructure optimized, review
+    automation running
+
+Beyond 90 Days: Continuous Improvement
+
+After foundation is built, shift to systematic growth:
+
+-   **Months 4-6:** Target 30-50% AI Citation Share, publish 20+
+    pages/month, expand to secondary topics
+
+-   **Months 7-9:** Build third pillar cluster, achieve Top 3 Map Pack
+    for 80-200 keywords
+
+-   **Months 10-12:** Target 70-90% AI Citation Share, 500+ keywords in
+    Map Pack, comprehensive SERP domination
+
+**--- END OF PLAYBOOK ---**
+
+*THE COMPLETE AI-SEO/AEO/GEO PLAYBOOK*
+
+*2026 Edition • SmarketSherpa Operations*

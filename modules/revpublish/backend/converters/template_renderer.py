@@ -1,0 +1,104 @@
+"""
+Template Rendering Engine for RevPublish
+Handles Section Registry loading and placeholder injection
+"""
+
+import json
+import copy
+import re
+import uuid
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+
+
+class TemplateRenderer:
+    """Renders Elementor sections from registry templates with context injection"""
+    
+    def __init__(self, registry_path: str = None):
+        if registry_path is None:
+            registry_path = Path(__file__).parent.parent / 'templates' / 'section_registry.json'
+        
+        self.registry_path = Path(registry_path)
+        self.registry = self._load_registry()
+    
+    def _load_registry(self) -> Dict:
+        """Load section registry from JSON file"""
+        try:
+            with open(self.registry_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"WARNING: Registry not found at {self.registry_path}")
+            return {}
+        except json.JSONDecodeError as e:
+            print(f"ERROR: Invalid JSON in registry: {e}")
+            return {}
+    
+    def render_template(self, template_name: str, context: Dict) -> Dict:
+        """
+        Render a section template with context injection
+        
+        Args:
+            template_name: Key from section_registry.json
+            context: Dictionary of placeholder values
+            
+        Returns:
+            Rendered Elementor section with unique IDs
+        """
+        raw_template = self.registry.get(template_name)
+        if not raw_template:
+            raise ValueError(f"Template '{template_name}' not found in registry")
+        
+        # Deep copy to avoid mutating registry
+        rendered = copy.deepcopy(raw_template)
+        
+        # Inject context and generate unique IDs
+        rendered = self._inject_context(rendered, context)
+        rendered = self._generate_ids(rendered)
+        
+        return rendered
+    
+    def _inject_context(self, node: Any, context: Dict) -> Any:
+        """Recursively inject context into template placeholders"""
+        if isinstance(node, str):
+            # Find all {{placeholder}} patterns
+            matches = re.findall(r'\{\{(.*?)\}\}', node)
+            
+            for key in matches:
+                if key in context:
+                    value = context[key]
+                    
+                    # If the entire string is just the placeholder and value is complex
+                    if node.strip() == "{{}}" and isinstance(value, (list, dict)):
+                        return value
+                    
+                    # String replacement
+                    node = node.replace("{{}}", str(value))
+            
+            return node
+        
+        elif isinstance(node, list):
+            return [self._inject_context(item, context) for item in node]
+        
+        elif isinstance(node, dict):
+            return {k: self._inject_context(v, context) for k, v in node.items()}
+        
+        return node
+    
+    def _generate_ids(self, node: Any) -> Any:
+        """Recursively add unique IDs to Elementor elements"""
+        if isinstance(node, dict):
+            # Add ID if this is an Elementor element
+            if 'elType' in node and 'id' not in node:
+                node['id'] = uuid.uuid4().hex[:7]
+            
+            # Recurse into nested elements
+            return {k: self._generate_ids(v) for k, v in node.items()}
+        
+        elif isinstance(node, list):
+            return [self._generate_ids(item) for item in node]
+        
+        return node
+
+
+# Singleton instance
+renderer = TemplateRenderer()

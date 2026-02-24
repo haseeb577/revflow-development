@@ -1,0 +1,23 @@
+[Unit]
+Description=RevGuard v3.0 Auto-Healing
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revguard-v3
+ExecStart=/opt/revflow-os/shared-venv/bin/python revguard.py
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

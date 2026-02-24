@@ -1,0 +1,30 @@
+[Unit]
+Description=RevFlow OS™ | RevCore™ Sub-Module: RevSense™ (AI Knowledge Workspace)
+After=docker.service network-online.target
+Requires=docker.service
+PartOf=revcore-governance.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/revcore-governance/surfsense
+ExecStart=/usr/bin/docker compose -f docker-compose.revcore.yml up -d
+ExecStop=/usr/bin/docker compose -f docker-compose.revcore.yml down
+ExecReload=/usr/bin/docker compose -f docker-compose.revcore.yml restart
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=revcore-surfsense
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

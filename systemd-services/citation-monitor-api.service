@@ -1,0 +1,14 @@
+[Unit]
+Description=Citation Monitor API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-citations
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revflow-citations/citation_monitor_api.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

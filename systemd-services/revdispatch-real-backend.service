@@ -1,0 +1,24 @@
+[Unit]
+Description=RevDispatch Real Backend (Peer Auth)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=postgres
+Group=postgres
+WorkingDirectory=/opt/revdispatch-real
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8501
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

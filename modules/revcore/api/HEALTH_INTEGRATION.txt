@@ -1,0 +1,28 @@
+=============================================================
+RevFlow Health Check Integration Instructions
+=============================================================
+
+To integrate the health check endpoint into your FastAPI app:
+
+1. Import the health router in your main.py:
+   
+   from revflow_health import router as health_router
+
+2. Include the router in your app:
+   
+   app.include_router(health_router, tags=["health"])
+
+3. Restart your service:
+   
+   sudo systemctl restart revcore.service
+
+4. Test the endpoint:
+   
+   curl http://localhost:8950/health
+   curl http://localhost:8950/health/detailed
+
+5. Verify response:
+   
+   Should return JSON with status: "healthy"
+
+=============================================================

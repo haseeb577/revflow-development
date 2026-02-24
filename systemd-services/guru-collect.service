@@ -1,0 +1,17 @@
+[Unit]
+Description=Guru Intelligence Daily Collection Service
+After=network.target
+
+[Service]
+StartLimitIntervalSec=300
+StartLimitBurst=5
+Type=oneshot
+User=root
+WorkingDirectory=/opt/guru-intelligence
+Environment="PATH=/opt/guru-intelligence/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python -c "import sys; sys.path.insert(0, '/opt/guru-intelligence/src'); from collectors.collector_orchestrator import CollectorOrchestrator; import asyncio; asyncio.run(CollectorOrchestrator().run_daily_collection())"
+StandardOutput=append:/opt/guru-intelligence/logs/collection.log
+StandardError=append:/opt/guru-intelligence/logs/collection.log
+
+[Install]
+WantedBy=multi-user.target

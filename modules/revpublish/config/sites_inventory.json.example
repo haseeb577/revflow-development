@@ -1,0 +1,14 @@
+{
+  "sites": [
+    {
+      "id": "site_001",
+      "name": "Example Site",
+      "url": "https://example.com",
+      "wp_rest_url": "https://example.com/wp-json",
+      "username": "admin",
+      "password": "app_password_here",
+      "default_template": "service-page-v1",
+      "categories": ["plumbing", "hvac"]
+    }
+  ]
+}

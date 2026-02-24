@@ -1,0 +1,26 @@
+[Unit]
+Description=RevWins - Quick Wins & High-Impact Opportunities (Port 8150)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/quick-wins-api
+EnvironmentFile=/opt/shared-api-engine/.env
+Environment="PORT=8150"
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/quick-wins-api/app.py
+StandardOutput=append:/var/log/revflow/revwins.log
+StandardError=append:/var/log/revflow/revwins-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

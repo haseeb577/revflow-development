@@ -1,0 +1,39 @@
+[Unit]
+Description=RevFlow OS™ Self-Healing Engine
+Documentation=file:///root/REVFLOW_SERVICE_REGISTRY.md
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root
+ExecStart=/usr/local/bin/revcore-self-healing-engine
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=revcore-self-healing
+
+# Resource limits
+MemoryLimit=256M
+CPUQuota=20%
+
+# Security
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/log/revflow /var/cache/revflow /opt /etc
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

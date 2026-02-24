@@ -1,0 +1,25 @@
+[Unit]
+Description=RevFlow Browser MCP Server
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-browser-mcp
+Environment=NODE_ENV=production
+Environment=PORT=8920
+ExecStart=/usr/bin/node src/server.js
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

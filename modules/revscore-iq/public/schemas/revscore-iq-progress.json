@@ -1,0 +1,58 @@
+{
+  "name": "Assessment In Progress",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Assessment In Progress"
+      },
+      {
+        "type": "text",
+        "content": "Your assessment is being processed through the 5-stage AI pipeline...",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "2rem",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "Progress: 0%",
+            "dataSource": {
+              "endpoint": "/api/assessments/{assessment_id}/status",
+              "dataPath": "progress"
+            },
+            "style": {
+              "fontSize": "1.5rem",
+              "fontWeight": "bold",
+              "color": "#3b82f6",
+              "marginBottom": "1rem"
+            }
+          },
+          {
+            "type": "text",
+            "content": "Status: Processing...",
+            "dataSource": {
+              "endpoint": "/api/assessments/{assessment_id}/status",
+              "dataPath": "status"
+            },
+            "style": {
+              "color": "#94a3b8"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+

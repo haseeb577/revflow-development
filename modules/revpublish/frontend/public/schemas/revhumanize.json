@@ -1,0 +1,84 @@
+{
+  "module": {
+    "id": "revhumanize",
+    "name": "RevHumanize",
+    "number": 6,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevHumanize Dashboard",
+    "description": "AI content humanization and authenticity pipeline",
+    "icon": "user-check",
+    "color": "#14B8A6"
+  },
+  "dataSource": {
+    "endpoint": null,
+    "refreshInterval": null
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "status": "running",
+        "description": "Integrated into content pipeline"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "content-humanized",
+      "props": {
+        "title": "Content Humanized",
+        "icon": "👤",
+        "defaultValue": "45,230"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "detection-bypass",
+      "props": {
+        "title": "Detection Bypass Rate",
+        "icon": "✅",
+        "defaultValue": "98.7%"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Humanization Features",
+        "items": [
+          "AI detection bypass",
+          "Natural language patterns",
+          "Voice consistency",
+          "Readability optimization",
+          "Plagiarism prevention"
+        ]
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "integration",
+      "props": {
+        "title": "Integration",
+        "content": "RevHumanize is integrated directly into the content generation pipeline. All AI-generated content passes through humanization before publishing."
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "humanize",
+      "props": {
+        "label": "Humanize Content",
+        "icon": "🎭",
+        "description": "Process content through humanization"
+      }
+    }
+  ]
+}

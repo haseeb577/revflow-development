@@ -1,0 +1,44 @@
+{
+  "name": "Competitive Analysis",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Competitive Analysis Dashboard"
+      },
+      {
+        "type": "text",
+        "content": "Head-to-head comparison with competitors",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "dataTable",
+        "dataSource": {
+          "endpoint": "/api/assessments/{assessment_id}",
+          "dataPath": "competitors"
+        },
+        "columns": [
+          {
+            "key": "name",
+            "label": "Competitor"
+          },
+          {
+            "key": "overall_score",
+            "label": "Score"
+          },
+          {
+            "key": "rank",
+            "label": "Rank"
+          }
+        ]
+      }
+    ]
+  }
+}
+

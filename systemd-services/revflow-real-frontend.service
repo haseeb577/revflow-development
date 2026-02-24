@@ -1,0 +1,23 @@
+[Unit]
+Description=RevFlow Real Frontend
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-real-ui/frontend
+ExecStart=/usr/bin/python3 -m http.server 8202
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,434 @@
+#!/usr/bin/env python3
+"""
+RevCore™ Module 12 - Intelligence Layer API
+Intelligent diagnostics and advanced repairs
+Port: 8950
+"""
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional, List, Dict
+import subprocess
+import json
+from datetime import datetime
+import os
+
+# Import RevScore IQ routes
+from routes.revscore import router as revscore_router
+
+app = FastAPI(
+    title="RevCore™ Intelligence API",
+    description="Module 12 - Intelligent Diagnostics & Advanced Repairs",
+    version="2.0.0"
+)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register RevScore IQ routes
+app.include_router(revscore_router)
+
+# ============================================================================
+# MODELS
+# ============================================================================
+
+class UICDNFixRequest(BaseModel):
+    scan_all: bool = True
+    ports: Optional[List[int]] = None
+
+class DiagnosticRequest(BaseModel):
+    service_name: str
+    include_logs: bool = True
+    log_lines: int = 50
+
+class PlaybookExecutionRequest(BaseModel):
+    playbook_id: str
+    params: Optional[Dict] = {}
+
+# ============================================================================
+# HEALTH & STATUS
+# ============================================================================
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {
+        "status": "healthy",
+        "module": "RevCore Module 12 Intelligence API",
+        "version": "2.0.0",
+        "timestamp": datetime.utcnow().isoformat(),
+        "capabilities": [
+            "ui_cdn_fix",
+            "service_diagnostics",
+            "config_validation",
+            "playbook_execution",
+            "cross_module_intelligence"
+        ]
+    }
+
+@app.get("/api/v1/status")
+async def get_status():
+    """Get comprehensive RevCore status"""
+    return {
+        "revcore": {
+            "status": "operational",
+            "port": 8950,
+            "active_playbooks": 5,
+            "last_diagnostic": datetime.utcnow().isoformat()
+        },
+        "integrations": {
+            "monit": check_monit_status(),
+            "revguard": check_revguard_status(),
+            "uptime_kuma": check_uptime_kuma_status()
+        }
+    }
+
+# ============================================================================
+# UI CDN FIX - PRIMARY NEW CAPABILITY
+# ============================================================================
+
+@app.post("/api/v1/intelligence/fix-ui-cdn")
+async def fix_ui_cdn(request: UICDNFixRequest):
+    """
+    Scan all UIs for CDN dependencies and fix them
+    This is the intelligence that goes beyond simple service restart
+    """
+    try:
+        # Default ports to scan
+        if request.scan_all:
+            ports_to_scan = [3100, 3200, 3401, 3550, 8501, 8601, 8202, 9000]
+        else:
+            ports_to_scan = request.ports or []
+        
+        results = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "scanned_ports": ports_to_scan,
+            "uis_found": [],
+            "uis_with_cdn": [],
+            "uis_fixed": [],
+            "errors": []
+        }
+        
+        # Run the actual fix script
+        # This calls the bash script we created earlier
+        script_path = "/root/RevFlow_UI_Mass_CDN_Fix_20260122_153000.sh"
+        
+        if os.path.exists(script_path):
+            try:
+                result = subprocess.run(
+                    [script_path],
+                    capture_output=True,
+                    text=True,
+                    timeout=300  # 5 minute timeout
+                )
+                
+                results["script_output"] = result.stdout
+                results["script_exit_code"] = result.returncode
+                
+                if result.returncode == 0:
+                    results["status"] = "success"
+                    results["message"] = "UI CDN fix completed successfully"
+                else:
+                    results["status"] = "partial_success"
+                    results["message"] = "Some UIs may have issues"
+                    results["errors"].append(result.stderr)
+                
+            except subprocess.TimeoutExpired:
+                results["status"] = "timeout"
+                results["message"] = "Fix script took too long"
+                results["errors"].append("Script execution exceeded 5 minutes")
+                
+        else:
+            results["status"] = "error"
+            results["message"] = "Fix script not found"
+            results["errors"].append(f"Script not found at {script_path}")
+        
+        return results
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
+# SERVICE DIAGNOSTICS
+# ============================================================================
+
+@app.post("/api/v1/intelligence/diagnose/{service_name}")
+async def diagnose_service(service_name: str, request: DiagnosticRequest):
+    """
+    Deep diagnostic of a service
+    Goes beyond "is it running" to analyze WHY it's failing
+    """
+    try:
+        diagnosis = {
+            "service": service_name,
+            "timestamp": datetime.utcnow().isoformat(),
+            "checks": {}
+        }
+        
+        # Check 1: Is service running?
+        try:
+            result = subprocess.run(
+                ["systemctl", "is-active", service_name],
+                capture_output=True,
+                text=True
+            )
+            diagnosis["checks"]["is_running"] = result.stdout.strip() == "active"
+        except:
+            diagnosis["checks"]["is_running"] = False
+        
+        # Check 2: Port conflicts
+        try:
+            result = subprocess.run(
+                ["systemctl", "show", service_name, "--property=ExecStart"],
+                capture_output=True,
+                text=True
+            )
+            # Parse port from ExecStart if available
+            diagnosis["checks"]["port_info"] = result.stdout.strip()
+        except:
+            diagnosis["checks"]["port_info"] = "Unable to determine"
+        
+        # Check 3: Recent logs
+        if request.include_logs:
+            try:
+                result = subprocess.run(
+                    ["journalctl", "-u", service_name, "-n", str(request.log_lines), "--no-pager"],
+                    capture_output=True,
+                    text=True
+                )
+                diagnosis["recent_logs"] = result.stdout
+                
+                # Analyze logs for common patterns
+                logs = result.stdout.lower()
+                if "connection refused" in logs:
+                    diagnosis["likely_cause"] = "database_connection_failed"
+                    diagnosis["suggested_fix"] = "check_database_availability"
+                elif "address already in use" in logs:
+                    diagnosis["likely_cause"] = "port_conflict"
+                    diagnosis["suggested_fix"] = "find_process_on_port"
+                elif "permission denied" in logs:
+                    diagnosis["likely_cause"] = "permissions_error"
+                    diagnosis["suggested_fix"] = "check_file_permissions"
+                elif "module not found" in logs or "importerror" in logs:
+                    diagnosis["likely_cause"] = "missing_dependency"
+                    diagnosis["suggested_fix"] = "install_dependencies"
+                else:
+                    diagnosis["likely_cause"] = "unknown"
+                    diagnosis["suggested_fix"] = "manual_investigation_required"
+                    
+            except:
+                diagnosis["recent_logs"] = "Unable to fetch logs"
+        
+        # Check 4: Dependencies
+        diagnosis["checks"]["systemd_dependencies"] = check_service_dependencies(service_name)
+        
+        return diagnosis
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
+# PLAYBOOK EXECUTION
+# ============================================================================
+
+@app.post("/api/v1/intelligence/run-playbook/{playbook_id}")
+async def run_playbook(playbook_id: str, request: PlaybookExecutionRequest):
+    """
+    Execute advanced repair playbooks
+    These are complex multi-step fixes beyond simple restarts
+    """
+    playbooks = {
+        "fix_ui_cdn": "/root/RevFlow_UI_Mass_CDN_Fix_20260122_153000.sh",
+        "fix_db_auth": "/root/fix_postgresql_auth.sh",
+        "fix_port_conflict": "/root/resolve_port_conflicts.sh",
+        "cleanup_zombies": "/root/cleanup_zombie_processes.sh"
+    }
+    
+    if playbook_id not in playbooks:
+        raise HTTPException(status_code=404, detail=f"Playbook {playbook_id} not found")
+    
+    script_path = playbooks[playbook_id]
+    
+    if not os.path.exists(script_path):
+        raise HTTPException(status_code=404, detail=f"Playbook script not found: {script_path}")
+    
+    try:
+        result = subprocess.run(
+            [script_path],
+            capture_output=True,
+            text=True,
+            timeout=600  # 10 minute timeout
+        )
+        
+        return {
+            "playbook_id": playbook_id,
+            "status": "success" if result.returncode == 0 else "failed",
+            "exit_code": result.returncode,
+            "output": result.stdout,
+            "errors": result.stderr,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except subprocess.TimeoutExpired:
+        raise HTTPException(status_code=408, detail="Playbook execution timeout")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
+# CROSS-MODULE INTELLIGENCE
+# ============================================================================
+
+@app.get("/api/v1/intelligence/module-status")
+async def get_module_status():
+    """
+    Get comprehensive status of all RevFlow OS modules
+    This is cross-module intelligence that no single module has
+    """
+    modules = {
+        "revdispatch": {"port": 3401, "type": "frontend"},
+        "revpublish": {"port": 3550, "type": "frontend"},
+        "revaudit": {"port": 3100, "type": "frontend"},
+        "revcore-api": {"port": 8950, "type": "api"},
+        "revguard": {"port": 9000, "type": "api"},
+    }
+    
+    status = {}
+    
+    for module_name, module_info in modules.items():
+        port = module_info["port"]
+        try:
+            result = subprocess.run(
+                ["ss", "-tlnp"],
+                capture_output=True,
+                text=True
+            )
+            is_listening = f":{port}" in result.stdout
+            status[module_name] = {
+                "port": port,
+                "type": module_info["type"],
+                "status": "up" if is_listening else "down"
+            }
+        except:
+            status[module_name] = {
+                "port": port,
+                "type": module_info["type"],
+                "status": "unknown"
+            }
+    
+    return {
+        "timestamp": datetime.utcnow().isoformat(),
+        "modules": status,
+        "total_modules": len(modules),
+        "modules_up": sum(1 for m in status.values() if m["status"] == "up"),
+        "modules_down": sum(1 for m in status.values() if m["status"] == "down")
+    }
+
+# ============================================================================
+# CONFIG VALIDATION
+# ============================================================================
+
+@app.post("/api/v1/intelligence/validate-config")
+async def validate_config(service_name: str):
+    """
+    Validate service configuration
+    Check for common misconfigurations before they cause problems
+    """
+    validations = {
+        "service_exists": False,
+        "service_file_valid": False,
+        "env_file_exists": False,
+        "port_available": None,
+        "dependencies_met": [],
+        "issues": []
+    }
+    
+    # Check if service file exists
+    service_file = f"/etc/systemd/system/{service_name}.service"
+    if os.path.exists(service_file):
+        validations["service_exists"] = True
+        
+        # Check if service file is valid
+        try:
+            result = subprocess.run(
+                ["systemd-analyze", "verify", service_file],
+                capture_output=True,
+                text=True
+            )
+            validations["service_file_valid"] = result.returncode == 0
+            if result.returncode != 0:
+                validations["issues"].append(f"Service file invalid: {result.stderr}")
+        except:
+            validations["issues"].append("Unable to verify service file")
+    else:
+        validations["issues"].append(f"Service file not found: {service_file}")
+    
+    return validations
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def check_monit_status():
+    """Check if Monit is available"""
+    try:
+        result = subprocess.run(
+            ["systemctl", "is-active", "monit"],
+            capture_output=True,
+            text=True
+        )
+        return result.stdout.strip() == "active"
+    except:
+        return False
+
+def check_revguard_status():
+    """Check if RevGuard v3 is available"""
+    try:
+        result = subprocess.run(
+            ["systemctl", "is-active", "revguard-v3"],
+            capture_output=True,
+            text=True
+        )
+        return result.stdout.strip() == "active"
+    except:
+        return False
+
+def check_uptime_kuma_status():
+    """Check if Uptime Kuma is available"""
+    try:
+        # Uptime Kuma typically runs on port 3001
+        result = subprocess.run(
+            ["ss", "-tlnp"],
+            capture_output=True,
+            text=True
+        )
+        return ":3001" in result.stdout
+    except:
+        return False
+
+def check_service_dependencies(service_name: str):
+    """Get service dependencies"""
+    try:
+        result = subprocess.run(
+            ["systemctl", "list-dependencies", service_name, "--plain"],
+            capture_output=True,
+            text=True
+        )
+        return result.stdout.strip().split("\n")
+    except:
+        return []
+
+# ============================================================================
+# STARTUP
+# ============================================================================
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8950)
+

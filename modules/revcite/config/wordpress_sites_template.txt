@@ -1,0 +1,5 @@
+# WordPress Sites for RevCite Deployment
+# Format: domain|path
+# Example: example.com|/var/www/example.com
+
+# Add your 53 sites below (one per line):

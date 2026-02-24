@@ -1,0 +1,44 @@
+{
+  "name": "Reports Library",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Assessment Reports Library"
+      },
+      {
+        "type": "text",
+        "content": "Browse and manage all assessment reports",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "dataTable",
+        "dataSource": {
+          "endpoint": "/api/reports",
+          "dataPath": "reports"
+        },
+        "columns": [
+          {
+            "key": "assessment_id",
+            "label": "Assessment ID"
+          },
+          {
+            "key": "report_type",
+            "label": "Report Type"
+          },
+          {
+            "key": "generated_at",
+            "label": "Generated"
+          }
+        ]
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revsignal",
+    "name": "RevSignal SDK",
+    "number": 11,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevSignal SDK Dashboard",
+    "description": "Visitor identification and tracking system",
+    "icon": "radio",
+    "color": "#EF4444"
+  },
+  "dataSource": {
+    "endpoint": "/api/revsignal/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevSignal SDK on port 8006"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "visitors-identified",
+      "props": {
+        "title": "Visitors Identified",
+        "icon": "👁️",
+        "dataKey": "stats.visitorsIdentified",
+        "defaultValue": "156,780"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "sites-active",
+      "props": {
+        "title": "Sites Active",
+        "icon": "🌐",
+        "dataKey": "stats.sitesActive",
+        "defaultValue": "53"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Signal Features",
+        "items": [
+          "Anonymous visitor identification",
+          "Company detection",
+          "Behavior tracking",
+          "Intent scoring",
+          "Real-time alerts"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8006]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "view-visitors",
+      "props": {
+        "label": "View Visitors",
+        "icon": "📊",
+        "description": "See identified visitor data"
+      }
+    }
+  ]
+}

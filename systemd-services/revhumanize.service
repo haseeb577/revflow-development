@@ -1,0 +1,25 @@
+[Unit]
+Description=RevHumanize - AI Humanization & QC Pipeline (Port 8620)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-humanization-pipeline
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8620
+StandardOutput=append:/var/log/revflow/revhumanize.log
+StandardError=append:/var/log/revflow/revhumanize-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

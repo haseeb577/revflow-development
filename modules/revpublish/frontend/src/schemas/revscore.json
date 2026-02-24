@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revscore",
+    "name": "RevScore IQ",
+    "number": 2,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevScore IQ Dashboard",
+    "description": "Content quality scoring and optimization engine",
+    "icon": "chart-bar",
+    "color": "#10B981"
+  },
+  "dataSource": {
+    "endpoint": "/api/revscore/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevScore API cluster on ports 8100, 8500, 8501"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "content-scored",
+      "props": {
+        "title": "Content Scored",
+        "icon": "📊",
+        "dataKey": "stats.contentScored",
+        "defaultValue": "89,420"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "avg-score",
+      "props": {
+        "title": "Average Score",
+        "icon": "⭐",
+        "dataKey": "stats.avgScore",
+        "defaultValue": "87.2"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "scoring-factors",
+      "props": {
+        "title": "Scoring Factors",
+        "items": [
+          "Readability analysis",
+          "SEO optimization score",
+          "Keyword density",
+          "Content depth metrics",
+          "Engagement prediction"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8100, 8500, 8501]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "score-content",
+      "props": {
+        "label": "Score Content",
+        "icon": "📈",
+        "description": "Analyze and score new content"
+      }
+    }
+  ]
+}

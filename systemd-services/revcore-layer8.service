@@ -1,0 +1,23 @@
+[Unit]
+Description=RevCORE Layer 8 Management API
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revcore/api
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revcore/api/layer8_api.py
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

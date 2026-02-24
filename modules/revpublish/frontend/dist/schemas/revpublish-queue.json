@@ -1,0 +1,68 @@
+{
+  "name": "RevPublish Content Queue",
+  "version": "1.0.0",
+  "dataSource": {
+    "endpoint": "/api/queue",
+    "method": "GET",
+    "dataPath": "queue",
+    "refreshInterval": 10000
+  },
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Content Queue",
+        "style": {
+          "marginBottom": "1.5rem"
+        }
+      },
+      {
+        "type": "dataTable",
+        "dataPath": ".",
+        "columns": [
+          {
+            "key": "id",
+            "label": "ID",
+            "width": "80px"
+          },
+          {
+            "key": "title",
+            "label": "Title",
+            "width": "300px"
+          },
+          {
+            "key": "source",
+            "label": "Source",
+            "width": "120px"
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "badge",
+            "width": "120px",
+            "colorMap": {
+              "pending": "#ffc107",
+              "processing": "#17a2b8",
+              "completed": "#28a745",
+              "failed": "#dc3545"
+            }
+          },
+          {
+            "key": "created_at",
+            "label": "Created",
+            "type": "datetime",
+            "width": "180px"
+          }
+        ],
+        "emptyMessage": "No content in queue.",
+        "pagination": true,
+        "itemsPerPage": 20
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+---
+# WordPress Deployment Metadata
+site_url: [SITE_URL]
+page_slug: services
+post_type: page
+post_status: [POST_STATUS]
+
+# WordPress Core Fields & SEO
+post_title: Professional [NICHE] Services in [CITY], [STATE] | [BUSINESS_NAME]
+post_excerpt: [BUSINESS_NAME] provides expert [NICHE] services in [CITY], [STATE]. Licensed, insured, and trusted for [YEARS_EXPERIENCE]+ years.
+meta_description: Expert [NICHE] in [CITY], [STATE]. [BUSINESS_NAME] offers professional services with [YEARS_EXPERIENCE] years experience. Licensed #[LICENSE_NUMBER]. Call [PHONE]!
+focus_keyword: [NICHE] [CITY]
+
+# Elementor Configuration
+page_type_id: service_page
+color_scheme: professional
+
+# Field Data (Auto-mapped to Elementor widgets)
+field_data:
+  business_name: [BUSINESS_NAME]
+  niche: [NICHE]
+  service_type: [SERVICE_TYPE]
+  city: [CITY]
+  state: [STATE]
+  zip_code: [ZIP_CODE]
+  service_area: [SERVICE_AREA]
+  phone: [PHONE]
+  email: [EMAIL]
+  address: [ADDRESS]
+  hours_of_operation: [HOURS_OF_OPERATION]
+  emergency_available: [EMERGENCY_AVAILABLE]
+  license_number: [LICENSE_NUMBER]
+  years_experience: [YEARS_EXPERIENCE]
+  
+  services_list:
+    - Emergency Repairs & Service Calls
+    - New Installations & Replacements
+    - Preventive Maintenance Programs
+    - Safety Inspections & Diagnostics
+  
+  benefits:
+    - title: [YEARS_EXPERIENCE]+ Years of Experience
+      description: We've seen it all and fixed it all
+    - title: Licensed & Insured
+      description: License #[LICENSE_NUMBER]
+    - title: Local Experts
+      description: Serving [SERVICE_AREA]
+    - title: Upfront Pricing
+      description: No hidden fees
+    - title: Quality Guaranteed
+      description: 100% satisfaction guaranteed
+  
+  cta_primary_text: Call Now: [PHONE]
+  cta_primary_link: tel:[PHONE]
+  cta_secondary_text: Get Free Estimate
+  cta_secondary_link: "#contact"
+---

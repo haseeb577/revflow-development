@@ -1,0 +1,342 @@
+{
+  "name": "RevPublish Sites",
+  "version": "4.3.0",
+  "dataSource": {
+    "endpoint": "/api/hostinger/websites",
+    "method": "GET",
+    "dataPath": "sites",
+    "required": false,
+    "fallbackEndpoint": "/api/sites?per_page=100"
+  },
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem",
+      "maxWidth": "1600px",
+      "margin": "0 auto"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "🌐 WordPress Sites Management",
+        "style": {
+          "marginBottom": "0.5rem",
+          "color": "#fff",
+          "fontSize": "2rem",
+          "fontWeight": "700"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Manage WordPress sites and authentication credentials. Connect your sites and configure credentials for automated publishing.",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2.5rem",
+          "lineHeight": "1.6",
+          "fontSize": "1rem"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(99, 102, 241, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "🔐 Application Password Setup Guide",
+            "style": {
+              "marginBottom": "1rem",
+              "color": "#6366f1",
+              "fontSize": "1.25rem",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "type": "text",
+            "dangerouslySetInnerHTML": true,
+            "content": "<ol style='color:#e2e8f0;line-height:2;margin-left:1.5rem;font-size:0.95rem;'><li>Log into your WordPress site at <code style='background:#0f172a;padding:0.25rem 0.5rem;border-radius:4px;color:#6366f1;'>yoursite.com/wp-admin</code></li><li>Navigate to <strong style='color:#6366f1;'>Users → Profile</strong></li><li>Scroll to <strong style='color:#6366f1;'>Application Passwords</strong> section</li><li>Enter application name: <code style='background:#0f172a;padding:0.25rem 0.5rem;border-radius:4px;color:#10b981;'>RevPublish</code></li><li>Click <strong style='color:#6366f1;'>Add New Application Password</strong></li><li><strong>Copy the password immediately</strong> (shown only once!)</li></ol>"
+          },
+          {
+            "type": "text",
+            "style": {
+              "marginTop": "1.5rem",
+              "padding": "1rem",
+              "background": "rgba(239, 68, 68, 0.15)",
+              "border": "1px solid #ef4444",
+              "borderRadius": "8px",
+              "color": "#fca5a5",
+              "fontSize": "0.9rem",
+              "fontWeight": "500"
+            },
+            "content": "⚠️ CRITICAL: Remove all spaces from the password! Example: 'AbCd 1234 EfGh' becomes 'AbCd1234EfGh'"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(16, 185, 129, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "🔍 Discover & Register WordPress Sites",
+            "style": {
+              "marginBottom": "0.75rem",
+              "color": "#10b981",
+              "fontSize": "1.25rem",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "type": "text",
+            "content": "Connect to WordPress sites by installing the RevPublish Connector plugin or using WordPress Application Passwords.",
+            "style": {
+              "color": "#94a3b8",
+              "marginBottom": "1.5rem",
+              "fontSize": "0.95rem"
+            }
+          },
+          {
+            "type": "form",
+            "endpoint": "/api/wordpress/register",
+            "method": "POST",
+            "fields": [
+              {
+                "type": "text",
+                "name": "site_url",
+                "label": "🌐 WordPress Site URL",
+                "placeholder": "https://yoursite.com or yoursite.com",
+                "required": true,
+                "description": "Enter your WordPress site URL (with or without https://)"
+              },
+              {
+                "type": "text",
+                "name": "site_secret",
+                "label": "🔐 Site Secret (Optional)",
+                "placeholder": "Leave empty if using Application Password",
+                "required": false,
+                "description": "If you installed RevPublish Connector plugin, enter the site secret from plugin settings"
+              },
+              {
+                "type": "text",
+                "name": "wp_username",
+                "label": "👤 WordPress Username",
+                "placeholder": "admin",
+                "required": false,
+                "description": "WordPress admin username (required if not using plugin)"
+              },
+              {
+                "type": "password",
+                "name": "app_password",
+                "label": "🔑 Application Password",
+                "placeholder": "xxxx xxxx xxxx xxxx xxxx xxxx",
+                "required": false,
+                "description": "WordPress Application Password (create in Users → Profile → Application Passwords)"
+              }
+            ],
+            "submitText": "🔍 Discover & Register Site",
+            "successMessage": "Site discovered and registered successfully!",
+            "style": {
+              "marginBottom": "0"
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(99, 102, 241, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "✏️ Update Site Credentials",
+            "style": {
+              "marginBottom": "0.75rem",
+              "color": "#6366f1",
+              "fontSize": "1.25rem",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "type": "text",
+            "content": "Select a registered site and update its WordPress authentication credentials.",
+            "style": {
+              "color": "#94a3b8",
+              "marginBottom": "1.5rem",
+              "fontSize": "0.95rem"
+            }
+          },
+          {
+            "type": "form",
+            "endpoint": "/api/sites/{site_id}",
+            "method": "PUT",
+            "fields": [
+              {
+                "type": "select",
+                "name": "site_id",
+                "label": "📍 Select Site",
+                "required": true,
+                "dataSource": "/api/sites?per_page=100",
+                "dataPath": "sites",
+                "valueField": "id",
+                "labelField": "site_name",
+                "placeholder": "Choose a site...",
+                "description": "Select the WordPress site you want to update"
+              },
+              {
+                "type": "text",
+                "name": "wp_username",
+                "label": "👤 WordPress Username",
+                "required": true,
+                "placeholder": "admin or email@example.com",
+                "description": "Your WordPress admin username"
+              },
+              {
+                "type": "password",
+                "name": "app_password",
+                "label": "🔑 Application Password",
+                "required": true,
+                "placeholder": "Paste password (remove spaces!)",
+                "description": "The password from WordPress → Users → Profile → Application Passwords"
+              }
+            ],
+            "submitButton": {
+              "text": "💾 Save Credentials",
+              "style": {
+                "background": "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                "color": "white",
+                "padding": "0.875rem 2rem",
+                "fontSize": "1rem",
+                "fontWeight": "600",
+                "border": "none",
+                "borderRadius": "8px",
+                "cursor": "pointer",
+                "boxShadow": "0 4px 12px rgba(99, 102, 241, 0.3)",
+                "transition": "all 0.2s"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(99, 102, 241, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
+        },
+        "children": [
+          {
+            "type": "container",
+            "style": {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "alignItems": "center",
+              "marginBottom": "1.5rem",
+              "paddingBottom": "1rem",
+              "borderBottom": "1px solid rgba(99, 102, 241, 0.2)"
+            },
+            "children": [
+              {
+                "type": "header",
+                "level": 3,
+                "text": "📊 All Sites",
+                "style": {
+                  "marginBottom": "0",
+                  "color": "#fff",
+                  "fontSize": "1.25rem",
+                  "fontWeight": "600"
+                },
+                "dynamicText": true,
+                "textTemplate": "📊 All Sites ({{total}})"
+              },
+              {
+                "type": "button",
+                "text": "🔄 Sync from Hostinger",
+                "action": {
+                  "type": "api",
+                  "method": "POST",
+                  "endpoint": "/api/hostinger/sync"
+                },
+                "style": {
+                  "background": "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                  "color": "white",
+                  "padding": "0.625rem 1.25rem",
+                  "borderRadius": "8px",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "fontSize": "0.875rem",
+                  "fontWeight": "600",
+                  "boxShadow": "0 2px 8px rgba(99, 102, 241, 0.3)"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dataTable",
+            "dataPath": "sites",
+            "columns": [
+              {
+                "field": "id",
+                "header": "ID"
+              },
+              {
+                "field": "site_name",
+                "header": "Site Name"
+              },
+              {
+                "field": "site_url",
+                "header": "URL"
+              },
+              {
+                "field": "status",
+                "header": "Status"
+              },
+              {
+                "field": "wp_username",
+                "header": "👤 Username"
+              },
+              {
+                "field": "app_password",
+                "header": "🔑 Password"
+              },
+              {
+                "field": "updated_at",
+                "header": "Last Updated"
+              }
+            ],
+            "emptyMessage": "📝 No WordPress sites found. Discover and register sites to get started.",
+            "style": {
+              "marginTop": "0"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

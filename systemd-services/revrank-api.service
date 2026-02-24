@@ -1,0 +1,15 @@
+[Unit]
+Description=RevRank Engine API - Module 3 (Port 8201)
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revrank_engine/backend
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8201
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

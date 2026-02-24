@@ -1,0 +1,27 @@
+[Unit]
+Description=RevGuard™ Comprehensive Monitoring Service
+After=network.target postgresql.service
+Wants=revguard-monitor.timer
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/root/revguard-comprehensive-monitor.sh
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec=120
+EnvironmentFile=-/opt/shared-api-engine/.env
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

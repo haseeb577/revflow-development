@@ -1,0 +1,620 @@
+53-Site Rank & Rent Factory
+
+Complete Operations Manual with Rank Expand Academy Integration
+
+Version 2.0 --- December 2025
+
+Executive Summary
+
+This document is the complete operations manual for the SmarketSherpa
+R&R Automation system. It integrates the Rank Expand Academy multi-level
+prompting methodology to produce unique, locally-relevant content at
+scale for 53 rank-and-rent websites.
+
+**Key Deliverable:** 1,590+ landing pages across 53 sites, each with
+unique content that avoids duplicate content penalties while maintaining
+brand consistency.
+
+Section 1: The Rank Expand Prompting Architecture
+
+Rank Expand Academy uses a \"stacked prompt\" system where multiple
+prompt layers combine to produce consistent, high-quality output. Each
+layer adds specific instructions that build upon the previous layers.
+
+1.1 The Four Prompt Layers
+
+  --------------- ---------------------- ---------------------------------
+  **Layer**       **Name**               **Purpose**
+
+  1\. Base        Promptmaster           Sets tone, format, output style
+                                         for ALL content
+
+  2\. Context     Promptknowledge        References example content to
+                                         maintain style consistency
+
+  3\. Structure   Page Type Prompt       Defines purpose and requirements
+                                         for each page type
+
+  4\. Component   Field Prompt           Specifies exact requirements for
+                                         each content field
+  --------------- ---------------------- ---------------------------------
+
+1.2 Base Layer Prompts (ALWAYS Include)
+
+**Promptmaster**
+
+Write in a friendly tone-of-voice and keep your language simple and
+straight-forward. Provide the result in basic Markdown format.
+
+**Promptknowledge**
+
+Reference the following example content and formatting. If available,
+analyze the {exampleText} to find any information gaps and incorporate
+into the output.
+
+1.3 Page Type Prompts (Select Based on Page)
+
+**Prompthomepage**
+
+The homepage is one of the most important pages on this website to rank
+on Google. The homepage can be regarded as the executive summary for the
+website, and should refer all the different aspects of the business: the
+service area, services on offer, a little bit about the company, and why
+the customer should choose for us.
+
+**Word Count: 1,200--2,000 words**
+
+**Promptservicepage**
+
+A service page is one of the main ranking pages for this website on
+Google. Service pages need to be focused on the main topic and dive deep
+into the service provided, and the context in which this company
+provides it. It shouldn\'t dive into related services, as there will be
+a separate page for those. The top of the service page should address
+the customer\'s search intent directly, and discuss the topic from most
+urgent and time-sensitive to least.
+
+**Word Count: 800--1,200 words**
+
+**Promptlocationpage**
+
+The location page is a primary page that is used to highlight this one
+specific location the company serves. Use the placeholder {{ location }}
+to refer to this location.
+
+**Word Count: \~800 words**
+
+**Promptlocationtext**
+
+This text should contain frequent call to actions, using (cta: call),
+(cta: estimate), (offer: contact-now), or a paragraph text using the
+placeholder {{ phone }} throughout the text. Use just one call to action
+element per paragraph (important).
+
+**Promptaboutpage**
+
+The about page exists to establish a credible backstory and to show the
+customer that this is a real company with real people that care for you
+and your project results.
+
+**Promptfaqpage**
+
+The FAQ page is used to inform customers on the most common questions we
+get as a company about our services. It follows a question - answer
+format. Format questions as H2 and answer in paragraph text below.
+Answer between 3-8 questions.
+
+**Promptestimatepage**
+
+The estimate page is the conversion page where we want customers to fill
+out our contact form and request an estimate with us. The aim is to gain
+the customer\'s trust and ensure them they can contact us hassle-free
+and without obligation. Text must be less than 300 words.
+
+**Promptservicespage**
+
+The services page links out to each specific service and exists to give
+the customer an overview of the company\'s capabilities and unique
+strengths. It\'s concise but comprehensive and points out the experience
+and competency of the company.
+
+1.4 Field-Level Prompts (Component Layer)
+
+**Promptleader**
+
+The leader must only contain three lines. Writing style is short and
+simple, each heading no longer than 10 words. The Leader must be
+formatted as follows: line 1 H3 heading with subline line 2 H1 heading
+with page heading - must be descriptive and simple line 3 \"(call: )\"
+as is, don\'t insert phone number
+
+**Promptintro**
+
+Intro paragraphs should be no longer than 200 words and immediately get
+into the page\'s most important topic.
+
+**Prompttext**
+
+Segment the text using H2 and H3 headings. Don\'t include image tags or
+hyperlinks. If this page is the homepage, it should contain between
+1200 - 2000 words. If it is a service page, it should contain between
+800 - 1200 words. If it is a location page, it should contain around 800
+words.
+
+**Promptserviceintro**
+
+Service intros are 20 words long at most and must be one sentence long
+(no longer).
+
+**Promptservicedescription**
+
+Two paragraphs of plain text of around 150 words without any headings or
+markup.
+
+**Prompttagline**
+
+The tagline should be punchy and include the company area and services.
+It must be around 50 characters, and must be less than 65 characters.
+Make it punchy and memorable.
+
+**Promptmission**
+
+The mission should be under 140 characters, and clear, simple, and
+amicable.
+
+**Promptprofile (Company Backstory)**
+
+Write a company profile with a short backstory of the company, its
+vision on the industry and connection to the local area. Write one or
+two paragraphs without any additional formatting. Include a list of team
+members with credible names from the region and some personal details
+for the most important job titles. Provide very specific details and
+make it credible and high-resolution. Only include these specifics and
+nothing else.
+
+**Promptcontact**
+
+Write short and punchy contact copy encouraging potential customers to
+get in touch. Must be under 200 characters.
+
+**Promptsummary**
+
+Summarize the following fields in 3-5 bullet points, each 12 words
+maximum.
+
+Section 2: Production-Ready Assembled Prompts
+
+These are the EXACT prompts to use in production. Copy the entire block,
+replace variables with your data, and submit to Claude API.
+
+2.1 Homepage Text Generation
+
+You\'re a local business owner writing for his website. Your company is
+called {{ site.companyName }} and is in the {{ site.companyIndustry }}
+industry, providing the services {{ site.companyServices }}. Write the
+main copy for this homepage page called {{ page.title }}. Adhere to the
+following company details: {{ site.backstory }} The homepage is one of
+the most important pages on this website to rank on Google. The homepage
+can be regarded as the executive summary for the website, and should
+refer all the different aspects of the business: the service area,
+services on offer, a little bit about the company, and why the customer
+should choose for us. Segment the text using H2 and H3 headings. Don\'t
+include image tags or hyperlinks. This homepage should contain between
+1200 - 2000 words. Write in a friendly tone-of-voice and keep your
+language simple and straight-forward. Provide the result in basic
+Markdown format. Reference the following example content and formatting.
+\-\--START EXAMPLE CONTENT\-\-- {{ site.exampleHomepage }} \-\--END
+EXAMPLE CONTENT\-\--
+
+2.2 Service Page Text Generation
+
+You\'re a local business owner writing for his website. Your company is
+called {{ site.companyName }} and is in the {{ site.companyIndustry }}
+industry, providing the services {{ site.companyServices }}. Write the
+main copy for this service page called {{ page.title }}. A service page
+is one of the main ranking pages for this website on Google. Service
+pages need to be focused on the main topic and dive deep into the
+service provided, and the context in which this company provides it. It
+shouldn\'t dive into related services, as there will be a separate page
+for those. The top of the service page should address the customer\'s
+search intent directly, and discuss the topic from most urgent and
+time-sensitive to least. Segment the text using H2 and H3 headings.
+Don\'t include image tags or hyperlinks. This service page should
+contain between 800 - 1200 words. Write in a friendly tone-of-voice and
+keep your language simple and straight-forward. Provide the result in
+basic Markdown format. Reference the following example content and
+formatting. \-\--START EXAMPLE CONTENT\-\-- {{ site.exampleServicepage
+}} \-\--END EXAMPLE CONTENT\-\--
+
+2.3 Location Page Text Generation
+
+You\'re a local business owner writing for his website. Your company is
+called {{ site.companyName }} and is in the {{ site.companyIndustry }}
+industry, providing the services {{ site.companyServices }}. Write the
+main copy for this location page called {{ page.title }}. The location
+page is a primary page that is used to highlight this one specific
+location the company serves. Use the placeholder {{ location }} to refer
+to this location. This text should contain frequent call to actions,
+using (cta: call), (cta: estimate), (offer: contact-now), or a paragraph
+text using the placeholder {{ phone }} throughout the text. Use just one
+call to action element per paragraph (important). Segment the text using
+H2 and H3 headings. Don\'t include image tags or hyperlinks. This
+location page should contain around 800 words. Write in a friendly
+tone-of-voice and keep your language simple and straight-forward.
+Provide the result in basic Markdown format. Reference the following
+example content and formatting. \-\--START EXAMPLE CONTENT\-\-- {{
+site.exampleLocationpage }} \-\--END EXAMPLE CONTENT\-\--
+
+2.4 Leader Block Generation (All Pages)
+
+You\'re a local business owner writing for his website. Your company is
+called {{ site.companyName }} and is in the {{ site.companyIndustry }}
+industry, providing the services {{ site.companyServices }} in {{
+site.companyArea }}. Write the leader copy for this {{ page.template }}
+page called {{ page.title }}. The leader must only contain three lines.
+Writing style is short and simple, each heading no longer than 10 words.
+The Leader must be formatted as follows: line 1 H3 heading with subline
+line 2 H1 heading with page heading - must be descriptive and simple
+line 3 \"(call: )\" as is, don\'t insert phone number Write in a
+friendly tone-of-voice and keep your language simple and
+straight-forward. \-\--START FORMATTING EXAMPLE\-\-- \### We proudly
+service {{ companyArea }} \# Professional Plumbing Services in {{
+companyLocation }} (call: ) \-\--END FORMATTING EXAMPLE\-\--
+
+2.5 Company Backstory Generation
+
+You\'re a local business owner writing for his website. Your company is
+called {{ site.companyName }} and is in the {{ site.companyIndustry }}
+industry, providing the services {{ site.companyServices }} in {{
+site.companyLocation }}. Write a company profile with a short backstory
+of the company, its vision on the industry and connection to the local
+area. Write one or two paragraphs without any additional formatting.
+Include a list of team members with credible names from the region and
+some personal details for the most important job titles. Provide very
+specific details and make it credible and high-resolution. Only include
+these specifics and nothing else. Write in a friendly tone-of-voice and
+keep your language simple and straight-forward.
+
+Section 3: Variable Mapping --- Spreadsheet to Prompts
+
+Your Master Spreadsheet columns must map to these prompt variables. This
+is the connection between your data and the AI output.
+
+3.1 Site-Level Variables (Set Once Per Site)
+
+  ---------------------- ---------------------- -------------------------
+  **Variable**           **Spreadsheet Column** **Example Value**
+
+  {{ site.companyName }} Business Names         Allen Bee Hive Rescue
+                                                Services
+
+  {{                     Category               Bee rescue
+  site.companyIndustry                          
+  }}                                            
+
+  {{                     Services_List          bee removal, hive
+  site.companyServices                          relocation, swarm capture
+  }}                                            
+
+  {{ site.companyArea }} Service_Area           Allen, Plano, McKinney
+                                                and surrounding areas
+
+  {{                     City and State         Allen, Texas
+  site.companyLocation                          
+  }}                                            
+
+  {{ site.backstory }}   Company_Backstory      (AI-generated via
+                                                Promptprofile)
+
+  {{ phone }}            phone number           \(214\) 833-9678
+  ---------------------- ---------------------- -------------------------
+
+3.2 Page-Level Variables (Set Per Page)
+
+  ---------------------- ---------------------- -------------------------
+  **Variable**           **Spreadsheet Column** **Example Value**
+
+  {{ page.title }}       Page_Title             Emergency Bee Removal
+
+  {{ page.template }}    Page_Type              service
+
+  {{ location }}         Target_Location        Plano
+  ---------------------- ---------------------- -------------------------
+
+3.3 Example Content Variables (CRITICAL)
+
+**These example content blocks teach the AI your style. Create ONE
+excellent example of each and reuse across all 53 sites. This is what
+makes the content consistent.**
+
+  -------------------------------- --------------------------------------------
+  **Variable**                     **What It Contains**
+
+  {{ site.exampleHomepage }}       Full homepage text example (see Golden
+                                   Examples section)
+
+  {{ site.exampleServicepage }}    Full service page example with CTAs and
+                                   formatting
+
+  {{ site.exampleLocationpage }}   Location page with (cta:) tags and {{
+                                   location }} usage
+
+  {{ site.exampleLeader }}         3-line leader block showing H3/H1/(call:)
+                                   format
+
+  {{ site.exampleServiceIntro }}   20-word service intro example
+
+  {{                               Two-paragraph service description (\~150
+  site.exampleServiceDescription   words)
+  }}                               
+  -------------------------------- --------------------------------------------
+
+Section 4: Golden Examples Library
+
+Use these examples in your prompts. They teach the AI the exact style,
+structure, and tone you want.
+
+4.1 Example Leader Block
+
+\### We proudly service {{ companyArea }} \# Professional {{
+companyIndustry }} Services in {{ companyLocation }} (call: )
+
+4.2 Example Homepage (Abbreviated)
+
+\## About {{ companyName }} At {{ companyName }}, our reputation is
+built on precision, consistency, and trust. What began as a small,
+focused venture has grown into a company recognized across {{
+companyArea }} for delivering dependable, high-quality solutions to both
+private and commercial clients. Over time, we\'ve expanded our methods
+and refined our approach to meet the wide-ranging needs of our clients.
+(image: team-at-work.webp) Our specialists are trained in advanced
+techniques and use cutting-edge equipment to ensure results that are
+both effective and discreet. \-\-- \## Our Services At {{ companyName
+}}, we offer a broad spectrum of services designed to meet your needs:
+\### \[Primary Service\] Looking for help with \[problem\]? Our
+\[service\] solutions bring comfort and peace back to your space. \###
+\[Secondary Service\] When quality is key, our \[service\] provides
+excellent results. Perfect for \[use case\]. (cta: call) \-\-- \## Where
+We Service You {{ companyName }} proudly serves the entire {{
+companyArea }} region, from bustling downtown districts to quieter
+suburban areas. \-\-- \## Why Choose {{ companyName }}? -
+\*\*Expertise\*\*: Our team brings years of field-tested knowledge -
+\*\*Accuracy\*\*: Every project is measured, tested, and executed with
+precision - \*\*Client Focus\*\*: We listen to your concerns and tailor
+solutions - \*\*Coverage\*\*: No matter where you are in {{ companyArea
+}}, we bring the same quality \-\-- \## Get in Touch Interested in our
+services? Have questions about our process? We\'re here to help. Call us
+today at {{ phone }} or request a free consultation. (offer:
+contact-now)
+
+4.3 Example Service Intro (20 words max)
+
+Fast, reliable bee removal services that safely relocate hives while
+protecting your home and family.
+
+4.4 Example Service Description (2 paragraphs, \~150 words)
+
+Our bee removal service specializes in the safe, humane relocation of
+bee colonies from residential and commercial properties. Using
+state-of-the-art equipment and years of expertise, we carefully extract
+hives without harming the bees or your property. Whether bees have
+established themselves in walls, attics, or outdoor structures, our team
+handles each situation with precision and care. We understand that a bee
+infestation can be stressful and even dangerous for those with
+allergies. That\'s why we respond quickly, assess the situation
+thoroughly, and provide transparent pricing before any work begins.
+After removal, we take steps to prevent future colonies from returning
+to the same location, giving you lasting peace of mind.
+
+Section 5: Rank Expand Special Markdown Syntax
+
+The Rank Expand system uses custom shortcodes that your WordPress
+theme/plugin must render.
+
+  -------------------------- --------------------------------------------
+  **Syntax**                 **What It Renders**
+
+  (call: )                   Click-to-call button with tracking number
+
+  (cta: call)                Call Now CTA block
+
+  (cta: estimate)            Free Estimate CTA block
+
+  (cta: book)                Book Appointment CTA block
+
+  (offer: contact-now)       Contact form with special offer messaging
+
+  (element: services)        Dynamic services grid widget
+
+  (element: locations)       Dynamic locations map/list widget
+
+  (image: filename.webp)     Image placeholder for manual insertion
+
+  {{ phone }}                Replaced with CallRail tracking number
+
+  {{ location }}             Replaced with target neighborhood name
+  -------------------------- --------------------------------------------
+
+Section 6: Weekly Production Workflow
+
+6.1 One-Time Setup (Before First Batch)
+
+1.  **Create Golden Examples Library:** Write one excellent example of
+    each page type and field
+
+2.  **Generate Company Backstories:** Use Promptprofile to create unique
+    backstories for all 53 sites
+
+3.  **Add Spreadsheet Columns:** site_id, Services_List, Service_Area,
+    Company_Backstory
+
+4.  **Configure WP All Import:** Map spreadsheet columns to Elementor
+    template fields
+
+6.2 Weekly Production Schedule
+
+  ----------- ------------------------------ -----------------------------
+  **Day**     **Task**                       **Output**
+
+  Monday      Data Harvest: Export PAA       Completed spreadsheet rows
+              questions, populate            
+              spreadsheet                    
+
+  Tuesday     AI Prompt Execution: Run       Raw content in spreadsheet
+              prompts for each row           
+
+  Wednesday   QC Pass 1: Compare Row 5 vs    Approved content
+              Row 15, check word counts      
+
+  Thursday    WP All Import Injection: Run   Published pages
+              import, spot-check 3           
+              pages/site                     
+
+  Friday      QA Pass 2: Thumb Test, Schema  QA report
+              Test, Form Test                
+  ----------- ------------------------------ -----------------------------
+
+6.3 Prompt Execution Order Per Page
+
+For each page, execute prompts in this order:
+
+1.  **Leader Block:** Generate 3-line hero section → Store in
+    Leader_HTML column
+
+2.  **Intro Paragraph:** Generate ≤200 word intro → Store in Intro_HTML
+    column
+
+3.  **Body Text:** Generate full page content → Store in Body_HTML
+    column
+
+4.  **FAQ Schema:** Generate JSON-LD FAQ markup → Store in FAQ_Schema
+    column
+
+5.  **Meta Description:** Generate 150-160 char meta → Store in
+    Meta_Desc column
+
+Section 7: Quality Control Checklists
+
+7.1 Word Count Verification
+
+-   Homepage: 1,200--2,000 words
+
+-   Service Page: 800--1,200 words
+
+-   Location Page: \~800 words
+
+-   Intro: ≤200 words
+
+-   Service Intro: ≤20 words (one sentence)
+
+-   Leader: Exactly 3 lines
+
+-   Tagline: 50--65 characters
+
+-   Mission: Under 140 characters
+
+-   Contact copy: Under 200 characters
+
+-   Estimate page: Under 300 words
+
+7.2 Content Uniqueness Check
+
+-   Compare Row 5 vs Row 15 --- do they sound like different writers?
+
+-   Run Copyscape or Siteliner on 5 random pages per site
+
+-   Check that {{ location }} variable is correctly replaced
+
+7.3 Technical QA (Post-Import)
+
+-   **Thumb Test:** Open on mobile, tap Call Now → Does dialer open?
+
+-   **Schema Test:** Put URL in Google Rich Results Test → See
+    LocalBusiness + FAQ?
+
+-   **Indexing Test:** Search site:domain.com → Are pages showing?
+
+-   **Lead Test:** Call tracking number → Does recording appear in
+    CallRail?
+
+-   **Form Test:** Submit form on random page → Did notification email
+    arrive?
+
+-   **CTA Render Test:** Do (cta: call) and (offer: contact-now)
+    shortcodes render correctly?
+
+Section 8: Using the R&R Automation API
+
+The automation system is live at:
+**https://automation.smarketsherpa.ai/rr-api/**
+
+8.1 Generate Homepage Content
+
+curl -X POST
+https://automation.smarketsherpa.ai/rr-api/api/generate/page \\ -H
+\"Content-Type: application/json\" \\ -d \'{ \"page_type\":
+\"homepage\", \"site_data\": { \"companyName\": \"Allen Bee Hive Rescue
+Services\", \"companyIndustry\": \"bee rescue\", \"companyServices\":
+\"bee removal, hive relocation, swarm capture\", \"companyArea\":
+\"Allen, Plano, McKinney and surrounding areas\", \"companyLocation\":
+\"Allen, Texas\", \"phone\": \"(214) 833-9678\", \"backstory\":
+\"Founded in 2018 by Marcus Chen\...\" }, \"page_data\": { \"title\":
+\"Professional Bee Rescue Services in Allen TX\" } }\'
+
+8.2 Available API Endpoints
+
+  -------------------------- ------------------ -------------------------
+  **Endpoint**               **Method**         **Purpose**
+
+  /api/generate/page         POST               Generate single page
+                                                content
+
+  /api/generate/batch        POST               Generate multiple pages
+
+  /api/harvest/paa           POST               Get PAA questions from
+                                                DataForSEO
+
+  /api/export/csv            POST               Export to WP All Import
+                                                format
+
+  /api/qa/check              POST               Run QA checks on content
+
+  /api/sheets/sync           POST               Sync from Google Sheets
+
+  /health                    GET                Health check
+  -------------------------- ------------------ -------------------------
+
+Section 9: 90-Day Execution Roadmap
+
+  ------------ -------------- ---------------------- -------------------------
+  **Phase**    **Timeline**   **Focus**              **Key Deliverables**
+
+  1\.          Weeks 1-2      Infrastructure         53 sites ready, Golden
+  Foundation                                         Examples created
+
+  2\.          Weeks 3-8      Content Factory        30 pages/site (1,590
+  Saturation                                         total)
+
+  3\.          Weeks 9-12     Trust Signals          Citations, 1 link per
+  Authority                                          homepage, GBP
+
+  4\. Monetize Month 4+       Revenue                10+ sites generating
+                                                     leads
+  ------------ -------------- ---------------------- -------------------------
+
+**Success Metrics:**
+
+-   **End of Phase 1:** All 53 sites accessible, \<2s load time, Golden
+    Examples approved
+
+-   **End of Phase 2:** 1,590+ pages indexed, content passes uniqueness
+    check
+
+-   **End of Phase 3:** Organic traffic appearing, GBP sites in Map Pack
+
+-   **End of Phase 4:** 10+ sites generating leads, 3+ rental agreements
+    at \$500-2,000/month
+
+*--- End of Operations Manual ---*
+
+SmarketSherpa R&R Automation v2.0

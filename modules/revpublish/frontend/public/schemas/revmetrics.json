@@ -1,0 +1,146 @@
+{
+  "module": {
+    "id": "revmetrics",
+    "name": "RevMetrics",
+    "number": 10,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevMetrics Dashboard",
+    "description": "Platform analytics and performance metrics",
+    "icon": "bar-chart",
+    "color": "#F59E0B"
+  },
+  "dataSource": {
+    "endpoint": "/api/revmetrics/stats",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevMetrics API on port 8220"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "total-customers",
+      "props": {
+        "title": "Total Customers",
+        "icon": "👥",
+        "dataKey": "customers",
+        "defaultValue": "12"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "active-customers",
+      "props": {
+        "title": "Active Customers",
+        "icon": "✅",
+        "dataKey": "active",
+        "defaultValue": "8"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "total-revenue",
+      "props": {
+        "title": "Total Revenue",
+        "icon": "💰",
+        "dataKey": "revenue",
+        "defaultValue": "$45,250"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "modules-deployed",
+      "props": {
+        "title": "Modules Deployed",
+        "icon": "📦",
+        "dataKey": "modulesDeployed",
+        "defaultValue": "16"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "api-requests",
+      "props": {
+        "title": "API Requests (24h)",
+        "icon": "📊",
+        "dataKey": "apiRequests",
+        "defaultValue": "0"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "metrics-features",
+      "props": {
+        "title": "Analytics Features",
+        "items": [
+          "Customer tracking",
+          "Revenue analytics",
+          "Module performance",
+          "API usage metrics",
+          "Real-time dashboards"
+        ]
+      }
+    },
+    {
+      "type": "Chart",
+      "id": "revenue-chart",
+      "position": { "span": 2 },
+      "props": {
+        "title": "Revenue Trend",
+        "type": "line",
+        "dataKey": "revenueHistory",
+        "height": "200px"
+      }
+    },
+    {
+      "type": "DataTable",
+      "id": "module-performance",
+      "position": { "span": 2 },
+      "props": {
+        "title": "Module Performance",
+        "dataKey": "moduleStats",
+        "columns": [
+          { "key": "module", "label": "Module" },
+          { "key": "status", "label": "Status" },
+          { "key": "requests", "label": "Requests" },
+          { "key": "avgResponse", "label": "Avg Response" }
+        ],
+        "maxRows": 10
+      }
+    },
+    {
+      "type": "LinkList",
+      "id": "quick-links",
+      "props": {
+        "title": "Quick Actions",
+        "links": [
+          { "label": "View KPIs", "url": "/api/revmetrics/dashboard/kpis", "icon": "📈" },
+          { "label": "Customer List", "url": "/api/revmetrics/customers", "icon": "👥" },
+          { "label": "API Documentation", "url": "http://217.15.168.106:8220/docs", "icon": "📚", "external": true }
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8220, 8401, 8402, 3400]
+      }
+    }
+  ]
+}

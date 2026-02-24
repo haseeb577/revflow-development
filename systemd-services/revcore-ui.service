@@ -1,0 +1,24 @@
+[Unit]
+Description=RevCORE UI Dashboard
+After=network.target revguard-v3.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revcore-ui/frontend/build
+ExecStartPre=/bin/bash -c 'mkdir -p /opt/revcore-ui/frontend/build'
+ExecStart=/usr/bin/python3 -m http.server 3960
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

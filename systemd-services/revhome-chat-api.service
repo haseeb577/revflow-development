@@ -1,0 +1,26 @@
+[Unit]
+Description=RevHome Chat API
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revhome
+Environment="PATH=/opt/revhome/venv/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn revhome_chat_api:app --host 0.0.0.0 --port 8105
+StandardOutput=append:/var/log/revhome-chat-api.log
+StandardError=append:/var/log/revhome-chat-api-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

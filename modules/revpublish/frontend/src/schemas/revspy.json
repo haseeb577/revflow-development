@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revspy",
+    "name": "RevSPY",
+    "number": 15,
+    "suite": "Digital Landlord",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevSPY Dashboard",
+    "description": "Competitive intelligence and blind spot research",
+    "icon": "eye",
+    "color": "#A855F7"
+  },
+  "dataSource": {
+    "endpoint": "/api/revspy/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevSPY research engine on ports 8160, 8162"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "competitors-tracked",
+      "props": {
+        "title": "Competitors Tracked",
+        "icon": "🔍",
+        "dataKey": "stats.competitorsTracked",
+        "defaultValue": "234"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "blind-spots",
+      "props": {
+        "title": "Blind Spots Found",
+        "icon": "🎯",
+        "dataKey": "stats.blindSpots",
+        "defaultValue": "1,456"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Intelligence Features",
+        "items": [
+          "Competitor monitoring",
+          "Content gap analysis",
+          "Keyword blind spots",
+          "Backlink opportunities",
+          "Market positioning"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8160, 8162]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "run-analysis",
+      "props": {
+        "label": "Run Spy Analysis",
+        "icon": "🕵️",
+        "description": "Start competitive intelligence scan"
+      }
+    }
+  ]
+}

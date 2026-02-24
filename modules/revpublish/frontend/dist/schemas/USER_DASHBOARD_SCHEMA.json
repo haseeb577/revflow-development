@@ -1,0 +1,624 @@
+{
+  "schema_version": "1.0",
+  "schema_type": "dashboard",
+  "dashboard_name": "RevFlow OS Customer Dashboard",
+  "target_audience": "customer",
+  "refresh_interval_seconds": 30,
+  "sections": [
+    {
+      "type": "header",
+      "title": "Jackson Moving - RevFlow OS Dashboard",
+      "subtitle": "Real-time lead monitoring and dispatch management",
+      "customer_name_source": "customer_company_name",
+      "actions": [
+        {
+          "label": "Settings",
+          "action": "open_settings",
+          "icon": "⚙️"
+        },
+        {
+          "label": "Help",
+          "action": "open_help",
+          "icon": "?"
+        }
+      ]
+    },
+    {
+      "type": "stats_summary",
+      "title": "TODAY'S METRICS (Last 24 Hours)",
+      "stats": [
+        {
+          "name": "Ingested",
+          "value_source": "leads_ingested_today",
+          "format": "number",
+          "subtext_source": "leads_breakdown_revignal_revintell",
+          "trend_source": "leads_trend_percent"
+        },
+        {
+          "name": "Approved",
+          "value_source": "leads_approved_today",
+          "format": "number",
+          "subtext_source": "approved_breakdown"
+        },
+        {
+          "name": "Dispatched",
+          "value_source": "leads_dispatched_today",
+          "format": "number",
+          "subtext_source": "dispatch_status_breakdown",
+          "secondary_metric": {
+            "label": "Avg Time",
+            "value_source": "avg_dispatch_time",
+            "format": "duration"
+          }
+        }
+      ]
+    },
+    {
+      "type": "filter_bar",
+      "name": "lead_filters",
+      "sections": [
+        {
+          "type": "source_toggles",
+          "title": "Filter by Source",
+          "toggles": [
+            {
+              "id": "all",
+              "label": "All Leads",
+              "icon": "Filter",
+              "checked": true,
+              "count_source": "all_leads_count"
+            },
+            {
+              "id": "revsignal",
+              "label": "RevSignal (Website Visitors)",
+              "icon": "Globe",
+              "checked": true,
+              "count_source": "revsignal_leads_count"
+            },
+            {
+              "id": "revintell",
+              "label": "RevIntel (Buyer Intent)",
+              "icon": "Database",
+              "checked": true,
+              "count_source": "revintell_leads_count"
+            }
+          ]
+        },
+        {
+          "type": "status_filter",
+          "name": "status_filter",
+          "label": "Status",
+          "options": [
+            { "value": "all", "label": "All Status", "selected": true },
+            { "value": "pending", "label": "Pending Approval" },
+            { "value": "approved", "label": "Approved" },
+            { "value": "sent", "label": "Sent to GHL" },
+            { "value": "failed", "label": "Failed" }
+          ]
+        },
+        {
+          "type": "search_box",
+          "name": "search_term",
+          "placeholder": "Search leads by name, email, or company...",
+          "icon": "Search"
+        },
+        {
+          "type": "advanced_filter_toggle",
+          "label": "Advanced Filter",
+          "collapsed": true
+        }
+      ],
+      "advanced_filters": {
+        "type": "form_group",
+        "conditional_show": "advanced_filter_expanded",
+        "fields": [
+          {
+            "name": "job_title_contains",
+            "label": "Job Title contains",
+            "type": "text_input",
+            "placeholder": "e.g., Manager, Director"
+          },
+          {
+            "name": "company_size",
+            "label": "Company Size",
+            "type": "dropdown",
+            "options": [
+              { "value": "all", "label": "All", "selected": true },
+              { "value": "1-10", "label": "1-10 employees" },
+              { "value": "11-50", "label": "11-50 employees" },
+              { "value": "51-200", "label": "51-200 employees" },
+              { "value": "200+", "label": "200+ employees" }
+            ]
+          },
+          {
+            "name": "date_range",
+            "label": "Date Range",
+            "type": "date_range_picker",
+            "default": "last_24h"
+          }
+        ]
+      }
+    },
+    {
+      "type": "lead_pulse_table",
+      "name": "lead_pulse",
+      "title": "LEAD PULSE (Real-Time)",
+      "columns": [
+        {
+          "name": "status_icon",
+          "label": "",
+          "type": "icon",
+          "width": "40px",
+          "sortable": false
+        },
+        {
+          "name": "first_name",
+          "label": "Name",
+          "type": "text",
+          "width": "150px",
+          "sortable": true,
+          "searchable": true,
+          "formatter": "full_name"
+        },
+        {
+          "name": "source_id",
+          "label": "Source",
+          "type": "tag",
+          "width": "120px",
+          "sortable": true,
+          "filterable": true
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "type": "badge",
+          "width": "140px",
+          "sortable": true,
+          "status_map": {
+            "pending": { "label": "⏳ Pending Approval", "color": "yellow" },
+            "approved": { "label": "✅ Approved", "color": "green" },
+            "sent": { "label": "✅ Sent to GHL", "color": "blue" },
+            "failed": { "label": "❌ Failed - Retry", "color": "red" }
+          }
+        },
+        {
+          "name": "action",
+          "label": "Action",
+          "type": "action_button",
+          "width": "120px",
+          "sortable": false,
+          "actions_map": {
+            "pending": [
+              { "label": "Approve", "action": "approve_lead", "style": "primary" }
+            ],
+            "sent": [
+              { "label": "Resend", "action": "resend_lead", "style": "secondary" },
+              { "label": "View", "action": "view_ghl_contact", "style": "secondary" }
+            ],
+            "failed": [
+              { "label": "Retry", "action": "retry_lead", "style": "primary" }
+            ]
+          }
+        }
+      ],
+      "data_source": "filtered_leads",
+      "pagination": {
+        "page_size": 8,
+        "show_pagination": true,
+        "show_load_more": true
+      },
+      "row_click_action": "expand_lead_detail",
+      "actions": [
+        { "label": "Refresh", "action": "refresh_table", "icon": "RefreshCw" },
+        { "label": "Export to CSV", "action": "export_leads_csv", "icon": "Download" }
+      ]
+    },
+    {
+      "type": "lead_detail_card",
+      "name": "lead_detail",
+      "conditional_show": "lead_selected",
+      "title": "LEAD DETAIL",
+      "expand_source": "selected_lead_data",
+      "sections": [
+        {
+          "type": "lead_header",
+          "fields": [
+            {
+              "name": "name",
+              "format": "large_bold",
+              "sources": ["first_name", "last_name"]
+            },
+            {
+              "name": "source_id",
+              "format": "tag",
+              "source": "source_id"
+            },
+            {
+              "name": "status",
+              "format": "badge",
+              "source": "status"
+            }
+          ]
+        },
+        {
+          "type": "two_column_layout",
+          "sections": [
+            {
+              "title": "📍 LOCATION",
+              "icon": "MapPin",
+              "fields": [
+                { "label": "Address", "source": "personal_address" },
+                { "label": "City, State ZIP", "template": "{personal_city}, {personal_state} {personal_zip}" }
+              ]
+            },
+            {
+              "title": "💼 PROFESSIONAL",
+              "icon": "Briefcase",
+              "fields": [
+                { "label": "Job Title", "source": "job_title" },
+                { "label": "Company", "source": "company_name" },
+                { "label": "Industry", "source": "company_industry" },
+                { "label": "Revenue", "source": "company_revenue" },
+                { "label": "Department", "source": "department" },
+                { "label": "Seniority", "source": "seniority_level" }
+              ]
+            },
+            {
+              "title": "📞 CONTACT INTELLIGENCE",
+              "icon": "Phone",
+              "fields": [
+                {
+                  "label": "Primary Mobile",
+                  "template": "{mobile_phone}",
+                  "conditional_styling": {
+                    "when": "mobile_phone_dnc",
+                    "equals": "Y",
+                    "style": "strikethrough_red",
+                    "append": " (DNC)"
+                  }
+                },
+                {
+                  "label": "Verified Emails",
+                  "type": "tag_list",
+                  "source": "deep_verified_emails"
+                }
+              ]
+            },
+            {
+              "title": "🔗 DIGITAL PRESENCE",
+              "icon": "Link",
+              "fields": [
+                { "label": "LinkedIn", "source": "linkedin_url", "format": "link" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "security_and_source",
+          "title": "🔐 SECURITY & SOURCE",
+          "fields": [
+            { "label": "Source Domain", "source": "source_domain" },
+            {
+              "label": "Norton Status",
+              "source": "security_status",
+              "format": "badge",
+              "status_map": {
+                "verified": { "label": "✅ Verified (Safe)", "color": "green" },
+                "warning": { "label": "⚠️ Warning", "color": "yellow" },
+                "blacklisted": { "label": "❌ Blacklisted", "color": "red" }
+              }
+            },
+            {
+              "label": "Source ID",
+              "source": "source_id",
+              "description": "Auto-generated, can be edited"
+            }
+          ]
+        },
+        {
+          "type": "approval_section",
+          "title": "APPROVAL DECISION",
+          "conditional_show": "lead_status_pending",
+          "fields": [
+            {
+              "name": "source_id_edit",
+              "label": "Source ID Tag",
+              "type": "dropdown",
+              "options_source": "available_source_ids",
+              "current_value_source": "source_id",
+              "editable": true
+            },
+            {
+              "name": "approval_notes",
+              "label": "Custom Notes (optional)",
+              "type": "textarea",
+              "placeholder": "Add any notes before dispatching..."
+            }
+          ],
+          "approval_info": {
+            "type": "info_box",
+            "title": "If Approved:",
+            "items": [
+              "Contact will be created/updated in your GHL account",
+              "Tagged with: [Web-AM, incoming, revflow]",
+              "Logged in Google Sheets with timestamp",
+              "Notification email sent to your team"
+            ]
+          },
+          "approval_buttons": [
+            {
+              "label": "✅ Approve & Send",
+              "action": "approve_lead",
+              "style": "primary",
+              "size": "large"
+            },
+            {
+              "label": "Reject & Remove",
+              "action": "reject_lead",
+              "style": "secondary"
+            },
+            {
+              "label": "Save as Draft",
+              "action": "save_draft",
+              "style": "secondary"
+            }
+          ]
+        },
+        {
+          "type": "raw_data_section",
+          "title": "RAW LEAD DATA (For Debugging)",
+          "collapsible": true,
+          "content": {
+            "type": "json_viewer",
+            "data_source": "full_lead_json",
+            "collapsible_items": true,
+            "copyable": true
+          }
+        }
+      ]
+    },
+    {
+      "type": "activity_log",
+      "name": "activity_log",
+      "title": "ACTIVITY LOG (Last 24 Hours)",
+      "max_items": 8,
+      "data_source": "activity_log_entries",
+      "item_template": {
+        "timestamp": "timestamp",
+        "icon": "status_icon",
+        "status": "status",
+        "lead_name": "lead_name",
+        "action_description": "description",
+        "metadata": "metadata"
+      },
+      "example_items": [
+        {
+          "timestamp": "14:32",
+          "icon": "✅",
+          "status": "success",
+          "lead_name": "John Smith",
+          "description": "approved and dispatched to GHL",
+          "metadata": "Contact ID: con_abc123 | Tags: [Web-AM, incoming]"
+        },
+        {
+          "timestamp": "14:20",
+          "icon": "⏳",
+          "status": "pending",
+          "lead_name": "Bob Johnson",
+          "description": "waiting for GHL API response",
+          "metadata": "Request sent, retry in 30 seconds..."
+        },
+        {
+          "timestamp": "14:18",
+          "icon": "❌",
+          "status": "error",
+          "lead_name": "Sarah Williams",
+          "description": "GHL 429 (Rate limit)",
+          "metadata": "Will retry in 5 minutes [Retry Now]"
+        },
+        {
+          "timestamp": "14:15",
+          "icon": "✅",
+          "status": "success",
+          "lead_name": "Jane Doe",
+          "description": "approved and dispatched to GHL",
+          "metadata": "Contact ID: con_xyz789 | Tags: [RevIntel, intent]"
+        }
+      ],
+      "actions": [
+        { "label": "Load More Events", "action": "load_more_activity" },
+        { "label": "View Full Log", "action": "view_full_activity_log" }
+      ]
+    },
+    {
+      "type": "footer",
+      "content": {
+        "left": [
+          {
+            "label": "Last Updated",
+            "value_source": "dashboard_last_updated",
+            "format": "relative_time"
+          }
+        ],
+        "right": [
+          {
+            "label": "Support",
+            "action": "open_support_chat",
+            "style": "link"
+          }
+        ]
+      }
+    }
+  ],
+  "modals": [
+    {
+      "modal_id": "settings_modal",
+      "title": "SETTINGS - Jackson Moving",
+      "trigger_action": "open_settings",
+      "sections": [
+        {
+          "type": "form_section",
+          "title": "ACCOUNT & NOTIFICATIONS",
+          "fields": [
+            {
+              "name": "contact_email",
+              "label": "Contact Email",
+              "type": "email_input",
+              "readonly": false,
+              "value_source": "customer_email"
+            },
+            {
+              "name": "daily_report_enabled",
+              "label": "Daily Report",
+              "type": "toggle",
+              "value_source": "daily_report_enabled",
+              "sublabel": "Enabled (8:00 AM UTC)"
+            },
+            {
+              "name": "failure_alerts",
+              "label": "Alert on Failures",
+              "type": "toggle",
+              "value_source": "failure_alerts_enabled",
+              "sublabel": "Enabled"
+            },
+            {
+              "name": "slack_webhook",
+              "label": "Slack Webhook",
+              "type": "url_input",
+              "placeholder": "https://hooks.slack.com/services/...",
+              "optional": true,
+              "value_source": "slack_webhook_url"
+            }
+          ],
+          "actions": [
+            { "label": "Edit Email", "action": "edit_contact_email" },
+            { "label": "Test Report", "action": "send_test_report" },
+            { "label": "Add Slack", "action": "configure_slack" }
+          ]
+        },
+        {
+          "type": "form_section",
+          "title": "DATA & WEBHOOKS",
+          "fields": [
+            {
+              "name": "customer_id",
+              "label": "RevFlow OS Customer ID",
+              "type": "text_input",
+              "readonly": true,
+              "value_source": "customer_id",
+              "copyable": true
+            },
+            {
+              "name": "revsignal_webhook",
+              "label": "RevSignal Webhook",
+              "type": "url_input",
+              "readonly": true,
+              "value_source": "revsignal_webhook_url",
+              "copyable": true,
+              "sublabel": "Copy & configure in SimpleAudience"
+            },
+            {
+              "name": "revintell_webhook",
+              "label": "RevIntel Webhook",
+              "type": "url_input",
+              "readonly": true,
+              "value_source": "revintell_webhook_url",
+              "copyable": true,
+              "sublabel": "Copy & configure in SimpleAudience"
+            },
+            {
+              "name": "webhook_secret",
+              "label": "Webhook Secret",
+              "type": "password_input",
+              "readonly": true,
+              "value_source": "webhook_secret",
+              "copyable": true
+            }
+          ],
+          "actions": [
+            { "label": "Regenerate Secret", "action": "regenerate_webhook_secret", "confirm": true },
+            { "label": "View Log", "action": "view_webhook_log" }
+          ]
+        },
+        {
+          "type": "form_section",
+          "title": "INTEGRATION STATUS",
+          "fields": [
+            {
+              "name": "simpleaudience_status",
+              "label": "SimpleAudience API",
+              "type": "status_badge",
+              "value_source": "simpleaudience_status",
+              "status_map": {
+                "connected": "✅ Connected",
+                "error": "❌ Error",
+                "not_configured": "⭕ Not Configured"
+              }
+            },
+            {
+              "name": "ghl_status",
+              "label": "GoHighLevel OAuth",
+              "type": "status_badge",
+              "value_source": "ghl_status",
+              "status_map": {
+                "connected": "✅ Connected",
+                "error": "❌ Error",
+                "expired": "⚠️ Token Expired"
+              },
+              "expiry_source": "ghl_token_expires_at"
+            },
+            {
+              "name": "sheets_status",
+              "label": "Google Sheets",
+              "type": "status_badge",
+              "value_source": "sheets_status",
+              "status_map": {
+                "connected": "✅ Connected",
+                "error": "❌ Error"
+              }
+            }
+          ],
+          "actions": [
+            { "label": "Refresh Tokens", "action": "refresh_all_tokens" },
+            { "label": "View Integration Details", "action": "view_integration_details" }
+          ]
+        },
+        {
+          "type": "form_section",
+          "title": "TEAM & ACCESS",
+          "fields": [
+            {
+              "name": "team_members",
+              "label": "Current Users",
+              "type": "user_list",
+              "value_source": "team_members",
+              "item_template": {
+                "email": "email",
+                "role": "role",
+                "remove_action": "remove_user"
+              }
+            }
+          ],
+          "actions": [
+            { "label": "Invite Team Member", "action": "invite_user" },
+            { "label": "Manage Permissions", "action": "manage_permissions" }
+          ]
+        },
+        {
+          "type": "danger_zone",
+          "title": "DANGER ZONE",
+          "actions": [
+            { "label": "Download Full Lead History", "action": "export_all_leads", "style": "secondary" },
+            { "label": "Export Settings", "action": "export_settings", "style": "secondary" },
+            { "label": "Pause All Integrations", "action": "pause_integrations", "confirm": true, "style": "warning" },
+            { "label": "Delete All Data", "action": "delete_all_data", "confirm": true, "style": "danger", "sublabel": "⚠️ Irreversible" }
+          ]
+        }
+      ],
+      "footer_actions": [
+        { "label": "Save Settings", "action": "save_settings", "style": "primary" },
+        { "label": "Cancel", "action": "close_modal", "style": "secondary" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,367 @@
+{
+  "schema_version": "1.0",
+  "schema_type": "integration_wizard",
+  "integration_name": "AudienceLab",
+  "total_steps": 3,
+  "steps": [
+    {
+      "step": 1,
+      "title": "Configure AudienceLab Integration",
+      "subtitle": "Step 1 of 3: Webhook Setup",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "info_banner",
+          "severity": "info",
+          "icon": "📋",
+          "title": "Instructions",
+          "description": "Copy this webhook URL into AudienceLab's destination settings to start sending visitor identification data."
+        },
+        {
+          "type": "copy_field",
+          "name": "webhook_url",
+          "label": "Webhook URL",
+          "value": "http://217.15.168.106:8160/webhook/public",
+          "readonly": true,
+          "help_text": "This is your unique RevFlow webhook endpoint",
+          "copy_button": true
+        },
+        {
+          "type": "copy_field",
+          "name": "webhook_secret",
+          "label": "Webhook Secret Key",
+          "value": "00322244-c3f2-4c11-b9d3-79865ad289b9",
+          "readonly": true,
+          "help_text": "Keep this secret safe. Anyone with this key can submit leads.",
+          "copy_button": true,
+          "secondary_action": {
+            "label": "🔄 Regenerate Key",
+            "action": "regenerate_webhook_secret",
+            "confirmation": "Regenerating will invalidate the old key. Update it in AudienceLab settings."
+          }
+        },
+        {
+          "type": "info_banner",
+          "severity": "warning",
+          "icon": "⚠️",
+          "title": "Security Note",
+          "description": "Keep this webhook secret safe. Anyone with this key can submit leads to your RevFlow account. If compromised, regenerate immediately."
+        },
+        {
+          "type": "text_input",
+          "name": "audiencelab_source_id",
+          "label": "AudienceLab Source ID",
+          "placeholder": "e.g., src_abc123def456",
+          "required": true,
+          "validation": {
+            "pattern": "[a-zA-Z0-9_-]{10,}",
+            "message": "Source ID must be at least 10 characters (letters, numbers, dashes, underscores)"
+          },
+          "help_text": "Found in AudienceLab Settings > Integrations > Your App",
+          "help_link": "https://docs.audiencelab.com/integrations"
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next Step >",
+          "action": "next_step",
+          "validation": ["audiencelab_source_id"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "title": "Configure AudienceLab Integration",
+      "subtitle": "Step 2 of 3: Field Mapping",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "description",
+          "text": "Map AudienceLab data to RevFlow leads database. Unmapped fields will be dropped."
+        },
+        {
+          "type": "field_mapping_group",
+          "title": "Required Fields (must map)",
+          "required": true,
+          "mappings": [
+            {
+              "source_field": "visitor_ip_address",
+              "target_field": "source_id",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "auto",
+              "description": "Auto-assigned from webhook source"
+            },
+            {
+              "source_field": "company_name",
+              "target_field": "company_name",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "mapped",
+              "editable": false
+            },
+            {
+              "source_field": "contact_email",
+              "target_field": "email",
+              "source_type": "email",
+              "target_type": "email",
+              "status": "mapped",
+              "editable": false
+            },
+            {
+              "source_field": "contact_phone",
+              "target_field": "phone",
+              "source_type": "string",
+              "target_type": "phone",
+              "status": "mapped",
+              "transform": "normalize_phone",
+              "editable": false
+            },
+            {
+              "source_field": "contact_name",
+              "target_fields": ["first_name", "last_name"],
+              "source_type": "string",
+              "target_type": "string",
+              "status": "mapped",
+              "transform": "split_on_space",
+              "editable": false
+            },
+            {
+              "source_field": "linkedin_url",
+              "target_field": "linkedin_profile",
+              "source_type": "url",
+              "target_type": "url",
+              "status": "mapped",
+              "editable": true
+            }
+          ]
+        },
+        {
+          "type": "field_mapping_group",
+          "title": "Optional Fields (use if available)",
+          "required": false,
+          "mappings": [
+            {
+              "source_field": "company_revenue",
+              "target_field": "company_size",
+              "source_type": "enum",
+              "target_type": "enum",
+              "status": "unmapped",
+              "transform": "map_revenue_to_tier",
+              "editable": true
+            },
+            {
+              "source_field": "job_title",
+              "target_field": "contact_role",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "unmapped",
+              "editable": true
+            },
+            {
+              "source_field": "industry_detected",
+              "target_field": "industry",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "unmapped",
+              "editable": true
+            },
+            {
+              "source_field": "location_city",
+              "target_field": "city",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "unmapped",
+              "editable": true
+            },
+            {
+              "source_field": "location_state",
+              "target_field": "state",
+              "source_type": "string",
+              "target_type": "string",
+              "status": "unmapped",
+              "editable": true
+            },
+            {
+              "source_field": "visit_count",
+              "target_field": "visit_frequency",
+              "source_type": "number",
+              "target_type": "integer",
+              "status": "unmapped",
+              "editable": true
+            },
+            {
+              "source_field": "referrer_domain",
+              "target_field": "referrer_source",
+              "source_type": "url",
+              "target_type": "string",
+              "status": "unmapped",
+              "editable": true
+            }
+          ]
+        },
+        {
+          "type": "button_group",
+          "buttons": [
+            {
+              "label": "Custom Mapping",
+              "action": "open_custom_mapping",
+              "style": "secondary"
+            },
+            {
+              "label": "Help",
+              "action": "show_mapping_help",
+              "style": "secondary"
+            },
+            {
+              "label": "Validate Mapping",
+              "action": "validate_mapping",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next Step >",
+          "action": "next_step",
+          "validation": ["field_mapping"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 3,
+      "title": "Configure AudienceLab Integration",
+      "subtitle": "Step 3 of 3: Test & Activate",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "description",
+          "text": "Send a test lead to verify the integration works."
+        },
+        {
+          "type": "code_block",
+          "language": "json",
+          "title": "Test Payload",
+          "content": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Smith\",\n  \"email\": \"john.smith@acme.com\",\n  \"phone\": \"+1-555-0100\",\n  \"company_name\": \"ACME Corp\",\n  \"linkedin_profile\": \"linkedin.com/in/johnsmith\",\n  \"source_id\": \"audiencelab-test\",\n  \"customer_id\": 1\n}",
+          "editable": true,
+          "actions": [
+            {
+              "label": "Edit Payload",
+              "action": "edit_test_payload"
+            },
+            {
+              "label": "Load Sample",
+              "action": "load_sample_payload"
+            }
+          ]
+        },
+        {
+          "type": "button_group",
+          "alignment": "center",
+          "buttons": [
+            {
+              "label": "Send Test Lead",
+              "action": "send_test_lead",
+              "style": "primary",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "type": "test_result",
+          "name": "webhook_test_result",
+          "conditional": "test_executed",
+          "states": [
+            {
+              "status": "success",
+              "icon": "✅",
+              "title": "TEST PASSED",
+              "details": [
+                {
+                  "key": "Status",
+                  "value": "200 OK"
+                },
+                {
+                  "key": "Response",
+                  "value": "{\n  \"status\": \"success\",\n  \"lead_id\": 5,\n  \"message\": \"Lead 5 created\",\n  \"source\": \"audiencelab-test\"\n}"
+                },
+                {
+                  "key": "Lead Created",
+                  "value": "ID: 5 | Name: John Smith | Email: john.smith@acme.com | Company: ACME Corp | Source: audiencelab-test"
+                }
+              ],
+              "actions": [
+                {
+                  "label": "View in Database",
+                  "action": "view_test_lead_in_db"
+                },
+                {
+                  "label": "Send Another Test",
+                  "action": "send_test_lead"
+                }
+              ]
+            },
+            {
+              "status": "error",
+              "icon": "❌",
+              "title": "TEST FAILED",
+              "details": [
+                {
+                  "key": "Status",
+                  "value": "error_code"
+                },
+                {
+                  "key": "Message",
+                  "value": "error_message"
+                }
+              ],
+              "actions": [
+                {
+                  "label": "View Logs",
+                  "action": "view_error_logs"
+                },
+                {
+                  "label": "Retry Test",
+                  "action": "send_test_lead"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "info_banner",
+          "severity": "info",
+          "icon": "✅",
+          "title": "Ready to activate?",
+          "description": "When you enable this integration, AudienceLab will start sending real visitor data to your RevFlow account."
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "✅ Enable Integration",
+          "action": "enable_audiencelab_integration",
+          "confirmation": "Enable AudienceLab integration? Leads will start flowing automatically.",
+          "style": "success"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    }
+  ]
+}

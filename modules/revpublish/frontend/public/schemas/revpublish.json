@@ -1,0 +1,202 @@
+{
+  "module": {
+    "id": "revpublish",
+    "name": "RevPublish",
+    "number": 9,
+    "suite": "Lead Generation",
+    "version": "2.1.0"
+  },
+  "meta": {
+    "title": "RevPublish Dashboard",
+    "description": "WordPress Publishing Automation - Deploy content to 68 sites",
+    "icon": "upload-cloud",
+    "color": "#8B5CF6"
+  },
+  "dataSource": {
+    "endpoint": "/api/revpublish/dashboard",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevPublish API v2.1 on port 8550"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "total-sites",
+      "props": {
+        "title": "Total Sites",
+        "icon": "🌐",
+        "dataKey": "stats.totalSites",
+        "defaultValue": "68"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "connected-sites",
+      "props": {
+        "title": "Connected",
+        "icon": "✅",
+        "dataKey": "stats.connectedSites",
+        "defaultValue": "65"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "page-types",
+      "props": {
+        "title": "Page Types",
+        "icon": "📄",
+        "dataKey": "stats.pageTypes",
+        "defaultValue": "17"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "pages-today",
+      "props": {
+        "title": "Published Today",
+        "icon": "📤",
+        "dataKey": "stats.pagesToday",
+        "defaultValue": "0"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "ai-usage",
+      "props": {
+        "title": "AI Extractions Today",
+        "icon": "🤖",
+        "dataKey": "stats.aiUsageToday",
+        "defaultValue": "$0.00"
+      }
+    },
+    {
+      "type": "Form",
+      "id": "smart-deploy",
+      "position": { "span": 2 },
+      "props": {
+        "title": "Smart Deploy Content",
+        "endpoint": "/api/revpublish/deploy/smart",
+        "method": "POST",
+        "fields": [
+          {
+            "name": "content",
+            "type": "textarea",
+            "label": "Content",
+            "placeholder": "Paste your content here (text, HTML, or markdown)...",
+            "required": true,
+            "rows": 4,
+            "help": "AI will automatically extract fields for your chosen page type"
+          },
+          {
+            "name": "page_type_id",
+            "type": "select",
+            "label": "Page Type",
+            "required": true,
+            "options": [
+              { "value": "service_page", "label": "Service Page" },
+              { "value": "location_page", "label": "Location/City Page" },
+              { "value": "blog_post", "label": "Blog Post" },
+              { "value": "homepage", "label": "Homepage" },
+              { "value": "about_page", "label": "About Page" },
+              { "value": "contact_page", "label": "Contact Page" },
+              { "value": "faq_page", "label": "FAQ Page" },
+              { "value": "landing_page", "label": "Landing Page" }
+            ]
+          },
+          {
+            "name": "target_sites",
+            "type": "text",
+            "label": "Target Sites",
+            "placeholder": "all (or comma-separated site IDs)",
+            "help": "Use 'all' to deploy to all connected sites"
+          },
+          {
+            "name": "status",
+            "type": "select",
+            "label": "Publish Status",
+            "options": [
+              { "value": "draft", "label": "Draft (Review First)" },
+              { "value": "publish", "label": "Publish Immediately" }
+            ]
+          }
+        ],
+        "submitButton": "Deploy Content",
+        "resultKey": "results"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Publishing Features",
+        "items": [
+          "AI-powered field extraction",
+          "Elementor-compatible output",
+          "Google Docs/Sheets import",
+          "Conflict detection",
+          "Multi-site bulk deploy",
+          "17 page type templates"
+        ]
+      }
+    },
+    {
+      "type": "DataTable",
+      "id": "recent-sites",
+      "position": { "span": 2 },
+      "props": {
+        "title": "WordPress Sites (Recent)",
+        "dataKey": "sites",
+        "columns": [
+          { "key": "site_name", "label": "Site Name" },
+          { "key": "site_url", "label": "URL" },
+          { "key": "connection_status", "label": "Status" },
+          { "key": "last_connection_test", "label": "Last Test" }
+        ],
+        "maxRows": 8
+      }
+    },
+    {
+      "type": "LinkList",
+      "id": "quick-actions",
+      "props": {
+        "title": "Quick Actions",
+        "links": [
+          { "label": "Test All Connections", "url": "/api/revpublish/test-connections", "icon": "🔌" },
+          { "label": "View Page Types", "url": "/api/revpublish/page-types", "icon": "📋" },
+          { "label": "Google Import", "url": "/api/revpublish/google/status", "icon": "📊" },
+          { "label": "API Documentation", "url": "http://217.15.168.106:8550/docs", "icon": "📚", "external": true }
+        ]
+      }
+    },
+    {
+      "type": "Alert",
+      "id": "deploy-info",
+      "position": { "span": 3 },
+      "props": {
+        "variant": "info",
+        "title": "Smart Deployment Pipeline",
+        "message": "RevPublish uses AI extraction (Claude-3-Haiku) to automatically map content to page fields, generates Elementor-compatible HTML, scans for conflicts, and deploys to WordPress via REST API."
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8550, 3550]
+      }
+    }
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "dashboard": {
+    "id": "competitive-intelligence-dashboard",
+    "title": "RevFlow Competitive Intelligence",
+    "subtitle": "Super Admin Only - Internal Strategic Analysis",
+    "version": "1.0.0",
+    "theme": "dark",
+    "refreshInterval": 300000,
+    "sections": [
+      {
+        "id": "hero-metrics",
+        "type": "metrics-grid",
+        "columns": 4,
+        "metrics": [
+          {
+            "label": "Total Gaps",
+            "endpoint": "/api/competitive-intel/gap-analysis",
+            "dataPath": "summary.total_gaps",
+            "icon": "AlertTriangle",
+            "color": "warning",
+            "trend": {
+              "enabled": true,
+              "direction": "down",
+              "value": "-3"
+            }
+          },
+          {
+            "label": "Critical Gaps",
+            "endpoint": "/api/competitive-intel/gap-analysis",
+            "dataPath": "summary.critical",
+            "icon": "AlertOctagon",
+            "color": "danger",
+            "threshold": {
+              "warning": 1,
+              "danger": 3
+            }
+          },
+          {
+            "label": "High Priority",
+            "endpoint": "/api/competitive-intel/gap-analysis",
+            "dataPath": "summary.high",
+            "icon": "ArrowUp",
+            "color": "orange"
+          },
+          {
+            "label": "Competitive Advantages",
+            "endpoint": "/api/competitive-intel/gap-analysis",
+            "dataPath": "summary.competitive_advantages",
+            "icon": "Award",
+            "color": "success"
+          }
+        ]
+      },
+      {
+        "id": "gap-priority-chart",
+        "type": "chart",
+        "title": "Gap Analysis by Priority",
+        "chartType": "donut",
+        "endpoint": "/api/competitive-intel/gap-analysis",
+        "dataTransform": {
+          "type": "aggregate",
+          "groupBy": "priority",
+          "countField": "all_gaps"
+        },
+        "colors": {
+          "CRITICAL": "#dc2626",
+          "HIGH": "#ea580c",
+          "MEDIUM": "#eab308",
+          "LOW": "#22c55e"
+        },
+        "height": 300
+      },
+      {
+        "id": "competitive-advantages",
+        "type": "feature-list",
+        "title": "Our Competitive Advantages",
+        "subtitle": "Unique features competitors don't have",
+        "icon": "Trophy",
+        "endpoint": "/api/competitive-intel/gap-analysis",
+        "dataPath": "competitive_advantages",
+        "displayFields": [
+          {
+            "key": "feature_name",
+            "label": "Feature",
+            "primary": true
+          },
+          {
+            "key": "category",
+            "label": "Category",
+            "badge": true
+          },
+          {
+            "key": "our_completeness",
+            "label": "Completeness",
+            "type": "progress",
+            "format": "percentage"
+          }
+        ],
+        "emptyState": "No competitive advantages identified",
+        "maxItems": 10
+      },
+      {
+        "id": "high-priority-gaps",
+        "type": "table",
+        "title": "High Priority Gaps",
+        "subtitle": "Features we need to build urgently",
+        "endpoint": "/api/competitive-intel/gap-analysis",
+        "dataPath": "high_priority",
+        "columns": [
+          {
+            "key": "feature_name",
+            "header": "Feature",
+            "sortable": true,
+            "width": "40%"
+          },
+          {
+            "key": "category",
+            "header": "Category",
+            "type": "badge",
+            "sortable": true,
+            "width": "20%"
+          },
+          {
+            "key": "competitors_have_it",
+            "header": "Competitors",
+            "type": "number",
+            "align": "center",
+            "width": "20%"
+          },
+          {
+            "key": "priority",
+            "header": "Priority",
+            "type": "badge",
+            "colorMap": {
+              "CRITICAL": "red",
+              "HIGH": "orange",
+              "MEDIUM": "yellow",
+              "LOW": "green"
+            },
+            "width": "20%"
+          }
+        ],
+        "pagination": true,
+        "itemsPerPage": 10
+      },
+      {
+        "id": "competitor-matrix",
+        "type": "matrix",
+        "title": "Competitor Feature Matrix",
+        "subtitle": "Feature coverage across tracked competitors",
+        "endpoints": {
+          "competitors": "/api/competitive-intel/competitors",
+          "features": "/api/competitive-intel/features"
+        },
+        "cellType": "boolean",
+        "colorScale": {
+          "true": "#22c55e",
+          "false": "#ef4444"
+        }
+      },
+      {
+        "id": "feature-completion",
+        "type": "chart",
+        "title": "RevFlow Feature Completeness",
+        "chartType": "bar-horizontal",
+        "endpoint": "/api/competitive-intel/features",
+        "dataTransform": {
+          "type": "map",
+          "xField": "feature_name",
+          "yField": "completeness",
+          "sort": "desc"
+        },
+        "xAxis": {
+          "label": "Completeness %",
+          "format": "percentage"
+        },
+        "colors": {
+          "gradient": ["#ef4444", "#eab308", "#22c55e"]
+        },
+        "height": 400
+      },
+      {
+        "id": "category-breakdown",
+        "type": "chart",
+        "title": "Gaps by Category",
+        "chartType": "bar",
+        "endpoint": "/api/competitive-intel/gap-analysis",
+        "dataTransform": {
+          "type": "aggregate",
+          "groupBy": "category",
+          "countField": "all_gaps",
+          "filter": {
+            "we_have_it": false
+          }
+        },
+        "height": 300,
+        "showValues": true
+      },
+      {
+        "id": "rag-search",
+        "type": "search-panel",
+        "title": "RAG-Powered Intelligence Search",
+        "subtitle": "Ask questions about competitor features",
+        "endpoint": "/api/competitive-intel/query",
+        "method": "POST",
+        "placeholder": "e.g., What technical SEO features do RankMath and Yoast have?",
+        "resultDisplay": {
+          "type": "cards",
+          "fields": [
+            "feature_name",
+            "category",
+            "description",
+            "product_name"
+          ]
+        },
+        "exampleQueries": [
+          "What are the top 5 features we're missing?",
+          "Which competitors have local SEO features?",
+          "What makes RevFlow unique?",
+          "Compare schema markup implementations"
+        ]
+      },
+      {
+        "id": "competitor-cards",
+        "type": "card-grid",
+        "title": "Tracked Competitors",
+        "endpoint": "/api/competitive-intel/competitors",
+        "columns": 4,
+        "cardTemplate": {
+          "header": "{{name}}",
+          "subtitle": "{{company}}",
+          "badge": "{{product_type}}",
+          "footer": {
+            "label": "View Features",
+            "action": "navigate",
+            "target": "/competitors/{{id}}/features"
+          }
+        }
+      },
+      {
+        "id": "recent-activity",
+        "type": "timeline",
+        "title": "Recent Intelligence Updates",
+        "endpoint": "/api/competitive-intel/gap-analysis",
+        "dataPath": "all_gaps",
+        "limit": 10,
+        "sortBy": "created_at",
+        "sortOrder": "desc",
+        "itemTemplate": {
+          "title": "{{feature_name}}",
+          "description": "Priority: {{priority}} - Category: {{category}}",
+          "timestamp": "{{created_at}}",
+          "icon": "{{priority === 'CRITICAL' ? 'AlertOctagon' : 'Info'}}"
+        }
+      }
+    ],
+    "layout": {
+      "type": "grid",
+      "columns": 12,
+      "gap": 4,
+      "sectionLayout": {
+        "hero-metrics": {
+          "col": "span 12",
+          "row": "span 1"
+        },
+        "gap-priority-chart": {
+          "col": "span 4",
+          "row": "span 1"
+        },
+        "competitive-advantages": {
+          "col": "span 8",
+          "row": "span 1"
+        },
+        "high-priority-gaps": {
+          "col": "span 12",
+          "row": "span 1"
+        },
+        "competitor-matrix": {
+          "col": "span 12",
+          "row": "span 1"
+        },
+        "feature-completion": {
+          "col": "span 6",
+          "row": "span 1"
+        },
+        "category-breakdown": {
+          "col": "span 6",
+          "row": "span 1"
+        },
+        "rag-search": {
+          "col": "span 12",
+          "row": "span 1"
+        },
+        "competitor-cards": {
+          "col": "span 12",
+          "row": "span 1"
+        },
+        "recent-activity": {
+          "col": "span 12",
+          "row": "span 1"
+        }
+      }
+    },
+    "actions": {
+      "refresh": {
+        "enabled": true,
+        "label": "Refresh Data"
+      },
+      "export": {
+        "enabled": true,
+        "formats": ["json", "csv", "pdf"],
+        "label": "Export Report"
+      },
+      "settings": {
+        "enabled": true,
+        "options": [
+          "Auto-refresh",
+          "Notification alerts",
+          "Email reports"
+        ]
+      }
+    },
+    "notifications": {
+      "enabled": true,
+      "triggers": [
+        {
+          "condition": "summary.critical > 0",
+          "message": "Critical gaps detected!",
+          "severity": "high",
+          "actions": ["email", "slack"]
+        },
+        {
+          "condition": "summary.high > 5",
+          "message": "High priority gaps increasing",
+          "severity": "medium"
+        }
+      ]
+    }
+  }
+}

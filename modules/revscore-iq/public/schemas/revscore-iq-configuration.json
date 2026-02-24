@@ -1,0 +1,82 @@
+{
+  "name": "Assessment Configuration",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Assessment Configuration"
+      },
+      {
+        "type": "text",
+        "content": "Step 3 of 4: Configure assessment modules and settings",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "form",
+        "action": "/api/assessments/{assessment_id}/configure",
+        "method": "POST",
+        "fields": [
+          {
+            "type": "select",
+            "name": "assessment_mode",
+            "label": "Assessment Mode",
+            "required": true,
+            "defaultValue": "comprehensive",
+            "options": [
+              {"value": "executive", "label": "Executive Summary (5-7 pages)"},
+              {"value": "comprehensive", "label": "Comprehensive Audit (30-40 pages)"},
+              {"value": "regional", "label": "Regional Assessment (40-60 pages)"},
+              {"value": "json", "label": "JSON Export Only"}
+            ]
+          },
+          {
+            "type": "select",
+            "name": "depth_level",
+            "label": "Depth Level",
+            "defaultValue": "standard",
+            "options": [
+              {"value": "quick", "label": "Quick (Faster, less detail)"},
+              {"value": "standard", "label": "Standard (Recommended)"},
+              {"value": "deep", "label": "Deep (Slower, maximum detail)"}
+            ]
+          },
+          {
+            "type": "select",
+            "name": "ai_model",
+            "label": "AI Model",
+            "defaultValue": "auto",
+            "options": [
+              {"value": "auto", "label": "Auto (Use best model per task)"},
+              {"value": "gpt-4", "label": "GPT-4 (OpenAI)"},
+              {"value": "claude", "label": "Claude Sonnet 4.5 (Anthropic)"},
+              {"value": "gemini", "label": "Gemini Pro (Google)"}
+            ]
+          }
+        ],
+        "submitButton": {
+          "text": "Next: Review & Launch →"
+        }
+      },
+      {
+        "type": "spacer",
+        "height": "1rem"
+      },
+      {
+        "type": "link",
+        "url": "#competitors",
+        "label": "← Back: Competitors",
+        "style": {
+          "color": "#94a3b8",
+          "textDecoration": "none"
+        }
+      }
+    ]
+  }
+}
+

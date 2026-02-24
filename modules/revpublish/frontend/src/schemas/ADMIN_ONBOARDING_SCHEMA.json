@@ -1,0 +1,704 @@
+{
+  "schema_version": "1.0",
+  "schema_type": "wizard",
+  "wizard_name": "Customer Onboarding",
+  "total_steps": 5,
+  "target_audience": "admin",
+  "steps": [
+    {
+      "step": 1,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 1 of 5: Customer Information",
+      "description": "Basic setup for your new customer",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "form_section",
+          "fields": [
+            {
+              "name": "company_name",
+              "label": "Customer Name",
+              "type": "text_input",
+              "required": true,
+              "placeholder": "e.g., Jackson Moving Company",
+              "validation": {
+                "min_length": 3,
+                "max_length": 100,
+                "pattern": "^[a-zA-Z0-9\\s\\-&]+$",
+                "message": "Customer name must be 3-100 characters, letters/numbers/spaces/hyphens only"
+              },
+              "help_text": "This is how the customer appears in RevFlow OS",
+              "error_message": "Enter a valid customer name"
+            },
+            {
+              "name": "primary_website",
+              "label": "Primary Website (to monitor)",
+              "type": "url_input",
+              "required": true,
+              "placeholder": "ammovingcompany.com",
+              "validation": {
+                "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$",
+                "message": "Enter valid domain without www. prefix"
+              },
+              "help_text": "RevSignal will identify visitors from this domain",
+              "error_message": "Invalid domain format"
+            },
+            {
+              "name": "primary_industry",
+              "label": "Primary Industry",
+              "type": "dropdown",
+              "required": true,
+              "options": [
+                { "value": "moving", "label": "Moving & Relocation Services" },
+                { "value": "garage_doors", "label": "Garage Door Services" },
+                { "value": "hvac", "label": "HVAC Services" },
+                { "value": "plumbing", "label": "Plumbing Services" },
+                { "value": "roofing", "label": "Roofing Services" },
+                { "value": "electrical", "label": "Electrical Services" },
+                { "value": "cleaning", "label": "Cleaning Services" },
+                { "value": "landscaping", "label": "Landscaping Services" },
+                { "value": "other", "label": "Other (Please specify)" }
+              ],
+              "help_text": "Helps system auto-tag leads correctly",
+              "conditional_field": {
+                "when": "primary_industry",
+                "equals": "other",
+                "show_field": "industry_custom_text"
+              }
+            },
+            {
+              "name": "industry_custom_text",
+              "label": "Specify Industry",
+              "type": "text_input",
+              "required": false,
+              "placeholder": "e.g., Tree Trimming Services",
+              "conditional": true
+            },
+            {
+              "name": "contact_email",
+              "label": "Contact Email (for notifications)",
+              "type": "email_input",
+              "required": true,
+              "placeholder": "owner@jacksonmoving.com",
+              "help_text": "Daily health reports will be sent here",
+              "error_message": "Enter a valid email address"
+            },
+            {
+              "name": "service_areas",
+              "label": "Service Areas (comma-separated cities)",
+              "type": "tags_input",
+              "required": false,
+              "placeholder": "Dallas, Houston, Austin, San Antonio",
+              "help_text": "Used for territory-based routing",
+              "tag_separator": "comma"
+            }
+          ]
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next: GHL >",
+          "action": "next_step",
+          "validation": ["company_name", "primary_website", "primary_industry", "contact_email"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 2 of 5: Connect GoHighLevel Account",
+      "description": "Authorize RevFlow OS to manage leads in the customer's GHL sub-account",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "info_card",
+          "icon": "📱",
+          "title": "GoHighLevel OAuth",
+          "content": {
+            "type": "list",
+            "sections": [
+              {
+                "title": "This integration allows RevFlow OS to:",
+                "items": [
+                  { "icon": "✓", "text": "Create/update contacts in their GHL location" },
+                  { "icon": "✓", "text": "Check for duplicate contacts" },
+                  { "icon": "✓", "text": "Apply tags (e.g., 'RevSignal', 'RevIntel-AM')" },
+                  { "icon": "✓", "text": "Route leads to correct sub-account" }
+                ]
+              },
+              {
+                "title": "RevFlow OS will NOT:",
+                "items": [
+                  { "icon": "✗", "text": "Delete existing contacts" },
+                  { "icon": "✗", "text": "Access emails or calendars" },
+                  { "icon": "✗", "text": "Make charges or purchases" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "button_group",
+          "alignment": "center",
+          "buttons": [
+            {
+              "label": "🔗 Authorize with GoHighLevel",
+              "action": "initiate_ghl_oauth",
+              "style": "primary",
+              "size": "large",
+              "help_text": "You'll be redirected to GHL to select location"
+            }
+          ]
+        }
+      ],
+      "conditional_show": "not_oauth_completed",
+      "actions": {
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 2 of 5: GoHighLevel Account (Authorized)",
+      "description": "Connected account details",
+      "layout": "vertical",
+      "conditional_show": "oauth_completed",
+      "sections": [
+        {
+          "type": "success_banner",
+          "icon": "✅",
+          "title": "Authorization successful!",
+          "description": "GHL OAuth token received and stored"
+        },
+        {
+          "type": "info_card",
+          "title": "Connected Account Details",
+          "content": {
+            "type": "key_value",
+            "items": [
+              { "key": "User", "value_source": "ghl_user_name", "format": "text" },
+              { "key": "Email", "value_source": "ghl_user_email", "format": "email" },
+              { "key": "Location", "value_source": "ghl_location_name", "format": "text" },
+              { "key": "Location ID", "value_source": "ghl_location_id", "format": "code" },
+              { "key": "Current Contacts", "value_source": "ghl_contact_count", "format": "number" },
+              { "key": "Authorized Scopes", "value_source": "ghl_scopes", "format": "tags" }
+            ]
+          }
+        },
+        {
+          "type": "button_group",
+          "buttons": [
+            {
+              "label": "Change Location",
+              "action": "reinitiate_ghl_oauth",
+              "style": "secondary"
+            },
+            {
+              "label": "Disconnect & Re-authorize",
+              "action": "disconnect_ghl",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next: SimpleAudience >",
+          "action": "next_step",
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 3,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 3 of 5: Connect SimpleAudience Data Sources",
+      "description": "Configure RevSignal (Website Visitors) and RevIntel (Buyer Intent) data sources",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "form_section",
+          "fields": [
+            {
+              "name": "simpleaudience_api_key",
+              "label": "SimpleAudience API Key",
+              "type": "password_input",
+              "required": true,
+              "placeholder": "sk_live_abc123xyz789",
+              "help_text": "Get this from SimpleAudience > Settings > API Keys",
+              "external_link": "https://docs.simpleaudience.io/api-keys",
+              "external_link_text": "View documentation",
+              "validation": {
+                "min_length": 20,
+                "message": "API key should be at least 20 characters"
+              },
+              "post_validation_action": "verify_api_key",
+              "post_validation_message": "Verifying API key..."
+            }
+          ]
+        },
+        {
+          "type": "status_indicator",
+          "name": "api_key_status",
+          "conditional_show": "api_verification_complete",
+          "status_source": "api_verification_result",
+          "states": [
+            {
+              "status": "success",
+              "icon": "✅",
+              "message": "API key verified successfully"
+            },
+            {
+              "status": "error",
+              "icon": "❌",
+              "message": "Invalid API key. Check your key and try again."
+            }
+          ]
+        },
+        {
+          "type": "data_sources_grid",
+          "name": "data_sources",
+          "sources": [
+            {
+              "source_id": "revsignal",
+              "name": "RevSignal (Website Visitors)",
+              "description": "Tracks anonymous visitors to ammovingcompany.com",
+              "status": "ready",
+              "webhook_url": "http://revflowos.com/webhook/signal",
+              "enabled": true,
+              "action": "configure_revsignal"
+            },
+            {
+              "source_id": "revintell",
+              "name": "RevIntel (Buyer Intent)",
+              "description": "Pulls identified prospects from SimpleAudience",
+              "status": "ready",
+              "webhook_url": "http://revflowos.com/webhook/intel",
+              "enabled": true,
+              "action": "configure_revintell"
+            }
+          ]
+        },
+        {
+          "type": "collapsible_section",
+          "title": "Field Mapping Preview",
+          "subtitle": "SimpleAudience → RevFlow Green Fields",
+          "content": {
+            "type": "mapping_table",
+            "mappings": [
+              { "source": "visitor_ip_address", "target": "source_id (auto)", "notes": "Auto-generated" },
+              { "source": "identified_name", "target": "first_name, last_name", "notes": "Split on space" },
+              { "source": "verified_email", "target": "business_email", "notes": "Validated" },
+              { "source": "identified_company", "target": "company_name", "notes": "String" },
+              { "source": "identified_title", "target": "job_title", "notes": "String" },
+              { "source": "identified_linkedin", "target": "linkedin_url", "notes": "URL" }
+            ],
+            "action_link": "full_field_mapping"
+          }
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next: Routing Rules >",
+          "action": "next_step",
+          "validation": ["simpleaudience_api_key"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 4,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 4 of 5: Configure Lead Routing & Limits",
+      "description": "Set up how leads flow from SimpleAudience → RevFlow → GHL",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "form_section",
+          "title": "Volume Limits",
+          "fields": [
+            {
+              "name": "max_leads_per_day",
+              "label": "Max Leads Per Day",
+              "type": "number_input",
+              "required": true,
+              "default": 500,
+              "min": 10,
+              "max": 10000,
+              "step": 10,
+              "suffix": "leads/day",
+              "help_text": "Adjust based on customer subscription tier"
+            },
+            {
+              "name": "volume_limit_action",
+              "label": "When limit is reached:",
+              "type": "radio_group",
+              "required": true,
+              "options": [
+                {
+                  "value": "pause",
+                  "label": "Pause intake (recommended)",
+                  "description": "Stop accepting new leads until next day"
+                },
+                {
+                  "value": "queue",
+                  "label": "Queue excess leads for next day",
+                  "description": "Keep accepting, deliver tomorrow"
+                }
+              ],
+              "default": "pause"
+            }
+          ]
+        },
+        {
+          "type": "form_section",
+          "title": "Deduplication Strategy",
+          "fields": [
+            {
+              "name": "dedup_action",
+              "label": "When a duplicate is detected:",
+              "type": "radio_group",
+              "required": true,
+              "options": [
+                {
+                  "value": "skip",
+                  "label": "Skip entirely (don't update GHL)"
+                },
+                {
+                  "value": "update",
+                  "label": "Update existing contact with new tags",
+                  "selected": true
+                },
+                {
+                  "value": "create",
+                  "label": "Create separate contact (not recommended)"
+                }
+              ],
+              "default": "update"
+            },
+            {
+              "name": "dedup_priority",
+              "label": "Duplicate detection order:",
+              "type": "info_card",
+              "content": "1. Email (primary) → 2. Phone (secondary) → 3. RevFlow UUID (fallback)"
+            }
+          ]
+        },
+        {
+          "type": "routing_rules_builder",
+          "name": "routing_rules",
+          "title": "Routing Rules",
+          "allow_add_rules": true,
+          "default_rules": [
+            {
+              "rule_id": "default_catch_all",
+              "name": "Default (Catch-All)",
+              "description": "All leads not matched by other rules",
+              "enabled": true,
+              "conditions": [
+                {
+                  "type": "always_match",
+                  "text": "All leads not matched by other rules"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "route_to_location",
+                  "location_id": "_auto_select_first",
+                  "location_selector": true
+                },
+                {
+                  "type": "add_tags",
+                  "tags": ["incoming", "revflow"],
+                  "tag_editor": true
+                }
+              ]
+            },
+            {
+              "rule_id": "high_intent_revintell",
+              "name": "High-Intent Buyers (RevIntel)",
+              "description": "Buyer intent signals from SimpleAudience",
+              "enabled": true,
+              "conditions": [
+                {
+                  "field": "source_id",
+                  "operator": "startswith",
+                  "value": "RevIntel"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "route_to_location",
+                  "location_id": "_same_as_above"
+                },
+                {
+                  "type": "add_tags",
+                  "tags": ["buyer-intent", "high-priority"]
+                },
+                {
+                  "type": "set_priority",
+                  "priority": "high"
+                }
+              ]
+            },
+            {
+              "rule_id": "website_visitors_revsignal",
+              "name": "Website Visitors (RevSignal)",
+              "description": "Identified website visitors",
+              "enabled": true,
+              "conditions": [
+                {
+                  "field": "source_id",
+                  "operator": "startswith",
+                  "value": "Web"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "route_to_location",
+                  "location_id": "_same_as_above"
+                },
+                {
+                  "type": "add_tags",
+                  "tags": ["website-visitor", "organic"]
+                }
+              ]
+            }
+          ],
+          "available_locations_source": "ghl_locations"
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "Next: Test & Launch >",
+          "action": "next_step",
+          "validation": ["max_leads_per_day", "dedup_action", "routing_rules"],
+          "style": "primary"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    },
+    {
+      "step": 5,
+      "title": "Customer Onboarding",
+      "subtitle": "Step 5 of 5: Test & Activate Customer",
+      "description": "Send a test lead through the entire pipeline before enabling real integration",
+      "layout": "vertical",
+      "sections": [
+        {
+          "type": "test_configuration",
+          "name": "test_lead_config",
+          "title": "Test Lead Configuration",
+          "source_selector": {
+            "label": "Source",
+            "options": [
+              { "value": "revsignal", "label": "RevSignal - Website Visitor" },
+              { "value": "revintell", "label": "RevIntel - Buyer Intent" }
+            ]
+          },
+          "sample_lead": {
+            "first_name": "Test",
+            "last_name": "User",
+            "business_email": "test@testco.com",
+            "mobile_phone": "2145550100",
+            "company_name": "Test Corp",
+            "job_title": "Operations Manager",
+            "source_id": "Web-AM"
+          },
+          "actions": [
+            { "label": "Load Sample", "action": "load_sample_lead" },
+            { "label": "Edit Sample", "action": "edit_sample_lead" },
+            { "label": "Send Test Lead", "action": "send_test_lead" }
+          ]
+        },
+        {
+          "type": "test_result",
+          "name": "pipeline_test_result",
+          "conditional_show": "test_executed",
+          "states": [
+            {
+              "status": "success",
+              "icon": "✅",
+              "title": "FULL PIPELINE SUCCESS",
+              "steps": [
+                { "name": "Pydantic Validation", "status": "passed" },
+                { "name": "Security Check (Norton)", "status": "passed" },
+                { "name": "Deduplication Check", "status": "passed", "result": "New Contact" },
+                { "name": "GHL Create Contact", "status": "passed", "result": "ID: con_abc123" },
+                { "name": "Tags Applied", "status": "passed", "result": "[incoming, revflow]" },
+                { "name": "Google Sheets Logged", "status": "passed", "result": "Row added" },
+                { "name": "Notification Email", "status": "passed", "result": "Sent" }
+              ],
+              "metrics": [
+                { "label": "Processing Time", "value": "847ms" },
+                { "label": "GHL Contact ID", "value": "con_abc123" },
+                { "label": "Name", "value": "Test User" },
+                { "label": "Email", "value": "test@testco.com" },
+                { "label": "Tags", "value": "[incoming, revflow, Web-AM]" }
+              ],
+              "actions": [
+                { "label": "View in GHL", "action": "view_ghl_contact" },
+                { "label": "View in Google Sheet", "action": "view_sheet" },
+                { "label": "View Email Log", "action": "view_email_log" }
+              ]
+            },
+            {
+              "status": "error",
+              "icon": "❌",
+              "title": "TEST FAILED",
+              "error_details_source": "test_error_message",
+              "actions": [
+                { "label": "View Full Error", "action": "view_full_error" },
+                { "label": "Retry Test", "action": "send_test_lead" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "activation_checklist",
+          "name": "activation_checklist",
+          "items": [
+            {
+              "checked": true,
+              "label": "Customer details verified"
+            },
+            {
+              "checked": true,
+              "label": "GHL OAuth authenticated"
+            },
+            {
+              "checked": true,
+              "label": "SimpleAudience API connected"
+            },
+            {
+              "checked": true,
+              "label": "Routing rules configured"
+            },
+            {
+              "checked_source": "test_executed_successfully",
+              "label": "Test lead succeeded end-to-end"
+            },
+            {
+              "checked": false,
+              "label": "Admin review complete",
+              "user_confirmable": true
+            }
+          ],
+          "all_checked_message": "Ready to activate Jackson Moving?"
+        }
+      ],
+      "actions": {
+        "primary": {
+          "label": "✅ Activate & Deploy Webhooks",
+          "action": "activate_customer",
+          "confirmation": "This will enable RevFlow OS for Jackson Moving and they'll start receiving leads from SimpleAudience immediately. Continue?",
+          "validation": ["activation_checklist_all_confirmed"],
+          "style": "success"
+        },
+        "secondary": {
+          "label": "< Back",
+          "action": "back",
+          "style": "secondary"
+        }
+      }
+    }
+  ],
+  "post_activation_screen": {
+    "title": "Activation Complete! 🎉",
+    "message": "Jackson Moving Company is now live on RevFlow OS",
+    "sections": [
+      {
+        "type": "next_steps",
+        "title": "Next Steps for Admin",
+        "items": [
+          {
+            "step": 1,
+            "title": "Share Webhook URLs with Customer",
+            "description": "Copy & paste into SimpleAudience",
+            "items": [
+              {
+                "label": "RevSignal Webhook",
+                "value": "http://revflowos.com/webhook/revflow/signal",
+                "copyable": true
+              },
+              {
+                "label": "RevIntel Webhook",
+                "value": "http://revflowos.com/webhook/revflow/intent",
+                "copyable": true
+              },
+              {
+                "label": "Webhook Secret",
+                "value": "sk_live_abc123xyz789",
+                "copyable": true,
+                "regenerate": true
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "title": "Create Customer Login",
+            "description": "Customer dashboard URL",
+            "items": [
+              {
+                "label": "Customer Dashboard",
+                "value": "https://revflowos.com/customer/jackson-moving"
+              },
+              {
+                "label": "Customer Email",
+                "value": "owner@jacksonmoving.com"
+              },
+              {
+                "label": "Temporary Password",
+                "value": "[Randomly generated - send via email]"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "title": "Monitor Health",
+            "description": "Daily reports will start arriving",
+            "items": [
+              {
+                "label": "Report Email",
+                "value": "owner@jacksonmoving.com"
+              },
+              {
+                "label": "First Report",
+                "value": "Tomorrow at 8:00 AM UTC"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "actions": [
+      { "label": "View Customer", "action": "view_customer" },
+      { "label": "Send Onboarding Email", "action": "send_onboarding_email" },
+      { "label": "Back to Dashboard", "action": "back_to_admin_dashboard" }
+    ]
+  }
+}

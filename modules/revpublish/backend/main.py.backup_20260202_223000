@@ -1,0 +1,575 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routes.dashboard import router as dashboard_router
+from routes.deployment_enhanced import router as deploy_router
+from routes.v2_routes import router as v2_router
+from fastapi import UploadFile, File, Form, HTTPException
+from typing import Optional, List, Dict, Any, Tuple
+import pandas as pd
+import io
+import re
+from datetime import datetime
+import requests
+from requests.auth import HTTPBasicAuth
+import sys
+import traceback
+
+import psycopg2
+import os
+import json
+app = FastAPI(title="RevPublish API v2.1", version="2.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {
+        "app": "RevPublish™ v2.1",
+        "status": "operational",
+        "backend_port": 8550
+    }
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "revpublish"}
+
+# TOP-LEVEL routes (NO prefix doubling!)
+app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
+
+# DEPLOYMENT routes (fixed prefixes)
+app.include_router(deploy_router, tags=["deployment"])
+
+# V2 routes (AI, conflicts, OAuth)
+app.include_router(v2_router, tags=["v2.0"])
+# ═══════════════════════════════════════════════
+  # BULK IMPORT ENDPOINT
+  # ═══════════════════════════════════════════════
+
+
+# ═══════════════════════════════════════════════════════════════
+# BULK IMPORT ENDPOINT
+# ═══════════════════════════════════════════════════════════════
+
+def normalize_phone_number(phone: str) -> tuple[str, bool]:
+    if not phone or pd.isna(phone):
+        return "", False
+    original = str(phone)
+    digits = re.sub(r'\D', '', original)
+    if len(digits) == 11 and digits.startswith('1'):
+        digits = digits[1:]
+    if len(digits) != 10:
+        return original, False
+    normalized = f"{digits[0:3]}-{digits[3:6]}-{digits[6:10]}"
+    return normalized, (normalized != original)
+
+def merge_template_fields(template: str, row_data: Dict[str, Any]) -> str:
+    merged = template
+    for field_name, field_value in row_data.items():
+        field_placeholder = f"[{field_name.upper()}]"
+        if pd.isna(field_value) or field_value is None:
+            field_value = ""
+        else:
+            field_value = str(field_value)
+        merged = merged.replace(field_placeholder, field_value)
+    
+    def evaluate_condition(match):
+        condition = match.group(1)
+        content_if_true = match.group(2)
+        if '=' in condition:
+            field, expected_value = condition.split('=', 1)
+            field = field.strip()
+            expected_value = expected_value.strip()
+            actual_value = str(row_data.get(field.lower(), '')).strip().lower()
+            expected_value = expected_value.lower()
+            if actual_value == expected_value:
+                return content_if_true
+        return ""
+    
+    merged = re.sub(r'\[IF\s+([^\]]+)\](.*?)\[/IF\]', evaluate_condition, merged, flags=re.DOTALL | re.IGNORECASE)
+    merged = re.sub(r'^### (.+)$', r'<h3>\1</h3>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'^## (.+)$', r'<h2>\1</h2>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'^# (.+)$', r'<h1>\1</h1>', merged, flags=re.MULTILINE)
+    merged = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', merged)
+    return merged
+
+
+def get_wordpress_credentials(site_url: str) -> Optional[Dict[str, str]]:
+    """
+    Get WordPress credentials from database for a given site URL.
+    Returns dict with username, password, api_url or None if not found.
+    
+    Credentials should be stored in wordpress_sites table:
+    - wp_username: WordPress admin username
+    - wp_password: Application password (NOT regular password!)
+    - wp_api_url: Full REST API URL
+    """
+    try:
+        conn = psycopg2.connect(
+            host=os.getenv("POSTGRES_HOST", "localhost"),
+            port=os.getenv("POSTGRES_PORT", "5432"),
+            database=os.getenv("POSTGRES_DB", "revflow"),
+            user=os.getenv("POSTGRES_USER", "postgres"),
+            password=os.getenv("POSTGRES_PASSWORD")
+        )
+        cursor = conn.cursor()
+        
+        # Query wordpress_sites table for credentials
+        cursor.execute("""
+            SELECT wp_username, app_password, site_url 
+            FROM wordpress_sites 
+            WHERE site_url = %s
+            LIMIT 1
+        """, (site_url,))
+        
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        
+        if row:
+            clean_url = row[2].replace('https://', '').replace('http://', '')
+            return {
+                'username': row[0],
+                'password': row[1],
+                'api_url': f"https://{clean_url}/wp-json/wp/v2"
+            }
+        return None
+    except Exception as e:
+        print(f"Error getting WordPress credentials for {site_url}: {e}", file=sys.stderr, flush=True)
+        return None
+
+
+def build_elementor_page_content(row_data: Dict[str, Any]) -> str:
+    """
+    Build basic HTML content for non-Elementor fallback.
+    This is used when Elementor data is not available.
+    
+    For full Elementor integration, use build_elementor_json() instead.
+    """
+    business_name = row_data.get('business_name', 'Professional Services')
+    niche = row_data.get('niche', 'Services')
+    city = row_data.get('city', '')
+    state = row_data.get('state', '')
+    phone = row_data.get('phone', '')
+    
+    # Basic HTML content
+    html = f"""
+    <div class="service-page">
+        <h1>{business_name}</h1>
+        <h2>Professional {niche} in {city}, {state}</h2>
+        
+        <div class="contact-info">
+            <p><strong>Phone:</strong> {phone}</p>
+        </div>
+        
+        <div class="services">
+            <h3>Our Services</h3>
+            <p>We provide professional {niche.lower()} services in {city} and surrounding areas.</p>
+        </div>
+    </div>
+    """
+    
+    return html.strip()
+
+
+def build_elementor_json(row_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Build Elementor JSON structure from CSV row data.
+    
+    This creates a basic Elementor page with:
+    - Hero section with business name and niche
+    - Contact information
+    - Services section
+    - Testimonials (if available)
+    
+    Returns: Dict that will be JSON-serialized for _elementor_data meta field
+    """
+    business_name = row_data.get('business_name', 'Professional Services')
+    niche = row_data.get('niche', 'Services')
+    city = row_data.get('city', '')
+    state = row_data.get('state', '')
+    phone = row_data.get('phone', '')
+    email = row_data.get('email', '')
+    
+    # Parse pipe-delimited fields
+    services = row_data.get('services_offered', '').split('|||') if row_data.get('services_offered') else []
+    testimonials = []
+    if row_data.get('testimonial_names'):
+        names = row_data.get('testimonial_names', '').split('|||')
+        texts = row_data.get('testimonial_texts', '').split('|||')
+        ratings = row_data.get('testimonial_ratings', '').split('|||')
+        
+        for i in range(min(len(names), len(texts))):
+            testimonials.append({
+                'name': names[i] if i < len(names) else '',
+                'text': texts[i] if i < len(texts) else '',
+                'rating': ratings[i] if i < len(ratings) else '5'
+            })
+    
+    # Basic Elementor structure
+    elementor_data = [
+        {
+            "id": "hero-section",
+            "elType": "section",
+            "settings": {
+                "background_background": "gradient"
+            },
+            "elements": [
+                {
+                    "id": "hero-column",
+                    "elType": "column",
+                    "elements": [
+                        {
+                            "id": "business-name",
+                            "elType": "widget",
+                            "widgetType": "heading",
+                            "settings": {
+                                "title": business_name,
+                                "header_size": "h1"
+                            }
+                        },
+                        {
+                            "id": "tagline",
+                            "elType": "widget",
+                            "widgetType": "heading",
+                            "settings": {
+                                "title": f"Professional {niche} Services in {city}, {state}",
+                                "header_size": "h2"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+    
+    # Add services section if available
+    if services:
+        service_items = [{"text": service.strip()} for service in services if service.strip()]
+        elementor_data.append({
+            "id": "services-section",
+            "elType": "section",
+            "elements": [
+                {
+                    "id": "services-column",
+                    "elType": "column",
+                    "elements": [
+                        {
+                            "id": "services-heading",
+                            "elType": "widget",
+                            "widgetType": "heading",
+                            "settings": {
+                                "title": "Our Services",
+                                "header_size": "h2"
+                            }
+                        },
+                        {
+                            "id": "services-list",
+                            "elType": "widget",
+                            "widgetType": "icon-list",
+                            "settings": {
+                                "icon_list": service_items
+                            }
+                        }
+                    ]
+                }
+            ]
+        })
+    
+    # Add testimonials section if available
+    if testimonials:
+        elementor_data.append({
+            "id": "testimonials-section",
+            "elType": "section",
+            "elements": [
+                {
+                    "id": "testimonials-column",
+                    "elType": "column",
+                    "elements": [
+                        {
+                            "id": "testimonials-heading",
+                            "elType": "widget",
+                            "widgetType": "heading",
+                            "settings": {
+                                "title": "What Our Customers Say",
+                                "header_size": "h2"
+                            }
+                        }
+                    ] + [
+                        {
+                            "id": f"testimonial-{i}",
+                            "elType": "widget",
+                            "widgetType": "testimonial",
+                            "settings": {
+                                "testimonial_name": t['name'],
+                                "testimonial_content": t['text'],
+                                "testimonial_rating": {"size": int(t['rating'])}
+                            }
+                        } for i, t in enumerate(testimonials)
+                    ]
+                }
+            ]
+        })
+    
+    return elementor_data
+
+
+def deploy_to_wordpress(
+    site_url: str,
+    title: str,
+    content: str,
+    status: str = "draft",
+    meta_data: Optional[Dict[str, Any]] = None,
+    use_elementor: bool = True
+) -> Tuple[bool, Optional[str], Optional[int], Optional[str]]:
+    """
+    Deploy content to WordPress site with Elementor support.
+    
+    IMPROVED VERSION based on Gemini's code review:
+    - Handles Elementor metadata correctly (_elementor_data as JSON string)
+    - Better error handling (returns status instead of raising exceptions)
+    - Supports both pages and posts
+    - Network timeout protection
+    
+    Args:
+        site_url: Target WordPress site URL
+        title: Page/Post title
+        content: Page/Post content (HTML or merged template)
+        status: Post status (draft, publish, pending, private)
+        meta_data: Optional metadata dict (must include 'elementor_data' for Elementor pages)
+        use_elementor: If True, creates Elementor page; if False, creates standard post
+    
+    Returns:
+        Tuple of (success, error_message, post_id, edit_url)
+    """
+    try:
+        # Get WordPress credentials
+        creds = get_wordpress_credentials(site_url)
+        if not creds:
+            return False, f"No WordPress credentials found for {site_url}", None, None
+        
+        # Prepare API endpoint (pages for Elementor, posts for standard)
+        endpoint_type = 'pages' if use_elementor else 'posts'
+        api_url = creds['api_url'].rstrip('/') + f'/{endpoint_type}'
+        
+        # Prepare base payload
+        payload = {
+            'title': title,
+            'content': content,
+            'status': status
+        }
+        
+        # Add Elementor-specific metadata if using Elementor
+        if use_elementor and meta_data and 'elementor_data' in meta_data:
+            # CRITICAL: Elementor requires _elementor_data as JSON STRING, not dict
+            elementor_json_string = json.dumps(meta_data['elementor_data'])
+            
+            payload['meta'] = {
+                '_elementor_data': elementor_json_string,  # Must be stringified!
+                '_elementor_edit_mode': 'builder',
+                '_elementor_template_type': 'page'
+            }
+            
+            # Set Elementor template
+            payload['template'] = 'elementor_header_footer'
+        
+        # Add other metadata if provided
+        if meta_data:
+            if 'categories' in meta_data:
+                payload['categories'] = meta_data['categories']
+            if 'tags' in meta_data:
+                payload['tags'] = meta_data['tags']
+            if 'excerpt' in meta_data:
+                payload['excerpt'] = meta_data['excerpt']
+            if 'custom_meta' in meta_data:
+                if 'meta' not in payload:
+                    payload['meta'] = {}
+                payload['meta'].update(meta_data['custom_meta'])
+        
+        # Make API request with improved error handling
+        try:
+            response = requests.post(
+                api_url,
+                json=payload,
+                auth=(creds['username'], creds['password']),
+                headers={'Content-Type': 'application/json'},
+                timeout=30  # Network timeout protection
+            )
+            
+            # Handle success
+            if response.status_code in [200, 201]:
+                result = response.json()
+                post_id = result.get('id')
+                
+                # Build edit URL
+                edit_url = f"https://{site_url}/wp-admin/post.php?post={post_id}&action=edit"
+                
+                return True, None, post_id, edit_url
+            
+            # Handle various error codes
+            elif response.status_code == 401:
+                return False, f"Authentication failed for {site_url} (check credentials)", None, None
+            elif response.status_code == 403:
+                return False, f"Permission denied for {site_url} (user lacks publish capability)", None, None
+            elif response.status_code == 429:
+                return False, f"Rate limit exceeded for {site_url} (too many requests)", None, None
+            else:
+                error_msg = f"WordPress API error {response.status_code}: {response.text[:200]}"
+                return False, error_msg, None, None
+                
+        except requests.exceptions.Timeout:
+            return False, f"Connection timeout to {site_url} (30s exceeded)", None, None
+        except requests.exceptions.ConnectionError:
+            return False, f"Cannot connect to {site_url} (site unreachable)", None, None
+        except requests.exceptions.RequestException as e:
+            return False, f"Network error: {str(e)[:100]}", None, None
+            
+    except Exception as e:
+        # Catch-all for unexpected errors
+        error_detail = traceback.format_exc()
+        print(f"Unexpected error deploying to {site_url}: {error_detail}", file=sys.stderr, flush=True)
+        return False, f"Unexpected deployment error: {str(e)[:100]}", None, None
+
+
+@app.post("/api/import")
+async def bulk_import_csv_template(
+    csv_file: UploadFile = File(...),
+    template_file: UploadFile = File(None),
+    enable_smart_corrections: bool = Form(True),
+    use_llm_assistance: bool = Form(False),
+    preview_mode: bool = Form(True),
+    post_status: str = Form("draft")
+):
+    try:
+        csv_content = await csv_file.read()
+        df = pd.read_csv(io.BytesIO(csv_content))
+        # Handle CSV-only mode (no template file)
+        if template_file is None:
+            template_text = ''
+        else:
+            template_content = await template_file.read()
+            template_text = template_content.decode('utf-8')
+        
+        if 'site_url' not in df.columns:
+            raise HTTPException(status_code=400, detail="CSV must have 'site_url' column")
+        
+        results = {
+            "status": "success",
+            "timestamp": datetime.now().isoformat(),
+            "preview_mode": preview_mode,
+            "summary": {"total_rows": len(df), "successful_deployments": 0, "failed_deployments": 0, "auto_corrections": 0},
+            "corrections_summary": {"phone_normalized": 0},
+            "deployments": []
+        }
+        
+        for index, row in df.iterrows():
+            row_number = index + 1
+            row_dict = row.to_dict()
+            target_site = row_dict.get('site_url', '').strip()
+            
+            if not target_site:
+                results["deployments"].append({"row_number": row_number, "status": "error", "message": "Missing site_url"})
+                results["summary"]["failed_deployments"] += 1
+                continue
+            
+            corrections_applied = []
+            if enable_smart_corrections and 'phone' in row_dict and row_dict['phone']:
+                normalized, changed = normalize_phone_number(row_dict['phone'])
+                if changed:
+                    corrections_applied.append({"field": "phone", "from": row_dict['phone'], "to": normalized})
+                    row_dict['phone'] = normalized
+                    results["corrections_summary"]["phone_normalized"] += 1
+                    results["summary"]["auto_corrections"] += 1
+            
+            # Skip template merge if no template provided
+            if template_text:
+                merged_content = merge_template_fields(template_text, row_dict)
+            else:
+                # CSV-only mode: use row data directly
+                merged_content = str(row_dict)
+            niche = row_dict.get('niche', 'Services')
+            city = row_dict.get('city', '')
+            state = row_dict.get('state', '')
+            page_title = f"Professional {niche} Services in {city}, {state}".strip()
+            page_slug = f"{niche.lower().replace(' ', '-')}-{city.lower().replace(' ', '-')}-{state.lower()}".strip('-')
+            
+            # Build Elementor content
+            elementor_data = build_elementor_json(row_dict)
+            html_content = build_elementor_page_content(row_dict)
+            
+            # Deploy to WordPress if not in preview mode
+            wp_post_id = None
+            wp_edit_url = None
+            deployment_error = None
+            
+            if not preview_mode:
+                # Actually deploy to WordPress with Elementor support
+                success, error_msg, wp_post_id, wp_edit_url = deploy_to_wordpress(
+                    site_url=target_site,
+                    title=page_title,
+                    content=html_content,  # Fallback HTML content
+                    status=post_status,
+                    meta_data={
+                        'elementor_data': elementor_data,  # Will be JSON-stringified in function
+                        'excerpt': f"{niche} services in {city}, {state}",
+                        'custom_meta': {
+                            'business_name': row_dict.get('business_name', ''),
+                            'phone': row_dict.get('phone', ''),
+                            'email': row_dict.get('email', ''),
+                            'city': city,
+                            'state': state,
+                            'niche': niche
+                        }
+                    },
+                    use_elementor=True  # Create Elementor page
+                )
+                
+                if not success:
+                    deployment_error = error_msg
+                    results["summary"]["failed_deployments"] += 1
+                else:
+                    results["summary"]["successful_deployments"] += 1
+            else:
+                # Preview mode - just validation
+                results["summary"]["successful_deployments"] += 1
+            
+            # Build deployment result
+            deployment_result = {
+                "row_number": row_number,
+                "status": "preview" if preview_mode else ("deployed" if wp_post_id else "failed"),
+                "site_info": {
+                    "site_url": target_site,
+                    "business_name": row_dict.get('business_name', ''),
+                    "niche": niche,
+                    "city": city,
+                    "state": state
+                },
+                "page_info": {
+                    "title": page_title,
+                    "slug": page_slug,
+                    "page_url": f"https://{target_site}/{page_slug}",
+                    "wp_admin_url": wp_edit_url or f"https://{target_site}/wp-admin/post.php?post=NEW&action=edit",
+                    "post_status": post_status,
+                    "wp_post_id": wp_post_id,
+                    "uses_elementor": True
+                },
+                "merged_fields": {k.upper(): v for k, v in row_dict.items()},
+                "corrections_applied": corrections_applied,
+                "message": "Preview only" if preview_mode else ("Deployed successfully" if wp_post_id else deployment_error)
+            }
+            
+            if deployment_error:
+                deployment_result["error"] = deployment_error
+            
+            results["deployments"].append(deployment_result)
+        
+        return results
+    except Exception as e:
+        error_detail = traceback.format_exc()
+        print(f"ERROR in /api/import: {error_detail}", file=sys.stderr, flush=True)
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}")

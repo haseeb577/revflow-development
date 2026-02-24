@@ -1,0 +1,27 @@
+[Unit]
+Description=RevPublish Frontend v2.0 (Port 3550)
+After=network.target revpublish-backend.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revpublish/frontend
+Environment="NODE_ENV=development"
+ExecStart=/usr/bin/npm run dev
+StandardOutput=append:/opt/revpublish/logs/frontend.log
+StandardError=append:/opt/revpublish/logs/frontend-error.log
+TimeoutStartSec=120
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

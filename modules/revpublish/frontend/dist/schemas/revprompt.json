@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revprompt",
+    "name": "RevPrompt Unified",
+    "number": 1,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevPrompt Unified Dashboard",
+    "description": "AI-powered prompt engineering and optimization platform",
+    "icon": "sparkles",
+    "color": "#8B5CF6"
+  },
+  "dataSource": {
+    "endpoint": "/api/revprompt/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevPrompt API running on port 8700"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "prompts-generated",
+      "props": {
+        "title": "Prompts Generated",
+        "icon": "✨",
+        "dataKey": "stats.promptsGenerated",
+        "defaultValue": "12,450"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "active-templates",
+      "props": {
+        "title": "Active Templates",
+        "icon": "📄",
+        "dataKey": "stats.templates",
+        "defaultValue": "47"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "capabilities",
+      "props": {
+        "title": "Capabilities",
+        "items": [
+          "SEO content prompt generation",
+          "PPC ad copy optimization",
+          "Multi-model prompt routing",
+          "Template management",
+          "A/B testing prompts"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8700]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "open-studio",
+      "props": {
+        "label": "Open Prompt Studio",
+        "icon": "🚀",
+        "description": "Launch the prompt engineering interface"
+      }
+    }
+  ]
+}

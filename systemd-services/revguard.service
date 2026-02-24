@@ -1,0 +1,24 @@
+[Unit]
+Description=RevGuard™ - Auto-Healing & Monitoring (MODULE 18)
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/revguard
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/revguard/health-checks/nginx_config_health.py
+StandardOutput=append:/var/log/revflow/revguard.log
+StandardError=append:/var/log/revflow/revguard-error.log
+
+Restart=on-failure
+RestartSec=30s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=512M
+MemoryMax=1G
+
+[Install]
+WantedBy=multi-user.target

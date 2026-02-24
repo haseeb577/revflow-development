@@ -1,0 +1,444 @@
+import React, { useState, useEffect } from 'react'
+
+/**
+ * Enhanced JSON Render - Full RevFlow OS UI Engine
+ * Handles: Forms, Tables, File Uploads, Actions, Modals
+ */
+export default function JSONRender({ config }) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [formData, setFormData] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [submitResult, setSubmitResult] = useState(null)
+
+  useEffect(() => {
+    console.log('📦 JSONRender received config:', config?.name)
+    
+    if (config?.dataSource?.endpoint) {
+      loadData(config.dataSource.endpoint)
+    } else {
+      setLoading(false)
+    }
+  }, [config])
+
+  async function loadData(endpoint) {
+    try {
+      console.log('📥 Loading data from:', endpoint)
+      setLoading(true)
+      setError(null)
+      
+      const response = await fetch(endpoint)
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      
+      const result = await response.json()
+      console.log('✅ Data loaded:', result)
+      
+      setData(result)
+      setLoading(false)
+    } catch (err) {
+      console.error('❌ Data load error:', err)
+      setError(err.message)
+      setLoading(false)
+    }
+  }
+
+  async function handleFormSubmit(e, formConfig) {
+    e.preventDefault()
+    setSubmitting(true)
+    setSubmitResult(null)
+
+    try {
+      const form = new FormData(e.target)
+      
+      console.log('📤 Submitting form to:', formConfig.endpoint)
+      
+      const response = await fetch(formConfig.endpoint, {
+        method: formConfig.method || 'POST',
+        body: form
+      })
+
+      const result = await response.json()
+      console.log('✅ Form submitted:', result)
+      
+      setSubmitResult(result)
+      setSubmitting(false)
+    } catch (err) {
+      console.error('❌ Form submit error:', err)
+      setSubmitResult({ error: err.message })
+      setSubmitting(false)
+    }
+  }
+
+  function renderElement(element, key = 0, contextData = null) {
+    if (!element) return null
+
+    const elementData = contextData || data
+
+    console.log('🎨 Rendering element type:', element.type)
+
+    switch (element.type) {
+      case 'container':
+        console.log('📦 Rendering container with', element.children?.length, 'children')
+        return (
+          <div key={key} style={element.style || {}}>
+            {element.children?.map((child, i) => renderElement(child, i, elementData))}
+          </div>
+        )
+
+      case 'text':
+        console.log('📝 Rendering text:', element.content?.substring(0, 50))
+        if (element.dangerouslySetInnerHTML) {
+          return (
+            <div 
+              key={key} 
+              style={element.style || {}}
+              dangerouslySetInnerHTML={{ __html: element.content }}
+            />
+          )
+        }
+        return (
+          <div key={key} style={element.style || {}}>
+            {element.content}
+          </div>
+        )
+
+      case 'header':
+        const HeadingTag = `h${element.level || 2}`
+        return React.createElement(
+          HeadingTag,
+          { key, style: element.style || {} },
+          element.text
+        )
+
+      case 'form':
+        return (
+          <form
+            key={key}
+            onSubmit={(e) => handleFormSubmit(e, element)}
+            style={element.style || {}}
+          >
+            {element.title && <h3>{element.title}</h3>}
+            
+            {element.fields?.map((field, i) => (
+              <div key={i} style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#fff' }}>
+                  {field.label}
+                </label>
+                
+                {field.type === 'file' ? (
+                  <input
+                    type="file"
+                    name={field.name}
+                    accept={field.accept}
+                    required={field.required}
+                    style={{
+                      padding: '0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid #334155',
+                      background: '#1e293b',
+                      color: '#fff',
+                      width: '100%'
+                    }}
+                  />
+                ) : field.type === 'select' ? (
+                  <select
+                    name={field.name}
+                    defaultValue={field.default}
+                    required={field.required}
+                    style={{
+                      padding: '0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid #334155',
+                      background: '#1e293b',
+                      color: '#fff',
+                      width: '100%'
+                    }}
+                  >
+                    {field.options?.map((opt, j) => (
+                      <option key={j} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                ) : field.type === 'checkbox' ? (
+                  <input
+                    type="checkbox"
+                    name={field.name}
+                    defaultChecked={field.default}
+                  />
+                ) : field.type === 'textarea' ? (
+                  <textarea
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    defaultValue={field.default}
+                    rows={field.rows || 4}
+                    maxLength={field.maxLength}
+                    style={{
+                      padding: '0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid #334155',
+                      background: '#1e293b',
+                      color: '#fff',
+                      width: '100%',
+                      resize: 'vertical',
+                      fontFamily: 'inherit'
+                    }}
+                  />
+                ) : field.type === 'multiselect' ? (
+                  <select
+                    name={field.name}
+                    multiple
+                    required={field.required}
+                    style={{
+                      padding: '0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid #334155',
+                      background: '#1e293b',
+                      color: '#fff',
+                      width: '100%',
+                      minHeight: '120px'
+                    }}
+                  >
+                    {field.options?.map((opt, j) => (
+                      <option key={j} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.type || 'text'}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    defaultValue={field.default}
+                    style={{
+                      padding: '0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid #334155',
+                      background: '#1e293b',
+                      color: '#fff',
+                      width: '100%'
+                    }}
+                  />
+                )}
+                
+                {field.help && (
+                  <small style={{ color: '#94a3b8', display: 'block', marginTop: '0.25rem' }}>
+                    {field.help}
+                  </small>
+                )}
+              </div>
+            ))}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: submitting ? '#64748b' : '#3b82f6',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              {submitting ? 'Submitting...' : (element.submitText || 'Submit')}
+            </button>
+
+            {submitResult && (
+              <div style={{
+                marginTop: '1rem',
+                padding: '1rem',
+                background: submitResult.error ? '#7f1d1d' : '#064e3b',
+                border: `1px solid ${submitResult.error ? '#ef4444' : '#10b981'}`,
+                borderRadius: '4px'
+              }}>
+                {submitResult.error ? (
+                  <div>Error: {submitResult.error}</div>
+                ) : (
+                  <div>
+                    <h4>✅ Import Complete!</h4>
+                    <p>Processed: {submitResult.summary?.total_rows} rows</p>
+                    <p>Successful: {submitResult.summary?.successful_deployments}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </form>
+        )
+
+      case 'dataTable':
+        if (!elementData) return <div key={key}>No data available</div>
+
+        const tableData = elementData[element.dataPath] || []
+
+        return (
+          <div key={key} style={{ overflowX: 'auto' }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              ...element.style
+            }}>
+              <thead>
+                <tr style={{ background: '#1e293b' }}>
+                  {element.columns?.map((col, i) => (
+                    <th key={i} style={{
+                      padding: '0.75rem',
+                      textAlign: 'left',
+                      borderBottom: '2px solid #334155'
+                    }}>
+                      {col.header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.map((row, i) => (
+                  <tr key={i} style={{
+                    borderBottom: '1px solid #334155',
+                    ':hover': { background: '#1e293b' }
+                  }}>
+                    {element.columns?.map((col, j) => (
+                      <td key={j} style={{ padding: '0.75rem' }}>
+                        {row[col.field]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+
+      case 'alert':
+        const alertColors = {
+          info: { bg: '#1e3a5f', border: '#3b82f6', icon: 'ℹ️' },
+          success: { bg: '#064e3b', border: '#10b981', icon: '✅' },
+          warning: { bg: '#78350f', border: '#f59e0b', icon: '⚠️' },
+          error: { bg: '#7f1d1d', border: '#ef4444', icon: '❌' }
+        }
+        const alertStyle = alertColors[element.variant] || alertColors.info
+        return (
+          <div key={key} style={{
+            padding: '1rem',
+            background: alertStyle.bg,
+            border: `1px solid ${alertStyle.border}`,
+            borderRadius: '8px',
+            margin: '1rem 0',
+            ...element.style
+          }}>
+            {element.title && (
+              <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                {alertStyle.icon} {element.title}
+              </div>
+            )}
+            <div>{element.message || element.content}</div>
+          </div>
+        )
+
+      case 'spacer':
+        return (
+          <div key={key} style={{
+            height: element.height || '1rem',
+            ...element.style
+          }} />
+        )
+
+      case 'statsGrid':
+        return (
+          <div key={key} style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1rem',
+            ...element.style
+          }}>
+            {element.stats?.map((stat, i) => (
+              <div key={i} style={{
+                background: '#1e293b',
+                padding: '1.5rem',
+                borderRadius: '8px',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{stat.icon}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#fff' }}>{stat.value}</div>
+                <div style={{ color: '#94a3b8', fontSize: '0.875rem' }}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        )
+
+      case 'link':
+        return (
+          <a
+            key={key}
+            href={element.url}
+            target={element.external ? '_blank' : '_self'}
+            rel={element.external ? 'noopener noreferrer' : undefined}
+            download={element.download ? (element.downloadName || true) : undefined}
+            style={{
+              color: '#3b82f6',
+              textDecoration: 'underline',
+              ...element.style
+            }}
+          >
+            {element.icon && <span style={{ marginRight: '0.5rem' }}>{element.icon}</span>}
+            {element.label || element.text}
+          </a>
+        )
+
+      case 'badge':
+        const badgeColors = {
+          success: { bg: '#064e3b', text: '#10b981' },
+          warning: { bg: '#78350f', text: '#f59e0b' },
+          error: { bg: '#7f1d1d', text: '#ef4444' },
+          info: { bg: '#1e3a5f', text: '#3b82f6' },
+          default: { bg: '#334155', text: '#94a3b8' }
+        }
+        const badgeStyle = badgeColors[element.variant] || badgeColors.default
+        return (
+          <span key={key} style={{
+            display: 'inline-block',
+            padding: '0.25rem 0.75rem',
+            background: badgeStyle.bg,
+            color: badgeStyle.text,
+            borderRadius: '9999px',
+            fontSize: '0.75rem',
+            fontWeight: '600',
+            ...element.style
+          }}>
+            {element.text || element.content}
+          </span>
+        )
+
+      default:
+        console.warn('⚠️  Unknown element type:', element.type)
+        return (
+          <div key={key} style={{ 
+            padding: '1rem', 
+            background: '#7f1d1d', 
+            color: '#fff',
+            borderRadius: '4px',
+            margin: '1rem 0'
+          }}>
+            Unknown element type: {element.type}
+          </div>
+        )
+    }
+  }
+
+  if (!config || !config.layout) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+        No schema configuration provided
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ padding: '2rem' }}>
+      {loading && <div>Loading data...</div>}
+      {error && <div style={{ color: '#ef4444' }}>Error: {error}</div>}
+      {renderElement(config.layout)}
+    </div>
+  )
+}

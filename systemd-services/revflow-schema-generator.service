@@ -1,0 +1,26 @@
+[Unit]
+Description=RevFlow Schema Markup Generator Service
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-pipeline/microservices/schema-generator
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+ExecStart=/usr/bin/python3 /opt/revflow-pipeline/microservices/schema-generator/app.py
+StandardOutput=append:/opt/revflow-pipeline/microservices/schema-generator/schema.log
+StandardError=append:/opt/revflow-pipeline/microservices/schema-generator/schema.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

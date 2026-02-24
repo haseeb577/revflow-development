@@ -1,0 +1,87 @@
+{
+  "module": {
+    "id": "revcore",
+    "name": "RevCore",
+    "number": 17,
+    "suite": "Tech Efficiency",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevCore Dashboard",
+    "description": "Core infrastructure and shared API services",
+    "icon": "server",
+    "color": "#64748B"
+  },
+  "dataSource": {
+    "endpoint": "/api/revcore/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "Core services on ports 8766, 9000"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "api-calls",
+      "props": {
+        "title": "API Calls (24h)",
+        "icon": "📡",
+        "dataKey": "stats.apiCalls",
+        "defaultValue": "1.2M"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "uptime",
+      "props": {
+        "title": "Uptime",
+        "icon": "✅",
+        "dataKey": "stats.uptime",
+        "defaultValue": "99.97%"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "sub-modules",
+      "props": {
+        "title": "Core Sub-Modules",
+        "items": [
+          "17a: RevAudit v6.0 Enhanced",
+          "17b: RevFlow Data Import Engine",
+          "17c: RevShield Pro (Security)",
+          "17d: RevFlow Platform",
+          "17e: RevFlow MinIO",
+          "17f: RevGuard"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8766, 9000]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "system-status",
+      "props": {
+        "label": "System Status",
+        "icon": "🔧",
+        "description": "View detailed infrastructure status"
+      }
+    }
+  ]
+}

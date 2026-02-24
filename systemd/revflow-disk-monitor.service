@@ -1,0 +1,9 @@
+[Unit]
+Description=RevFlow Disk Space Monitor
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/revflow-os/scripts/disk-space-monitor.sh
+StandardOutput=journal
+StandardError=journal

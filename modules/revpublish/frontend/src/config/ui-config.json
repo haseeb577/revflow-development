@@ -1,0 +1,174 @@
+{
+  "app": {
+    "title": "RevPublish™",
+    "version": "2.0.0",
+    "theme": {
+      "primary": "#667eea",
+      "secondary": "#764ba2",
+      "gradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+    }
+  },
+  "views": {
+    "sites": {
+      "id": "sites",
+      "title": "WordPress Sites",
+      "layout": [
+        {
+          "type": "container",
+          "children": [
+            {
+              "type": "text",
+              "tag": "h2",
+              "content": "Configured WordPress Sites",
+              "style": { "marginBottom": "20px" }
+            },
+            {
+              "type": "button",
+              "label": "+ Add Site",
+              "action": "show_add_form",
+              "style": { "float": "right", "marginTop": "-50px" }
+            },
+            {
+              "type": "form",
+              "id": "add_site_form",
+              "submitAction": "configure_site",
+              "submitLabel": "Configure Site",
+              "defaultValues": {},
+              "fields": [
+                {
+                  "type": "input",
+                  "name": "site_id",
+                  "label": "Site ID (Nickname)",
+                  "description": "A short unique name to identify this site (e.g., 'client-blog' or 'main-site'). This is for your reference only.",
+                  "placeholder": "e.g., my-client-site",
+                  "inputType": "text"
+                },
+                {
+                  "type": "input",
+                  "name": "site_url",
+                  "label": "WordPress Site URL",
+                  "description": "The full URL of the WordPress site where content will be published. Include https://",
+                  "placeholder": "https://example.com",
+                  "inputType": "url"
+                },
+                {
+                  "type": "input",
+                  "name": "username",
+                  "label": "WordPress Admin Username",
+                  "description": "Your WordPress login username (must have permission to create posts)",
+                  "placeholder": "admin",
+                  "inputType": "text"
+                },
+                {
+                  "type": "input",
+                  "name": "app_password",
+                  "label": "Application Password",
+                  "description": "Generate this in WordPress: Users → Your Profile → Application Passwords. NOT your regular login password!",
+                  "placeholder": "abcd 1234 efgh 5678",
+                  "inputType": "password"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "dataSource": "configured_sites",
+              "emptyMessage": "No sites configured. Add your first WordPress site to get started.",
+              "columns": [
+                { "key": "site_id", "label": "Site ID" },
+                { "key": "site_url", "label": "URL" },
+                { "key": "status", "label": "Status" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "deploy": {
+      "id": "deploy",
+      "title": "Deploy Content",
+      "layout": [
+        {
+          "type": "container",
+          "children": [
+            {
+              "type": "text",
+              "tag": "h2",
+              "content": "Deploy Content to WordPress",
+              "style": { "marginBottom": "20px" }
+            },
+            {
+              "type": "form",
+              "id": "deploy_form",
+              "submitAction": "deploy_content",
+              "submitLabel": "Deploy to WordPress",
+              "fields": [
+                {
+                  "type": "input",
+                  "name": "title",
+                  "label": "Post Title",
+                  "description": "The title that will appear on the WordPress post",
+                  "placeholder": "My Amazing Article",
+                  "inputType": "text"
+                },
+                {
+                  "type": "textarea",
+                  "name": "content_html",
+                  "label": "Content (HTML)",
+                  "description": "Paste your HTML content here. It will be converted to Elementor format automatically.",
+                  "placeholder": "<h2>Introduction</h2>\n<p>Your content goes here...</p>",
+                  "rows": 12
+                },
+                {
+                  "type": "input",
+                  "name": "excerpt",
+                  "label": "Excerpt / Summary",
+                  "description": "A short summary shown in post listings and search results (optional)",
+                  "placeholder": "Brief description of this article...",
+                  "inputType": "text"
+                },
+                {
+                  "type": "select",
+                  "name": "status",
+                  "label": "Publish Status",
+                  "description": "Draft = save without publishing. Publish = make live immediately.",
+                  "options": [
+                    { "value": "draft", "label": "Draft (review first)" },
+                    { "value": "publish", "label": "Publish (go live now)" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "history": {
+      "id": "history",
+      "title": "Deployment History",
+      "layout": [
+        {
+          "type": "container",
+          "children": [
+            {
+              "type": "text",
+              "tag": "h2",
+              "content": "Deployment History",
+              "style": { "marginBottom": "20px" }
+            },
+            {
+              "type": "table",
+              "dataSource": "deployment_history",
+              "emptyMessage": "No deployments yet. Deploy your first content to see history here.",
+              "columns": [
+                { "key": "title", "label": "Title" },
+                { "key": "site_id", "label": "Site" },
+                { "key": "status", "label": "Status" },
+                { "key": "timestamp", "label": "Time" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

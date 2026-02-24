@@ -1,0 +1,27 @@
+[Unit]
+Description=RevRank Engine™ API - The Content Factory
+After=network.target
+Documentation=https://docs.revflowos.com/revrank-engine
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revrank_engine/backend
+Environment="PATH=/opt/revrank_engine/backend/venv/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn main_enhanced:app --host 0.0.0.0 --port 8000
+StandardOutput=append:/var/log/revrank-engine.log
+StandardError=append:/var/log/revrank-engine.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

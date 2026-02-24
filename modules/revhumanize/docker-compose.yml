@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  humanization-pipeline:
+    build: .
+    container_name: revflow-humanization-pipeline
+    ports:
+      - "8003:8000"
+    environment:
+      - DATABASE_URL=postgresql://rr_automation:ebx9CMvWRHuAt8AfbuQECT3e@172.17.0.1:5432/api_engine_db
+      - CELERY_BROKER_URL=redis://revflow-redis:6379/0
+    volumes:
+      - /opt/shared-api-engine/.env:/app/.env:ro
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  celery-worker:
+    build: .
+    container_name: revflow-celery-worker
+    command: celery -A app.celery_app.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://rr_automation:ebx9CMvWRHuAt8AfbuQECT3e@172.17.0.1:5432/api_engine_db
+      - CELERY_BROKER_URL=redis://revflow-redis:6379/0
+    volumes:
+      - /opt/shared-api-engine/.env:/app/.env:ro
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  celery-flower:
+    build: .
+    container_name: revflow-flower
+    command: celery -A app.celery_app.celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://revflow-redis:6379/0
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: revflow-redis
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: revflow-nginx
+    restart: unless-stopped

@@ -1,0 +1,25 @@
+[Unit]
+Description=MODULE 16: RevMetrics™ API
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revmetrics-api
+EnvironmentFile=/opt/shared-api-engine/.env
+Environment="PATH=/opt/revmetrics-api/venv/bin:/usr/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 8220
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

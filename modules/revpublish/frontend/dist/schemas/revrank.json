@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revrank",
+    "name": "RevRank Engine",
+    "number": 3,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevRank Engine Dashboard",
+    "description": "Advanced ranking and schema generation system",
+    "icon": "trending-up",
+    "color": "#F59E0B"
+  },
+  "dataSource": {
+    "endpoint": "/api/revrank/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevRank distributed services"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "schemas-generated",
+      "props": {
+        "title": "Schemas Generated",
+        "icon": "🔧",
+        "dataKey": "stats.schemasGenerated",
+        "defaultValue": "3,240"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "ranking-jobs",
+      "props": {
+        "title": "Ranking Jobs",
+        "icon": "📊",
+        "dataKey": "stats.rankingJobs",
+        "defaultValue": "156"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "capabilities",
+      "props": {
+        "title": "Engine Capabilities",
+        "items": [
+          "Schema markup generation",
+          "SERP position tracking",
+          "Competitor analysis",
+          "Ranking factor modeling",
+          "Local SEO optimization"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8103, 8201, 8220, 8299, 8600, 8800]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "generate-schema",
+      "props": {
+        "label": "Generate Schema",
+        "icon": "⚡",
+        "description": "Create structured data markup"
+      }
+    }
+  ]
+}

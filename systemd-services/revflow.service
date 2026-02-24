@@ -1,0 +1,21 @@
+[Unit]
+Description=RevFlow Assessment API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-assessment
+Environment="PATH=/opt/revflow-assessment/venv/bin"
+ExecStart=/opt/revflow-assessment/venv/bin/gunicorn \
+    --bind 0.0.0.0:8200 \
+    --workers 2 \
+    --timeout 300 \
+    --access-logfile /var/log/revflow/access.log \
+    --error-logfile /var/log/revflow/error.log \
+    revflow_app:app
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,27 @@
+[Unit]
+Description=RevFlow MinIO Object Storage
+Documentation=https://docs.min.io
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/opt/revflow-competitive-intel/config/minio.env
+ExecStart=/usr/local/bin/minio server $MINIO_VOLUMES --address :9010 --console-address :9011
+StandardOutput=append:/var/log/revflow-competitive-intel/minio.log
+StandardError=append:/var/log/revflow-competitive-intel/minio-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

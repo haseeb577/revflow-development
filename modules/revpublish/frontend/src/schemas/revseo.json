@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revseo",
+    "name": "RevSEO Intelligence",
+    "number": 4,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevSEO Intelligence Dashboard",
+    "description": "AI-powered SEO analysis and recommendations",
+    "icon": "search",
+    "color": "#3B82F6"
+  },
+  "dataSource": {
+    "endpoint": "/api/revseo/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevSEO with ChromaDB vector search"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "keywords-tracked",
+      "props": {
+        "title": "Keywords Tracked",
+        "icon": "🔍",
+        "dataKey": "stats.keywordsTracked",
+        "defaultValue": "15,780"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "pages-analyzed",
+      "props": {
+        "title": "Pages Analyzed",
+        "icon": "📄",
+        "dataKey": "stats.pagesAnalyzed",
+        "defaultValue": "4,320"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Intelligence Features",
+        "items": [
+          "Keyword opportunity detection",
+          "Content gap analysis",
+          "RAG-powered recommendations",
+          "Competitor keyword tracking",
+          "SERP feature optimization"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8300, 8765, 8766, 8770]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "analyze",
+      "props": {
+        "label": "Run Analysis",
+        "icon": "🔬",
+        "description": "Start SEO intelligence scan"
+      }
+    }
+  ]
+}

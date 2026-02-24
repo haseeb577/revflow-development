@@ -1,0 +1,330 @@
+{
+  "schema_version": "1.0",
+  "schema_type": "dashboard",
+  "dashboard_name": "Integration Monitoring",
+  "refresh_interval_seconds": 30,
+  "sections": [
+    {
+      "type": "header",
+      "title": "Integration Monitoring Dashboard",
+      "subtitle": "Real-time status and activity logs",
+      "actions": [
+        {
+          "label": "Refresh",
+          "action": "refresh_dashboard",
+          "icon": "🔄"
+        },
+        {
+          "label": "Settings",
+          "action": "open_settings",
+          "icon": "⚙️"
+        }
+      ]
+    },
+    {
+      "type": "integration_card",
+      "integration_name": "AudienceLab",
+      "icon": "🔗",
+      "status": "connected",
+      "sections": [
+        {
+          "type": "status_indicator",
+          "status": "connected",
+          "label": "Status",
+          "last_sync_label": "Last Sync",
+          "last_sync_source": "audiencelab_last_sync_time"
+        },
+        {
+          "type": "stats_grid",
+          "stats": [
+            {
+              "label": "Leads Last 24h",
+              "value_source": "audiencelab_leads_24h",
+              "format": "number"
+            },
+            {
+              "label": "Success Rate",
+              "value_source": "audiencelab_success_rate",
+              "format": "percentage"
+            },
+            {
+              "label": "Uptime",
+              "value_source": "audiencelab_uptime",
+              "format": "percentage"
+            }
+          ]
+        },
+        {
+          "type": "activity_feed",
+          "title": "Recent Activity",
+          "max_items": 5,
+          "source": "audiencelab_activity_log",
+          "item_template": {
+            "timestamp": "timestamp",
+            "status_icon": "status_icon",
+            "status": "status",
+            "description": "description",
+            "action_link": "action"
+          },
+          "example_items": [
+            {
+              "timestamp": "2026-01-19 14:32",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1247 created (John Smith, ACME Corp)",
+              "action": "view_lead"
+            },
+            {
+              "timestamp": "2026-01-19 14:31",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1246 created (Jane Doe, Tech Solutions)",
+              "action": "view_lead"
+            },
+            {
+              "timestamp": "2026-01-19 14:28",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1245 created (ACME Corp, Expansion Team)",
+              "action": "view_lead"
+            },
+            {
+              "timestamp": "2026-01-19 14:20",
+              "status_icon": "⚠️",
+              "status": "warning",
+              "description": "Lead 1244 - Missing email address",
+              "action": "view_error"
+            },
+            {
+              "timestamp": "2026-01-19 14:18",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1243 created (Global Industries)",
+              "action": "view_lead"
+            }
+          ]
+        },
+        {
+          "type": "button_group",
+          "buttons": [
+            {
+              "label": "Configure",
+              "action": "configure_audiencelab",
+              "style": "secondary"
+            },
+            {
+              "label": "Test Webhook",
+              "action": "test_audiencelab_webhook",
+              "style": "secondary"
+            },
+            {
+              "label": "View Logs",
+              "action": "view_audiencelab_logs",
+              "style": "secondary"
+            },
+            {
+              "label": "Troubleshoot",
+              "action": "audiencelab_troubleshoot",
+              "style": "secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "integration_card",
+      "integration_name": "GoHighLevel (GHL)",
+      "icon": "📱",
+      "status": "connected",
+      "sections": [
+        {
+          "type": "status_indicator",
+          "status": "connected",
+          "label": "Status",
+          "last_sync_label": "Last Route",
+          "last_sync_source": "ghl_last_route_time"
+        },
+        {
+          "type": "stats_grid",
+          "stats": [
+            {
+              "label": "Leads Last 24h",
+              "value_source": "ghl_leads_24h",
+              "format": "number"
+            },
+            {
+              "label": "Success Rate",
+              "value_source": "ghl_success_rate",
+              "format": "percentage"
+            },
+            {
+              "label": "Uptime",
+              "value_source": "ghl_uptime",
+              "format": "percentage"
+            }
+          ]
+        },
+        {
+          "type": "collapsible_section",
+          "title": "Active Routing Rules",
+          "subtitle": "3 rules configured",
+          "content": {
+            "type": "rule_list",
+            "rules": [
+              {
+                "name": "Default - All Leads",
+                "description": "Routes to Sales Team - Location 2",
+                "enabled": true,
+                "arrow": "→"
+              },
+              {
+                "name": "High-Value B2B",
+                "description": "Routes to Enterprise Sales (company_size >= 50)",
+                "enabled": true,
+                "arrow": "→"
+              },
+              {
+                "name": "Support Escalations",
+                "description": "Routes to Support Team (tag contains 'escalation')",
+                "enabled": true,
+                "arrow": "→"
+              }
+            ]
+          }
+        },
+        {
+          "type": "activity_feed",
+          "title": "Recent Activity",
+          "max_items": 4,
+          "source": "ghl_activity_log",
+          "item_template": {
+            "timestamp": "timestamp",
+            "status_icon": "status_icon",
+            "status": "status",
+            "description": "description",
+            "action_link": "action"
+          },
+          "example_items": [
+            {
+              "timestamp": "2026-01-19 14:29",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1247 routed to Sales Team - Location 2",
+              "action": "view_routing_details"
+            },
+            {
+              "timestamp": "2026-01-19 14:27",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1246 routed to Sales Team - Location 2",
+              "action": "view_routing_details"
+            },
+            {
+              "timestamp": "2026-01-19 14:23",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1245 routed to Enterprise Sales (High-Value B2B rule)",
+              "action": "view_routing_details"
+            },
+            {
+              "timestamp": "2026-01-19 14:18",
+              "status_icon": "✓",
+              "status": "success",
+              "description": "Lead 1243 routed to Sales Team - Location 2",
+              "action": "view_routing_details"
+            }
+          ]
+        },
+        {
+          "type": "button_group",
+          "buttons": [
+            {
+              "label": "Configure",
+              "action": "configure_ghl",
+              "style": "secondary"
+            },
+            {
+              "label": "Test Route",
+              "action": "test_ghl_routing",
+              "style": "secondary"
+            },
+            {
+              "label": "View Logs",
+              "action": "view_ghl_logs",
+              "style": "secondary"
+            },
+            {
+              "label": "Edit Rules",
+              "action": "edit_ghl_rules",
+              "style": "secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "error_log_card",
+      "title": "Error Log (Last 7 Days)",
+      "icon": "⚠️",
+      "max_items": 10,
+      "sections": [
+        {
+          "type": "error_item",
+          "timestamp": "2026-01-19 14:20",
+          "severity": "warning",
+          "integration": "AudienceLab",
+          "error_type": "Missing Required Field",
+          "details": {
+            "lead": "John Smith",
+            "company": "ACME",
+            "field": "Email",
+            "message": "Email field required but not provided"
+          },
+          "action": "view_details",
+          "resolution": "Lead created with empty email field"
+        },
+        {
+          "type": "error_item",
+          "timestamp": "2026-01-19 13:45",
+          "severity": "info",
+          "integration": "GHL",
+          "error_type": "Slow Response",
+          "details": {
+            "lead_id": 1240,
+            "duration_ms": 3200,
+            "threshold_ms": 3000,
+            "message": "GHL API response took 3.2 seconds (threshold: 3s)"
+          },
+          "action": "view_details",
+          "resolution": "Request completed successfully after delay"
+        }
+      ],
+      "actions": [
+        {
+          "label": "View Full Error Log",
+          "action": "view_full_error_log",
+          "style": "secondary"
+        }
+      ]
+    },
+    {
+      "type": "footer",
+      "content": {
+        "type": "grid",
+        "columns": 2,
+        "items": [
+          {
+            "label": "Last Updated",
+            "value_source": "dashboard_last_updated",
+            "format": "relative_time"
+          },
+          {
+            "label": "Support",
+            "value": "[Contact Support]",
+            "action": "open_support"
+          }
+        ]
+      }
+    }
+  ]
+}

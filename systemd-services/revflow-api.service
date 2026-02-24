@@ -1,0 +1,22 @@
+[Unit]
+Description=RevFlow API (Gunicorn)
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+User=root
+WorkingDirectory=/opt/smarketsherpa/revflow
+ExecStart=/usr/local/bin/gunicorn --bind 127.0.0.1:5000 --workers 2 --threads 4 app:app
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,47 @@
+"""R&R Integration API Routes"""
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from typing import List, Dict, Optional
+import logging
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter()
+
+class ValidationRequest(BaseModel):
+    content: str
+    page_type: str
+    site_id: str
+
+class ValidationResponse(BaseModel):
+    passed: bool
+    score: int
+    failed_rules: List[Dict] = []
+    warnings: List[Dict] = []
+    suggestions: List[str] = []
+    metadata: Dict = {}
+
+@router.post("/validate", response_model=ValidationResponse)
+async def validate_content(request: ValidationRequest):
+    """Validate R&R generated content against Knowledge Graph rules"""
+    try:
+        logger.info(f"Validating content for site {request.site_id}, page type {request.page_type}")
+        
+        # Placeholder validation logic
+        score = 85
+        passed = score >= 70
+        
+        return ValidationResponse(
+            passed=passed,
+            score=score,
+            failed_rules=[],
+            warnings=[],
+            suggestions=["Content looks good!" if passed else "Improve content quality"],
+            metadata={
+                "word_count": len(request.content.split()),
+                "validation_time_ms": 50
+            }
+        )
+    except Exception as e:
+        logger.error(f"Validation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

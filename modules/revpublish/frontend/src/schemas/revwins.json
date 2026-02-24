@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revwins",
+    "name": "RevWins",
+    "number": 7,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevWins Dashboard",
+    "description": "Quick wins identification and opportunity engine",
+    "icon": "zap",
+    "color": "#F97316"
+  },
+  "dataSource": {
+    "endpoint": "/api/revwins/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevWins API on port 8150"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "wins-identified",
+      "props": {
+        "title": "Wins Identified",
+        "icon": "🏆",
+        "dataKey": "stats.winsIdentified",
+        "defaultValue": "1,847"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "implemented",
+      "props": {
+        "title": "Implemented",
+        "icon": "✅",
+        "dataKey": "stats.implemented",
+        "defaultValue": "892"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "win-types",
+      "props": {
+        "title": "Win Categories",
+        "items": [
+          "Low-hanging SEO fruit",
+          "Quick content fixes",
+          "Technical optimizations",
+          "Schema opportunities",
+          "Speed improvements"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8150]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "find-wins",
+      "props": {
+        "label": "Find Quick Wins",
+        "icon": "🎯",
+        "description": "Scan for optimization opportunities"
+      }
+    }
+  ]
+}

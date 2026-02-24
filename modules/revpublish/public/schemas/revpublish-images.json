@@ -1,0 +1,158 @@
+{
+  "name": "RevPublish Images",
+  "version": "1.0.0",
+  "dataSource": {
+    "endpoint": "/api/revpublish/images?per_page=100"
+  },
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem",
+      "maxWidth": "1600px",
+      "margin": "0 auto"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "🖼️ Image Management",
+        "style": {
+          "marginBottom": "1rem",
+          "color": "#fff"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Upload, manage, and organize images for your WordPress content. Supports AI generation, bulk import, and optimization.",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem",
+          "lineHeight": "1.6"
+        }
+      },
+      {
+        "type": "statsGrid",
+        "stats": [
+          {"icon": "📸", "value": "0", "label": "Total Images"},
+          {"icon": "✅", "value": "0", "label": "Optimized"},
+          {"icon": "🔄", "value": "0", "label": "Pending"},
+          {"icon": "💾", "value": "0MB", "label": "Storage Used"}
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Image Browser",
+        "style": {
+          "marginBottom": "1rem",
+          "color": "#fff"
+        }
+      },
+      {
+        "type": "imageUploadBrowser",
+        "title": "Image Library",
+        "description": "Upload, generate, or import images for your content",
+        "apiBase": "/api/revpublish",
+        "revimageUrl": "/api/revimage",
+        "style": {
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Quick Actions",
+        "style": {
+          "marginBottom": "1rem",
+          "color": "#fff"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "display": "grid",
+          "gridTemplateColumns": "repeat(auto-fit, minmax(200px, 1fr))",
+          "gap": "1rem",
+          "marginTop": "1rem"
+        },
+        "children": [
+          {
+            "type": "link",
+            "url": "#",
+            "label": "AI Generate",
+            "icon": "🎨",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "textAlign": "center"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#",
+            "label": "Bulk Upload",
+            "icon": "📤",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "textAlign": "center"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#",
+            "label": "Import from URL",
+            "icon": "🔗",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "textAlign": "center"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#",
+            "label": "Optimize All",
+            "icon": "⚡",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none",
+              "textAlign": "center"
+            }
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "alert",
+        "variant": "info",
+        "title": "Image Management",
+        "message": "Upload images directly or use AI generation. Images are automatically optimized and stored for use across all your WordPress sites."
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: root-traefik-1
+    restart: unless-stopped
+
+    networks:
+      - traefik_net
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    command:
+      # File provider (use /dynamic inside container)
+      - --providers.file.directory=/dynamic
+      - --providers.file.watch=true
+
+      # EntryPoints
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+
+      # ACME (Let's Encrypt) via HTTP-01 on web entrypoint
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.email=admin@smarketsherpa.ai
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+
+      # Enable built-in dashboard (we'll secure via file provider)
+      - --api.dashboard=true
+
+      # Logging
+      - --log.level=INFO
+      - --accesslog=true
+      - --accesslog.format=json
+
+    volumes:
+      # Needed only if you plan to route dockerized backends by labels; harmless otherwise
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+      # Dynamic config directory on host -> /dynamic inside container (READ-WRITE)
+      - /root/traefik/dynamic:/dynamic:rw
+
+      # ACME cert storage
+      - /root/traefik/letsencrypt:/letsencrypt
+
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 80 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+networks:
+  traefik_net:
+    driver: bridge

@@ -1,0 +1,23 @@
+[Unit]
+Description=RevAudit v5.0 Backend
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revaudit-complete/backend
+ExecStart=/opt/revflow-os/shared-venv/bin/python revaudit_v5.py
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

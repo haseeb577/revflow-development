@@ -1,0 +1,27 @@
+[Unit]
+Description=RevFlow GHL Integration Service
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=revflow
+WorkingDirectory=/opt/revflow-lead-engine/backend/ghl_integration
+Environment="PYTHONPATH=/opt/revflow-lead-engine/backend/.."
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/usr/bin/python3 main.py
+StandardOutput=append:/opt/revflow-lead-engine/logs/ghl.log
+StandardError=append:/opt/revflow-lead-engine/logs/ghl-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

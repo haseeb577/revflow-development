@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "Complete page type configuration - ALL 11 page types included",
+    "last_updated": "2026-02-02",
+    "page_types_included": 11,
+    "notes": "Change widget types, add sections, reorder - all without touching Python code"
+  },
+  
+  "service_page": {
+    "description": "Individual service offering pages (e.g., Spring Replacement, AC Repair)",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "hero_image_carousel", "condition": "if_exists:hero_slides", "order": 2},
+      {"template": "services_list", "condition": "if_exists:services_items", "order": 3},
+      {"template": "testimonial_grid", "condition": "if_exists:testimonial_slides", "order": 4},
+      {"template": "trust_badges", "condition": "if_exists:trust_logos", "order": 5},
+      {"template": "contact_cta", "condition": "always", "order": 6}
+    ]
+  },
+  
+  "location_page": {
+    "description": "City/area landing pages (e.g., Dallas Garage Door in Richardson)",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "map_section", "condition": "always", "order": 2},
+      {"template": "neighborhoods_list", "condition": "if_exists:neighborhoods_items", "order": 3},
+      {"template": "services_list", "condition": "if_exists:services_items", "order": 4},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 5},
+      {"template": "contact_cta", "condition": "always", "order": 6}
+    ]
+  },
+  
+  "homepage": {
+    "description": "Main site homepage",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "hero_image_carousel", "condition": "if_exists:hero_slides", "order": 2},
+      {"template": "services_grid", "condition": "if_exists:services_grid_items", "order": 3},
+      {"template": "about_content", "condition": "always", "order": 4},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 5},
+      {"template": "trust_badges", "condition": "if_exists:trust_logos", "order": 6},
+      {"template": "contact_cta", "condition": "always", "order": 7}
+    ]
+  },
+  
+  "emergency_page": {
+    "description": "24/7 emergency service pages",
+    "color_scheme_override": "urgent",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "emergency_availability", "condition": "always", "order": 2},
+      {"template": "services_list", "condition": "if_exists:services_items", "order": 3},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 4},
+      {"template": "contact_cta", "condition": "always", "order": 5}
+    ]
+  },
+  
+  "about_page": {
+    "description": "Company about/history page",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "about_content", "condition": "always", "order": 2},
+      {"template": "team_grid", "condition": "if_exists:team_members", "order": 3},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 4},
+      {"template": "trust_badges", "condition": "if_exists:trust_logos", "order": 5},
+      {"template": "contact_cta", "condition": "always", "order": 6}
+    ]
+  },
+  
+  "contact_page": {
+    "description": "Contact information and form",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "contact_info_grid", "condition": "always", "order": 2},
+      {"template": "map_section", "condition": "always", "order": 3},
+      {"template": "contact_form", "condition": "always", "order": 4}
+    ]
+  },
+  
+  "faq_page": {
+    "description": "Frequently asked questions",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "faq_accordion", "condition": "if_exists:faq_items", "order": 2},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 3},
+      {"template": "contact_cta", "condition": "always", "order": 4}
+    ]
+  },
+  
+  "reviews_page": {
+    "description": "Customer reviews/testimonials page",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "testimonial_grid", "condition": "if_exists:testimonial_slides", "order": 2, "notes": "Reviews page uses GRID instead of carousel"},
+      {"template": "trust_badges", "condition": "if_exists:trust_logos", "order": 3},
+      {"template": "contact_cta", "condition": "always", "order": 4}
+    ]
+  },
+  
+  "portfolio_page": {
+    "description": "Project gallery/portfolio (before/after photos)",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "portfolio_gallery", "condition": "if_exists:portfolio_images", "order": 2},
+      {"template": "testimonial_carousel", "condition": "if_exists:testimonial_slides", "order": 3},
+      {"template": "services_list", "condition": "if_exists:services_items", "order": 4},
+      {"template": "contact_cta", "condition": "always", "order": 5}
+    ]
+  },
+  
+  "blog_post": {
+    "description": "Blog article/post",
+    "sections": [
+      {"template": "blog_header", "condition": "always", "order": 1},
+      {"template": "blog_content", "condition": "always", "order": 2},
+      {"template": "related_posts", "condition": "if_exists:related_posts", "order": 3},
+      {"template": "contact_cta", "condition": "always", "order": 4}
+    ]
+  },
+  
+  "team_page": {
+    "description": "Team member bios and photos",
+    "sections": [
+      {"template": "hero_standard", "condition": "always", "order": 1},
+      {"template": "team_grid", "condition": "if_exists:team_members", "order": 2},
+      {"template": "about_content", "condition": "if_exists:about_text", "order": 3},
+      {"template": "contact_cta", "condition": "always", "order": 4}
+    ]
+  },
+  
+  "_condition_reference": {
+    "always": "Section always included",
+    "if_exists:field_name": "Include only if context has 'field_name'",
+    "if_not_empty:field_name": "Include only if field has non-empty value",
+    "if_any:field1,field2": "Include if any of the fields exist",
+    "if_all:field1,field2": "Include if all of the fields exist"
+  },
+  
+  "_template_reference": {
+    "hero_standard": "Standard hero with H1, subheading, CTA button",
+    "hero_image_carousel": "Hero image slider/carousel",
+    "testimonial_carousel": "Sliding testimonial carousel (3 columns)",
+    "testimonial_grid": "Grid of testimonials (for reviews page)",
+    "services_list": "Icon list of services",
+    "services_grid": "Grid layout of services (for homepage)",
+    "trust_badges": "Logo carousel of certifications",
+    "map_section": "Google Maps embed",
+    "neighborhoods_list": "Icon list of neighborhoods served",
+    "contact_cta": "Final call-to-action section",
+    "about_content": "About us text content",
+    "emergency_availability": "24/7 emergency service badge",
+    "team_grid": "Grid of team members with photos",
+    "contact_form": "Contact form widget",
+    "contact_info_grid": "Contact info (phone, email, hours)",
+    "faq_accordion": "FAQ accordion widget",
+    "portfolio_gallery": "Project image gallery",
+    "blog_header": "Blog post header with title and meta",
+    "blog_content": "Blog post content (long-form text)",
+    "related_posts": "Related blog posts grid"
+  },
+  
+  "_page_type_summary": {
+    "total_page_types": 11,
+    "list": [
+      "service_page - Individual service offerings",
+      "location_page - City/area landing pages",
+      "homepage - Main site page",
+      "emergency_page - 24/7 urgent service",
+      "about_page - Company information",
+      "contact_page - Contact form and info",
+      "faq_page - Frequently asked questions",
+      "reviews_page - Customer testimonials",
+      "portfolio_page - Project gallery",
+      "blog_post - Blog articles",
+      "team_page - Staff bios"
+    ]
+  }
+}

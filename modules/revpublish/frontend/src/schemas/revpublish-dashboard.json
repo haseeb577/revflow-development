@@ -1,0 +1,137 @@
+{
+  "name": "RevPublish Dashboard",
+  "version": "2.0.0",
+  "dataSource": {
+    "endpoint": "/api/sites?per_page=100"
+  },
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "RevPublish Dashboard"
+      },
+      {
+        "type": "text",
+        "content": "WordPress Publishing Automation Platform",
+        "style": {"color": "#94a3b8", "marginBottom": "2rem"}
+      },
+      {
+        "type": "statsGrid",
+        "dataSource": {
+          "endpoint": "/api/sites?per_page=100"
+        },
+        "cards": [
+          {
+            "icon": "🌐",
+            "dataKey": "total",
+            "label": "Total Sites",
+            "color": "#3b82f6"
+          },
+          {
+            "icon": "✅",
+            "dataKey": "total",
+            "label": "Configured",
+            "color": "#22c55e"
+          },
+          {
+            "icon": "📄",
+            "dataKey": "total",
+            "label": "Page Types",
+            "color": "#8b5cf6"
+          },
+          {
+            "icon": "📤",
+            "value": "0",
+            "label": "Queued",
+            "color": "#f59e0b"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "header",
+        "level": 2,
+        "text": "Quick Actions"
+      },
+      {
+        "type": "container",
+        "style": {
+          "display": "grid",
+          "gridTemplateColumns": "repeat(auto-fit, minmax(200px, 1fr))",
+          "gap": "1rem",
+          "marginTop": "1rem"
+        },
+        "children": [
+          {
+            "type": "link",
+            "url": "#deploy",
+            "label": "Deploy Content",
+            "icon": "🚀",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#import",
+            "label": "Bulk Import",
+            "icon": "📥",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none"
+            }
+          },
+          {
+            "type": "link",
+            "url": "#sites",
+            "label": "View Sites",
+            "icon": "🌐",
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none"
+            }
+          },
+          {
+            "type": "link",
+            "url": "http://217.15.168.106:8550/docs",
+            "label": "API Docs",
+            "icon": "📚",
+            "external": true,
+            "style": {
+              "display": "block",
+              "padding": "1rem",
+              "background": "#1e293b",
+              "borderRadius": "8px",
+              "textDecoration": "none"
+            }
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "height": "2rem"
+      },
+      {
+        "type": "alert",
+        "variant": "info",
+        "title": "System Status",
+        "message": "Backend API running on port 8550. Frontend on port 3550. All services operational."
+      }
+    ]
+  }
+}

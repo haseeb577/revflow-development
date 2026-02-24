@@ -1,0 +1,32 @@
+[Unit]
+Description=RevFlow RAG API Service
+Documentation=https://revflow.os
+After=network.target postgresql.service revseo-chromadb.service
+Wants=postgresql.service revseo-chromadb.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revseo-intelligence
+Environment="PATH=/opt/revseo-intelligence/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/bin/python33 /root/DEPLOY_RAG_PRODUCTION_20260128_084000.py
+StandardOutput=append:/var/log/revflow-rag-api.log
+StandardError=append:/var/log/revflow-rag-api-error.log
+
+# Resource limits
+LimitNOFILE=65536
+MemoryLimit=2G
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

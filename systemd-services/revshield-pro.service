@@ -1,0 +1,40 @@
+[Unit]
+Description=RevShield Pro - Security & Reputation Monitor
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revflow-security-monitor
+Environment="PATH=/usr/bin:/usr/local/bin"
+EnvironmentFile=/opt/shared-api-engine/.env
+
+# Kill any orphaned processes before starting
+ExecStartPre=/bin/bash -c 'pkill -9 -f "python3.*/opt/revflow-security-monitor" || true'
+ExecStartPre=/bin/sleep 1
+
+# Start the service
+ExecStart=/usr/bin/python3 /opt/revflow-security-monitor/api/main.py
+
+# Process management
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=10
+
+# Logging
+StandardOutput=append:/var/log/revshield-pro.log
+StandardError=append:/var/log/revshield-pro-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

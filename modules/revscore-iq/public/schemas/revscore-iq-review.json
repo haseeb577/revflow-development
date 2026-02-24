@@ -1,0 +1,76 @@
+{
+  "name": "Review & Launch",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "Review & Launch Assessment"
+      },
+      {
+        "type": "text",
+        "content": "Step 4 of 4: Review your assessment configuration and launch",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "2rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "Assessment Summary"
+          },
+          {
+            "type": "text",
+            "content": "Review your assessment details before launching...",
+            "style": {
+              "color": "#94a3b8",
+              "marginTop": "1rem"
+            }
+          }
+        ]
+      },
+      {
+        "type": "form",
+        "action": "/api/assessments/{assessment_id}/launch",
+        "method": "POST",
+        "fields": [
+          {
+            "type": "checkbox",
+            "name": "accept_terms",
+            "label": "I confirm the information is accurate and authorize this assessment",
+            "required": true
+          }
+        ],
+        "submitButton": {
+          "text": "🚀 Launch Assessment"
+        }
+      },
+      {
+        "type": "spacer",
+        "height": "1rem"
+      },
+      {
+        "type": "link",
+        "url": "#configuration",
+        "label": "← Back: Configuration",
+        "style": {
+          "color": "#94a3b8",
+          "textDecoration": "none"
+        }
+      }
+    ]
+  }
+}
+

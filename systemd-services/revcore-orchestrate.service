@@ -1,0 +1,29 @@
+[Unit]
+Description=RevFlow OS™ | RevCore™ Sub-Module: RevOrchestrate™ (Agentic Handoff & HITL)
+After=network.target postgresql.service
+Wants=network-online.target
+PartOf=revcore-governance.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revcore-governance/orchestrate/backend
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revcore/backend/app/venv-revcore-orchestrate/bin/python -m uvicorn main:app --host 0.0.0.0 --port 9300 --log-level info
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=revcore-orchestrate
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

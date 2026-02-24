@@ -1,0 +1,23 @@
+[Unit]
+Description=RevAudit Frontend Dashboard
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revaudit-complete/frontend
+ExecStart=/usr/bin/python3 -m http.server 3100
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,48 @@
+{
+  "name": "Appendices Library",
+  "version": "2.0.0",
+  "layout": {
+    "type": "container",
+    "children": [
+      {
+        "type": "header",
+        "level": 1,
+        "text": "RevScore IQ™ Appendices & Playbooks"
+      },
+      {
+        "type": "text",
+        "content": "Access 32 comprehensive appendices covering every aspect of digital presence optimization",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem"
+        }
+      },
+      {
+        "type": "dataTable",
+        "dataSource": {
+          "endpoint": "/api/appendices",
+          "dataPath": "appendices"
+        },
+        "columns": [
+          {
+            "key": "letter",
+            "label": "Appendix"
+          },
+          {
+            "key": "title",
+            "label": "Title"
+          },
+          {
+            "key": "category",
+            "label": "Category"
+          },
+          {
+            "key": "page_count",
+            "label": "Pages"
+          }
+        ]
+      }
+    ]
+  }
+}
+

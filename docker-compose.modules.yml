@@ -1,0 +1,451 @@
+# RevFlow OS™ - Full Containerization
+# One container per module with correct paths
+
+# Common healthcheck using PORT environment variable (python3 - curl not in image)
+x-healthcheck: &default-healthcheck
+  test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:'+str($$PORT)+'/health', timeout=5)\" || exit 1"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s
+
+x-common: &common
+  image: revflow/python-unified:latest
+  restart: unless-stopped
+  env_file:
+    - /opt/shared-api-engine/.env
+  environment:
+    - POSTGRES_HOST=revflow-postgres-docker
+    - POSTGRES_PORT=5432
+    - POSTGRES_USER=revflow
+    - POSTGRES_PASSWORD=revflow2026
+    - POSTGRES_DB=revflow
+    - DB_HOST=revflow-postgres-docker
+    - DATABASE_URL=postgresql://revflow:revflow2026@revflow-postgres-docker:5432/revflow
+  networks:
+    - revflow-network
+  healthcheck:
+    <<: *default-healthcheck
+
+services:
+  # ==========================================================================
+  # INFRASTRUCTURE
+  # ==========================================================================
+
+  postgres:
+    image: postgres:15
+    container_name: revflow-postgres-docker
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: revflow
+      POSTGRES_USER: revflow
+      POSTGRES_PASSWORD: revflow2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - revflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U revflow -d revflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: revflow-redis-docker
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - revflow-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: revflow-chromadb-docker
+    restart: unless-stopped
+    ports:
+      - "8771:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    networks:
+      - revflow-network
+
+  # ==========================================================================
+  # Module 1: RevPrompt Unified™
+  # ==========================================================================
+  revprompt:
+    <<: *common
+    container_name: revflow-module01-revprompt
+    working_dir: /app
+    volumes:
+      - /opt/revprompt-unified:/app:ro
+    ports:
+      - "8700:8700"
+    environment:
+      - PORT=8700
+      - MODULE_NUMBER=1
+      - POSTGRES_HOST=172.18.0.1
+    command: uvicorn api:app --host 0.0.0.0 --port 8700
+
+  # ==========================================================================
+  # Module 2: RevScore IQ™
+  # ==========================================================================
+  revscore:
+    <<: *common
+    container_name: revflow-module02-revscore
+    working_dir: /app
+    volumes:
+      - /opt/revflow-modules/MODULE_2_RevScore_IQ:/app:ro
+    ports:
+      - "8100:8100"
+    environment:
+      - PORT=8100
+      - MODULE_NUMBER=2
+      - PYTHONPATH=/opt/shared-api-engine
+    command: uvicorn score_service:app --host 0.0.0.0 --port 8100
+
+  # ==========================================================================
+  # Module 3: RevRank Engine™
+  # ==========================================================================
+  revrank:
+    <<: *common
+    container_name: revflow-module03-revrank
+    working_dir: /app
+    volumes:
+      - /opt/revrank_engine/backend:/app:ro
+    ports:
+      - "8104:8104"
+    environment:
+      - PORT=8104
+      - MODULE_NUMBER=3
+    command: uvicorn main_enhanced:app --host 0.0.0.0 --port 8104
+
+  # ==========================================================================
+  # Module 4: RevSEO Intelligence™ (Guru Intelligence)
+  # ==========================================================================
+  revseo:
+    <<: *common
+    container_name: revflow-module04-revseo
+    working_dir: /app/src
+    volumes:
+      - /opt/guru-intelligence:/app
+      - /opt/guru-intelligence/logs:/opt/guru-intelligence/logs
+    ports:
+      - "8765:8765"
+    environment:
+      - PORT=8765
+      - MODULE_NUMBER=4
+    command: sh -c "pip install --quiet anthropic youtube-transcript-api feedparser tweepy pytrends beautifulsoup4 lxml apscheduler && uvicorn main:app --host 0.0.0.0 --port 8765"
+
+  # ==========================================================================
+  # Module 5: RevCite Pro™
+  # ==========================================================================
+  revcite:
+    image: revflow/python-unified:latest
+    container_name: revflow-module05-revcite
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - /opt/revflow-citations:/app:ro
+    ports:
+      - "8900:8900"
+    env_file:
+      - /opt/shared-api-engine/.env
+    environment:
+      - PORT=8900
+      - MODULE_NUMBER=5
+      - POSTGRES_HOST=172.18.0.1
+    networks:
+      - revflow-network
+    healthcheck:
+      <<: *default-healthcheck
+    command: sh -c "pip install --quiet playwright && uvicorn citation_builder_api:app --host 0.0.0.0 --port 8900"
+
+  # ==========================================================================
+  # Module 6: RevHumanize™
+  # ==========================================================================
+  revhumanize:
+    <<: *common
+    container_name: revflow-module06-revhumanize
+    working_dir: /app
+    volumes:
+      - /opt/revflow-humanization-pipeline:/app:ro
+    ports:
+      - "8620:8620"
+    environment:
+      - PORT=8620
+      - MODULE_NUMBER=6
+    command: sh -c "pip install --quiet 'passlib[bcrypt]' alembic PyJWT 'celery[redis]' flower 'python-jose[cryptography]' && uvicorn app.main:app --host 0.0.0.0 --port 8620"
+
+  # ==========================================================================
+  # Module 7: RevWins™ (FastAPI)
+  # ==========================================================================
+  revwins:
+    <<: *common
+    container_name: revflow-module07-revwins
+    working_dir: /app
+    volumes:
+      - /opt/quick-wins-api:/app:ro
+    ports:
+      - "8150:8150"
+    environment:
+      - PORT=8150
+      - MODULE_NUMBER=7
+    command: uvicorn main:app --host 0.0.0.0 --port 8150
+
+  # ==========================================================================
+  # Module 8: RevImage Engine™
+  # ==========================================================================
+  revimage:
+    <<: *common
+    container_name: revflow-module08-revimage
+    working_dir: /app
+    volumes:
+      - /opt/revflow-os/modules/revimage/backend:/app:ro
+    ports:
+      - "8610:8610"
+    environment:
+      - PORT=8610
+      - MODULE_NUMBER=8
+      - POSTGRES_HOST=172.18.0.1
+    command: uvicorn main:app --host 0.0.0.0 --port 8610
+
+  # ==========================================================================
+  # Module 9: RevPublish™
+  # ==========================================================================
+  revpublish:
+    <<: *common
+    container_name: revflow-module09-revpublish
+    working_dir: /app
+    volumes:
+      - /opt/revflow-os/modules/revpublish/backend:/app:ro
+    ports:
+      - "8550:8550"
+    environment:
+      - PORT=8550
+      - MODULE_NUMBER=9
+    command: uvicorn main:app --host 0.0.0.0 --port 8550
+
+  # ==========================================================================
+  # Module 10: RevMetrics™
+  # ==========================================================================
+  revmetrics:
+    <<: *common
+    container_name: revflow-module10-revmetrics
+    working_dir: /app
+    volumes:
+      - /opt/revflow-os/modules/revmetrics:/app:ro
+    ports:
+      - "8402:8402"
+    environment:
+      - PORT=8402
+      - MODULE_NUMBER=10
+    command: uvicorn main:app --host 0.0.0.0 --port 8402
+
+  # ==========================================================================
+  # Module 11: RevSignal SDK™
+  # ==========================================================================
+  revsignal:
+    <<: *common
+    container_name: revflow-module11-revsignal
+    working_dir: /app
+    volumes:
+      - /opt/revflow-os/modules/revsignal/api:/app:ro
+    ports:
+      - "8012:8012"
+    environment:
+      - PORT=8012
+      - MODULE_NUMBER=11
+    command: uvicorn main:app --host 0.0.0.0 --port 8012
+
+  # ==========================================================================
+  # Module 12: RevIntel™
+  # ==========================================================================
+  revintel:
+    <<: *common
+    container_name: revflow-module12-revintel
+    working_dir: /app
+    volumes:
+      - /opt/revflow_enrichment_service:/app:ro
+    ports:
+      - "8011:8011"
+    environment:
+      - PORT=8011
+      - MODULE_NUMBER=12
+    command: uvicorn main:app --host 0.0.0.0 --port 8011
+
+  # ==========================================================================
+  # Module 13: RevFlow Dispatch™
+  # ==========================================================================
+  revdispatch:
+    <<: *common
+    container_name: revflow-module13-revdispatch
+    working_dir: /app
+    volumes:
+      - /opt/revdispatch-real:/app:ro
+    ports:
+      - "8501:8501"
+    environment:
+      - PORT=8501
+      - MODULE_NUMBER=13
+    command: uvicorn main:app --host 0.0.0.0 --port 8501
+
+  # ==========================================================================
+  # Module 14: RevVest IQ™
+  # ==========================================================================
+  revvest:
+    <<: *common
+    container_name: revflow-module14-revvest
+    working_dir: /app
+    volumes:
+      - /opt/revvest-iq:/app:ro
+    ports:
+      - "8140:8140"
+    environment:
+      - PORT=8140
+      - MODULE_NUMBER=14
+    command: uvicorn main:app --host 0.0.0.0 --port 8140
+
+  # ==========================================================================
+  # Module 15: RevSPY™
+  # ==========================================================================
+  revspy:
+    <<: *common
+    container_name: revflow-module15-revspy
+    working_dir: /app
+    volumes:
+      - /opt/revflow-blind-spot-research:/app:ro
+    ports:
+      - "8160:8160"
+    environment:
+      - PORT=8160
+      - MODULE_NUMBER=15
+    command: uvicorn api:app --host 0.0.0.0 --port 8160
+
+  # ==========================================================================
+  # Module 16: RevSpend IQ™
+  # ==========================================================================
+  revspend:
+    <<: *common
+    container_name: revflow-module16-revspend
+    working_dir: /app
+    volumes:
+      - /opt/revflow-os/modules/revspend/api:/app:ro
+    ports:
+      - "8016:8016"
+    environment:
+      - PORT=8016
+      - MODULE_NUMBER=16
+    command: uvicorn main:app --host 0.0.0.0 --port 8016
+
+  # ==========================================================================
+  # Module 17: RevCore™ (API Gateway)
+  # ==========================================================================
+  revcore:
+    <<: *common
+    container_name: revflow-module17-revcore
+    working_dir: /app
+    volumes:
+      - /opt/revcore/api:/app:ro
+    ports:
+      - "9000:9000"
+    environment:
+      - PORT=9000
+      - MODULE_NUMBER=17
+    command: uvicorn main:app --host 0.0.0.0 --port 9000
+
+  # ==========================================================================
+  # Module 18: RevAssist™
+  # ==========================================================================
+  revassist:
+    <<: *common
+    container_name: revflow-module18-revassist
+    working_dir: /app
+    volumes:
+      - /var/www/revhome_assessment_engine_v2:/app:ro
+    ports:
+      - "8105:8105"
+    environment:
+      - PORT=8105
+      - MODULE_NUMBER=18
+    command: uvicorn revhome_api:app --host 0.0.0.0 --port 8105
+
+  # ==========================================================================
+  # Module 19: RevLocalGrid™ (SerpBear SERP Tracking)
+  # Uses DataForSEO via bridge at 172.18.0.1:8171
+  # ==========================================================================
+  revlocalgrid:
+    image: towfiqi/serpbear:latest
+    container_name: revflow-module19-revlocalgrid
+    restart: unless-stopped
+    volumes:
+      - /opt/revlocalgrid/data:/app/data
+    ports:
+      - "3002:3000"
+    env_file:
+      - /opt/revlocalgrid/.env
+    environment:
+      - MODULE_NUMBER=19
+    extra_hosts:
+      - "google.serper.dev:172.18.0.1"
+    networks:
+      - revflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ==========================================================================
+  # RevCore Gateway - Shared API Engine (Bridge)
+  # Unified API broker for DataForSEO, Claude, Gemini, Perplexity
+  # ==========================================================================
+  revcore-gateway:
+    image: revflow/python-unified:latest
+    container_name: revcore-gateway
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - /opt/revflow-revenue-aligned-scoring-system/python/shared-api-engine:/app:ro
+    ports:
+      - "8015:8015"
+    env_file:
+      - /opt/shared-api-engine/.env
+    environment:
+      - PORT=8015
+      - POSTGRES_HOST=revflow-postgres-docker
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=revflow
+      - POSTGRES_PASSWORD=revflow2026
+      - POSTGRES_DB=revflow
+      - DB_HOST=revflow-postgres-docker
+      - DATABASE_URL=postgresql://revflow:revflow2026@revflow-postgres-docker:5432/revflow
+    networks:
+      - revflow-network
+    depends_on:
+      - postgres
+      - redis
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:8015/health', timeout=5)\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    command: sh -c "pip install --quiet Flask flask-cors google-generativeai gunicorn anthropic requests && gunicorn -w 2 -b 0.0.0.0:8015 app:app --timeout 300 --pid /tmp/gunicorn.pid --worker-tmp-dir /tmp --control-socket /tmp/gunicorn.ctl"
+
+networks:
+  revflow-network:
+    external: true
+    name: revflow-network
+
+volumes:
+  postgres_data:
+  chromadb_data:

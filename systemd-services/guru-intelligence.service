@@ -1,0 +1,19 @@
+[Unit]
+Description=Guru Intelligence Platform
+After=network.target docker.service
+
+[Service]
+StartLimitIntervalSec=300
+StartLimitBurst=5
+EnvironmentFile=/opt/shared-api-engine/.env
+Type=simple
+User=root
+WorkingDirectory=/opt/guru-intelligence
+Environment="PATH=/opt/guru-intelligence/venv/bin"
+ExecStart=/opt/revflow-os/shared-venv/bin/python /opt/guru-intelligence/src/main.py
+Restart=always
+RestartSec=10
+Environment=ANTHROPIC_API_KEY=<use EnvironmentFile or set in .env - do not commit>
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revcite",
+    "name": "RevCite Pro",
+    "number": 5,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevCite Pro Dashboard",
+    "description": "AI citation and source management system",
+    "icon": "book-open",
+    "color": "#EC4899"
+  },
+  "dataSource": {
+    "endpoint": "/api/revcite/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevCite cluster with vector DB"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "citations-generated",
+      "props": {
+        "title": "Citations Generated",
+        "icon": "📚",
+        "dataKey": "stats.citationsGenerated",
+        "defaultValue": "28,450"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "sources-indexed",
+      "props": {
+        "title": "Sources Indexed",
+        "icon": "🗄️",
+        "dataKey": "stats.sourcesIndexed",
+        "defaultValue": "156,000"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Citation Features",
+        "items": [
+          "Automatic source discovery",
+          "Citation format generation",
+          "Authority scoring",
+          "Link building opportunities",
+          "Source verification"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8900, 8901, 8902, 8903]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "find-citations",
+      "props": {
+        "label": "Find Citations",
+        "icon": "🔗",
+        "description": "Discover authoritative sources"
+      }
+    }
+  ]
+}

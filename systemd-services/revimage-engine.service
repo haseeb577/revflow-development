@@ -1,0 +1,25 @@
+[Unit]
+Description=RevImage Engine API (Port 8610)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/revimage-engine
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python revimage_core_engine_2026_01_06.py
+StandardOutput=append:/var/log/revflow/revimage-engine.log
+StandardError=append:/var/log/revflow/revimage-engine-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

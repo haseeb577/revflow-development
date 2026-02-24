@@ -1,0 +1,43 @@
+---
+# HOMEPAGE TEMPLATE (BONUS)
+# Auto-generates comprehensive homepage layout
+# Use this for main site homepage
+
+site_url: [SITE_URL]
+page_type_id: homepage
+color_scheme: professional
+
+field_data:
+  business_name: [BUSINESS_NAME]
+  niche: [NICHE]
+  city: [CITY]
+  state: [STATE]
+  tagline: [TAGLINE]
+  phone: [PHONE]
+  email: [EMAIL]
+  hours: [HOURS]
+  services: [SERVICES]
+  about: [ABOUT]
+  years_experience: [YEARS_EXPERIENCE]
+  license_number: [LICENSE_NUMBER]
+  insurance_info: [INSURANCE_INFO]
+  certifications: [CERTIFICATIONS]
+  service_areas: [SERVICE_AREAS]
+  emergency_available: [EMERGENCY_AVAILABLE]
+  payment_methods: [PAYMENT_METHODS]
+  warranties: [WARRANTIES]
+  service_guarantee: [SERVICE_GUARANTEE]
+  reviews_count: [REVIEWS_COUNT]
+  average_rating: [AVERAGE_RATING]
+  service_radius_miles: [SERVICE_RADIUS_MILES]
+  service_call_fee: [SERVICE_CALL_FEE]
+  free_estimates: [FREE_ESTIMATES]
+
+# Generates full homepage with:
+# - Hero with CTA
+# - Services overview
+# - About section
+# - Why choose us
+# - Reviews showcase
+# - Service areas
+# - Contact section

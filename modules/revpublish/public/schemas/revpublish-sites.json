@@ -1,0 +1,485 @@
+{
+  "name": "RevPublish Sites",
+  "version": "4.2.2",
+  "dataSource": {
+    "endpoint": "/revflow_os/revpublish/api/sites?per_page=100",
+    "method": "GET",
+    "dataPath": "sites"
+  },
+  "layout": {
+    "type": "container",
+    "style": {
+      "padding": "2rem",
+      "maxWidth": "1600px",
+      "margin": "0 auto"
+    },
+    "children": [
+      {
+        "type": "header",
+        "level": 2,
+        "text": "\ud83c\udf10 WordPress Sites Portfolio",
+        "style": {
+          "marginBottom": "1rem",
+          "color": "#fff"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Manage WordPress sites and authentication credentials. Each site requires a unique Application Password.",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem",
+          "lineHeight": "1.6"
+        }
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "1.5rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "\ud83d\udd10 How to Create Application Passwords",
+            "style": {
+              "marginBottom": "1rem",
+              "color": "#6366f1"
+            }
+          },
+          {
+            "type": "text",
+            "dangerouslySetInnerHTML": true,
+            "content": "<ol style='color:#e2e8f0;line-height:1.8;margin-left:1.5rem;'><li>Log into your WordPress site at <code style='background:#0f172a;padding:0.25rem 0.5rem;border-radius:4px;'>yoursite.com/wp-admin</code></li><li>Go to <strong style='color:#6366f1;'>Users \u2192 Profile</strong></li><li>Scroll to <strong style='color:#6366f1;'>Application Passwords</strong> section</li><li>Enter name: <code style='background:#0f172a;padding:0.25rem 0.5rem;border-radius:4px;'>RevPublish</code></li><li>Click <strong style='color:#6366f1;'>Add New Application Password</strong></li><li>Copy the password (shown only once!) and enter it in the form below</li></ol>"
+          },
+          {
+            "type": "text",
+            "style": {
+              "marginTop": "1rem",
+              "padding": "1rem",
+              "background": "rgba(239, 68, 68, 0.1)",
+              "border": "1px solid #ef4444",
+              "borderRadius": "6px",
+              "color": "#fca5a5",
+              "fontSize": "0.9rem"
+            },
+            "content": "\u26a0\ufe0f CRITICAL: Remove all spaces from the password! 'AbCd 1234 EfGh' becomes 'AbCd1234EfGh'"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "1.5rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "\u270f\ufe0f Update Site Credentials",
+            "style": {
+              "marginBottom": "1rem",
+              "color": "#6366f1"
+            }
+          },
+          {
+            "type": "text",
+            "content": "Select a site below and enter its WordPress username and Application Password:",
+            "style": {
+              "color": "#94a3b8",
+              "marginBottom": "1rem"
+            }
+          },
+          {
+            "type": "form",
+            "endpoint": "/api/sites/{site_id}",
+            "method": "PUT",
+            "fields": [
+              {
+                "type": "select",
+                "name": "site_id",
+                "label": "\ud83d\udccd Select Site",
+                "required": true,
+                "dataSource": "/revflow_os/revpublish/api/sites?per_page=100",
+                "dataPath": "sites",
+                "valueField": "id",
+                "labelField": "site_name",
+                "placeholder": "Choose a site...",
+                "options": [
+                  {
+                    "value": 1,
+                    "label": "Aliceblue Marten 678661"
+                  },
+                  {
+                    "value": 2,
+                    "label": "Allenbeehiverescueservices"
+                  },
+                  {
+                    "value": 3,
+                    "label": "Andovermobilemechanicmasters"
+                  },
+                  {
+                    "value": 4,
+                    "label": "Arcadialandscapingpros"
+                  },
+                  {
+                    "value": 5,
+                    "label": "Awakenyourhealth"
+                  },
+                  {
+                    "value": 6,
+                    "label": "Balchspringspoolcleaningpros"
+                  },
+                  {
+                    "value": 7,
+                    "label": "Banningmobilemechanicservice"
+                  },
+                  {
+                    "value": 8,
+                    "label": "Banningsgreenoasislandscaping"
+                  },
+                  {
+                    "value": 9,
+                    "label": "Bellevilleelectricalmasters"
+                  },
+                  {
+                    "value": 10,
+                    "label": "Bellgardensdrywallpros"
+                  },
+                  {
+                    "value": 11,
+                    "label": "Beniciaroofingartisans"
+                  },
+                  {
+                    "value": 12,
+                    "label": "Boyntonbeachpoolcleaners"
+                  },
+                  {
+                    "value": 13,
+                    "label": "Brown Hamster 393696"
+                  },
+                  {
+                    "value": 14,
+                    "label": "Burkeroofingandrenovations"
+                  },
+                  {
+                    "value": 15,
+                    "label": "Carmelcarpentrysolutions"
+                  },
+                  {
+                    "value": 16,
+                    "label": "Castrovalleyelectricianpros"
+                  },
+                  {
+                    "value": 17,
+                    "label": "Dedhamwoodworkingcarpentryco"
+                  },
+                  {
+                    "value": 18,
+                    "label": "Duncanvilleconcretedrivewaypros"
+                  },
+                  {
+                    "value": 19,
+                    "label": "Eastpaloaltopatiocovers"
+                  },
+                  {
+                    "value": 20,
+                    "label": "Edinburghpatiocovers"
+                  },
+                  {
+                    "value": 21,
+                    "label": "Edinburgmobilemechanics"
+                  },
+                  {
+                    "value": 22,
+                    "label": "Elcerritopersonalinjurylaw"
+                  },
+                  {
+                    "value": 23,
+                    "label": "Elmirageconcretecontractor"
+                  },
+                  {
+                    "value": 24,
+                    "label": "Epoxyflooringprosoflaporte"
+                  },
+                  {
+                    "value": 25,
+                    "label": "Fountainebleauplumbingpros"
+                  },
+                  {
+                    "value": 26,
+                    "label": "Gahannacolorfulcoatingsstudios"
+                  },
+                  {
+                    "value": 27,
+                    "label": "Galtappliancecare"
+                  },
+                  {
+                    "value": 28,
+                    "label": "Gloucesterplumbingpros"
+                  },
+                  {
+                    "value": 29,
+                    "label": "Gold Hornet 778606"
+                  },
+                  {
+                    "value": 30,
+                    "label": "Hamtramckartisticpaintingservices"
+                  },
+                  {
+                    "value": 31,
+                    "label": "Hanfordstrustedmovingcompany"
+                  },
+                  {
+                    "value": 32,
+                    "label": "Harkerheightscarpentercollective"
+                  },
+                  {
+                    "value": 33,
+                    "label": "Hattiesburgappliancerepair"
+                  },
+                  {
+                    "value": 34,
+                    "label": "Jamestowntreecaremasters"
+                  },
+                  {
+                    "value": 35,
+                    "label": "Kearnydrywallcontractor"
+                  },
+                  {
+                    "value": 36,
+                    "label": "Keywestwaterrescueteam"
+                  },
+                  {
+                    "value": 37,
+                    "label": "Kingsvilleconcretecontractors"
+                  },
+                  {
+                    "value": 38,
+                    "label": "Kingsvilleinjuryjusticeadvocates"
+                  },
+                  {
+                    "value": 39,
+                    "label": "Lancasterconcretedrivewaypros"
+                  },
+                  {
+                    "value": 40,
+                    "label": "Lapuentedrywallpros"
+                  },
+                  {
+                    "value": 41,
+                    "label": "Lawndalepoolcarecrew"
+                  },
+                  {
+                    "value": 42,
+                    "label": "Lightgoldenrodyellow Wolf 508486"
+                  },
+                  {
+                    "value": 43,
+                    "label": "Lightseagreen Dunlin 388471"
+                  },
+                  {
+                    "value": 44,
+                    "label": "Lightyellow Pig 287114"
+                  },
+                  {
+                    "value": 45,
+                    "label": "Limegreen Hare 771358"
+                  },
+                  {
+                    "value": 46,
+                    "label": "Manchesterconcretecraftsmanship"
+                  },
+                  {
+                    "value": 47,
+                    "label": "Midnightblue Chimpanzee 364774"
+                  },
+                  {
+                    "value": 48,
+                    "label": "Monroevillemasonryspecialists"
+                  },
+                  {
+                    "value": 49,
+                    "label": "Montgomeryvillagemasonryworks"
+                  },
+                  {
+                    "value": 50,
+                    "label": "Newiberiaappliancefixers"
+                  },
+                  {
+                    "value": 51,
+                    "label": "Ocoeewaterdamagerepair"
+                  },
+                  {
+                    "value": 52,
+                    "label": "Orchardparktowingservices"
+                  },
+                  {
+                    "value": 53,
+                    "label": "Reedleyappliancerepair"
+                  },
+                  {
+                    "value": 54,
+                    "label": "Revhome"
+                  },
+                  {
+                    "value": 55,
+                    "label": "Revmove"
+                  },
+                  {
+                    "value": 56,
+                    "label": "Sanlorenzofencingbuilders"
+                  },
+                  {
+                    "value": 57,
+                    "label": "Santanvalleyfencing"
+                  },
+                  {
+                    "value": 58,
+                    "label": "Smarketsherpa"
+                  },
+                  {
+                    "value": 59,
+                    "label": "Snow Penguin 241136"
+                  },
+                  {
+                    "value": 60,
+                    "label": "Socorrotexasfencing"
+                  },
+                  {
+                    "value": 61,
+                    "label": "Spanawaytreecare"
+                  },
+                  {
+                    "value": 62,
+                    "label": "Tan Guanaco 832968"
+                  },
+                  {
+                    "value": 69,
+                    "label": "Test Site"
+                  },
+                  {
+                    "value": 63,
+                    "label": "Tewksburyconcretecontractors"
+                  },
+                  {
+                    "value": 64,
+                    "label": "Tulareappliancerepair"
+                  },
+                  {
+                    "value": 65,
+                    "label": "Westfieldtreecare"
+                  },
+                  {
+                    "value": 66,
+                    "label": "Westwarwicktowing"
+                  },
+                  {
+                    "value": 67,
+                    "label": "Westwindsorjunkremovalsolutions"
+                  },
+                  {
+                    "value": 68,
+                    "label": "Wheat Zebra 588228"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "name": "wp_username",
+                "label": "\ud83d\udc64 WordPress Username",
+                "required": true,
+                "placeholder": "admin or email@example.com",
+                "helpText": "Your WordPress admin username"
+              },
+              {
+                "type": "password",
+                "name": "app_password",
+                "label": "\ud83d\udd11 Application Password",
+                "required": true,
+                "placeholder": "Paste password (remove spaces!)",
+                "helpText": "The password from WordPress \u2192 Users \u2192 Profile \u2192 Application Passwords"
+              }
+            ],
+            "submitButton": {
+              "text": "\ud83d\udcbe Save Credentials",
+              "style": {
+                "background": "#6366f1",
+                "color": "white",
+                "padding": "0.75rem 1.5rem",
+                "fontSize": "1rem",
+                "fontWeight": "600",
+                "border": "none",
+                "borderRadius": "8px",
+                "cursor": "pointer"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "style": {
+          "background": "#1e293b",
+          "padding": "1.5rem",
+          "borderRadius": "8px",
+          "marginBottom": "2rem"
+        },
+        "children": [
+          {
+            "type": "header",
+            "level": 3,
+            "text": "\ud83d\udcca All Sites",
+            "style": {
+              "marginBottom": "1rem"
+            }
+          },
+          {
+            "type": "dataTable",
+            "dataPath": "sites",
+            "columns": [
+              {
+                "field": "id",
+                "header": "ID"
+              },
+              {
+                "field": "site_name",
+                "header": "Site Name"
+              },
+              {
+                "field": "site_url",
+                "header": "URL"
+              },
+              {
+                "field": "status",
+                "header": "Status"
+              },
+              {
+                "field": "wp_username",
+                "header": "\ud83d\udc64 Username"
+              },
+              {
+                "field": "app_password",
+                "header": "\ud83d\udd11 Password"
+              },
+              {
+                "field": "updated_at",
+                "header": "Last Updated"
+              }
+            ],
+            "emptyMessage": "\ud83d\udcdd No WordPress sites found.",
+            "style": {
+              "marginTop": "1rem"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

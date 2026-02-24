@@ -1,0 +1,219 @@
+"""
+Humanization Pipeline - Main FastAPI Application
+Complete application with all endpoints and services
+"""
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
+from sqlalchemy.orm import Session
+from typing import Optional
+import os
+import uuid
+
+from .database import get_db_session, init_db
+from .models.pydantic_models import (
+    ContentValidationRequest,
+    ContentValidationResponse,
+    VoiceCheckRequest,
+    VoiceCheckResponse,
+    YMYLCheckRequest,
+    YMYLCheckResponse,
+    AutoHumanizationRequest,
+    AutoHumanizationResult,
+    ManualReviewRequest,
+    ManualReviewResponse
+)
+from .models.db_models import ReviewQueueItem, AuditLog
+from .validators import QAValidator
+from .services import VoiceConsistencyChecker, YMYLVerificationChecker, AIDetector
+
+# Initialize FastAPI
+app = FastAPI(
+    title="Humanization Pipeline API",
+    version="1.0.0",
+    description="Complete content validation and humanization system"
+)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize services
+qa_validator = QAValidator()
+voice_checker = VoiceConsistencyChecker()
+ymyl_checker = YMYLVerificationChecker()
+ai_detector = AIDetector()
+
+# Initialize database on startup
+@app.on_event("startup")
+async def startup():
+    init_db()
+    print("✓ Database initialized")
+
+# ============================================================================
+# HEALTH & STATUS
+# ============================================================================
+
+@app.get("/")
+async def root():
+    return {
+        "service": "Humanization Pipeline",
+        "version": "1.0.0",
+        "status": "operational"
+    }
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "database": "connected"}
+
+# ============================================================================
+# CONTENT VALIDATION
+# ============================================================================
+
+@app.post("/api/v1/validate", response_model=ContentValidationResponse)
+async def validate_content(
+    request: ContentValidationRequest,
+    db: Session = Depends(get_db_session)
+):
+    """
+    Complete content validation pipeline
+    """
+    # Generate content_id if not provided
+    content_id = request.get_content_id()
+    # Run QA validation
+    qa_result = qa_validator.calculate_score(request.content, request.title)
+    
+    # Run voice check
+    voice_result = voice_checker.check(request.content)
+    
+    # Run YMYL check  
+    ymyl_result = ymyl_checker.check(request.content, "general")
+    
+    # Run AI detection
+    ai_result = ai_detector.detect(request.content)
+    
+    # Determine if manual review needed
+    requires_review = (
+        qa_result["qa_score"] < request.target_score or
+        not voice_result["is_consistent"] or
+        ai_result["is_ai_generated"]
+    )
+    
+    # Add to review queue if needed
+    if requires_review and db:
+        queue_item = ReviewQueueItem(
+            content_id=content_id or f"temp_{uuid.uuid4().hex[:12]}",
+            title=request.title,
+            content=request.content,
+            qa_score=qa_result["qa_score"],
+            voice_consistency_score=voice_result["score"],
+            ymyl_verification_score=ymyl_result["score"],
+            ai_probability=ai_result["probability"],
+            tier1_issues=qa_result["tier1_issues"],
+            tier2_issues=qa_result["tier2_issues"],
+            tier3_issues=qa_result["tier3_issues"],
+            voice_violations=voice_result["violations"],
+            ymyl_failures=ymyl_result["failures"],
+            status="pending"
+        )
+        db.add(queue_item)
+        db.commit()
+    
+    return ContentValidationResponse(
+        content_id=content_id or f"temp_{uuid.uuid4().hex[:12]}",
+        qa_score=qa_result["qa_score"],
+        voice_consistency_score=voice_result["score"],
+        ymyl_verification_score=ymyl_result["score"],
+        ai_probability=ai_result["probability"],
+        tier1_issues=qa_result["tier1_issues"],
+        tier2_issues=qa_result["tier2_issues"],
+        tier3_issues=qa_result["tier3_issues"],
+        requires_manual_review=requires_review,
+        status="needs_review" if requires_review else "approved"
+    )
+
+# ============================================================================
+# VOICE CONSISTENCY CHECK
+# ============================================================================
+
+@app.post("/api/v1/voice/check", response_model=VoiceCheckResponse)
+async def check_voice(request: VoiceCheckRequest):
+    """Check voice consistency"""
+    result = voice_checker.check(request.content, request.reference_voice)
+    return VoiceCheckResponse(**result)
+
+# ============================================================================
+# YMYL VERIFICATION
+# ============================================================================
+
+@app.post("/api/v1/ymyl/verify", response_model=YMYLCheckResponse)
+async def verify_ymyl(request: YMYLCheckRequest):
+    """Verify YMYL content"""
+    result = ymyl_checker.check(request.content, request.content_type)
+    return YMYLCheckResponse(**result)
+
+# ============================================================================
+# AUTO-HUMANIZATION
+# ============================================================================
+
+@app.post("/api/v1/humanize", response_model=AutoHumanizationResult)
+async def auto_humanize(request: AutoHumanizationRequest):
+    """
+    Auto-humanize content (basic implementation)
+    """
+    content = request.content
+    changes = []
+    
+    # Simple humanization: remove AI phrases
+    ai_phrases = [
+        ("it's important to note", "notably"),
+        ("in today's digital age", "today"),
+        ("comprehensive guide", "guide"),
+        ("delve into", "explore"),
+    ]
+    
+    for old, new in ai_phrases:
+        if old in content.lower():
+            content = content.replace(old, new)
+            content = content.replace(old.title(), new.title())
+            changes.append(f"Replaced '{old}' with '{new}'")
+    
+    # Detect before/after
+    before = ai_detector.detect(request.content)
+    after = ai_detector.detect(content)
+    
+    return AutoHumanizationResult(
+        original_content=request.content,
+        humanized_content=content,
+        changes_made=changes,
+        success=len(changes) > 0,
+        ai_probability_before=before["probability"],
+        ai_probability_after=after["probability"]
+    )
+
+# ============================================================================
+# ADMIN UI
+# ============================================================================
+
+@app.get("/admin", response_class=HTMLResponse)
+async def serve_admin():
+    """Serve admin UI"""
+    admin_path = "/opt/revflow-humanization-pipeline/app/templates/admin.html"
+    if os.path.exists(admin_path):
+        with open(admin_path) as f:
+            return f.read()
+    return "<h1>Admin UI</h1><p>Template not found</p>"
+
+# Import admin router
+from .api.admin import router as admin_router
+app.include_router(admin_router)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

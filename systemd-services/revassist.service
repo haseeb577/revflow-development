@@ -1,0 +1,26 @@
+[Unit]
+Description=RevAssist™ - Module 18 Home Assessment Engine (Port 8105)
+After=network.target postgresql.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Environment="PYTHONPATH=/opt/shared-api-engine"
+Type=simple
+User=root
+WorkingDirectory=/var/www/revhome_assessment_engine_v2
+EnvironmentFile=/opt/shared-api-engine/.env
+ExecStart=/opt/revflow-os/shared-venv/bin/python -m uvicorn revhome_api:app --host 0.0.0.0 --port 8105
+StandardOutput=append:/var/log/revflow/revassist.log
+StandardError=append:/var/log/revflow/revassist-error.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=RevScore IQ Health Check
+After=network.target
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/revscore-test health
+StandardOutput=append:/var/log/revflow/testing/health-check.log
+StandardError=append:/var/log/revflow/testing/health-check.log
+
+Restart=on-failure
+RestartSec=10s
+CPUAccounting=true
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target
+

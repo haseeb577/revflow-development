@@ -1,0 +1,86 @@
+{
+  "module": {
+    "id": "revintel",
+    "name": "RevIntel",
+    "number": 12,
+    "suite": "Lead Generation",
+    "version": "1.0.0"
+  },
+  "meta": {
+    "title": "RevIntel Dashboard",
+    "description": "Data enrichment and lead intelligence platform",
+    "icon": "database",
+    "color": "#8B5CF6"
+  },
+  "dataSource": {
+    "endpoint": "/api/revintel/health",
+    "refreshInterval": 30000
+  },
+  "layout": {
+    "type": "dashboard",
+    "columns": 3,
+    "gap": "20px"
+  },
+  "components": [
+    {
+      "type": "StatusCard",
+      "id": "service-status",
+      "props": {
+        "title": "Service Status",
+        "dataKey": "status",
+        "description": "RevIntel enrichment service on port 8011"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "leads-enriched",
+      "props": {
+        "title": "Leads Enriched",
+        "icon": "📈",
+        "dataKey": "stats.leadsEnriched",
+        "defaultValue": "78,340"
+      }
+    },
+    {
+      "type": "StatCard",
+      "id": "enrichment-rate",
+      "props": {
+        "title": "Enrichment Rate",
+        "icon": "✨",
+        "dataKey": "stats.enrichmentRate",
+        "defaultValue": "94.2%"
+      }
+    },
+    {
+      "type": "InfoCard",
+      "id": "features",
+      "props": {
+        "title": "Intelligence Features",
+        "items": [
+          "Company data enrichment",
+          "Contact discovery",
+          "Firmographic data",
+          "Technology stack detection",
+          "Social profile linking"
+        ]
+      }
+    },
+    {
+      "type": "PortList",
+      "id": "ports",
+      "props": {
+        "title": "Active Ports",
+        "ports": [8011]
+      }
+    },
+    {
+      "type": "ActionButton",
+      "id": "enrich-data",
+      "props": {
+        "label": "Enrich Data",
+        "icon": "🔍",
+        "description": "Start data enrichment process"
+      }
+    }
+  ]
+}
