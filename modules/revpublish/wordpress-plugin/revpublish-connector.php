@@ -1588,6 +1588,11 @@ class RevPublishConnector {
         }
         update_post_meta($page_id, '_elementor_data', wp_slash(wp_json_encode($elementor_data)));
 
+        // Clear Elementor cache so frontend shows updated content immediately.
+        if (did_action('elementor/loaded') && class_exists('\Elementor\Plugin')) {
+            \Elementor\Plugin::instance()->files_manager->clear_cache();
+        }
+
         return array(
             'status' => 'success',
             'message' => 'Page updated successfully',
