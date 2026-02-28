@@ -373,6 +373,7 @@ function JsonViewerElement({ element }) {
 
 /**
  * Build and download a page-specific slot template.
+ * Auto-fetches when site + target page are selected. Copy icon and tooltips supported.
  */
 function ContentTemplateBuilderElement({ element }) {
   const [loading, setLoading] = useState(false)
@@ -380,14 +381,19 @@ function ContentTemplateBuilderElement({ element }) {
   const [templateText, setTemplateText] = useState('')
   const [slotCount, setSlotCount] = useState(0)
   const [fileName, setFileName] = useState('content-template.txt')
+  const [copied, setCopied] = useState(false)
+  const [refresh, setRefresh] = useState(0)
+  const tooltips = element.tooltips || {}
 
-  const handleGenerate = async () => {
+  const fetchTemplate = async () => {
     const siteEl = document.querySelector('[name="target_site"]')
     const pageEl = document.querySelector('[name="target_page_id"]')
     const site = siteEl ? String(siteEl.value || '').trim() : ''
     const pageId = pageEl ? String(pageEl.value || '').trim() : ''
     if (!site || !pageId) {
-      setError('Select site and target page first.')
+      setTemplateText('')
+      setSlotCount(0)
+      setError(null)
       return
     }
 
@@ -411,8 +417,35 @@ function ContentTemplateBuilderElement({ element }) {
       setFileName(payload.template_filename || 'content-template.txt')
     } catch (e) {
       setError(e.message || 'Template generation failed')
+      setTemplateText('')
+      setSlotCount(0)
     } finally {
       setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    const onChanged = () => setRefresh(r => r + 1)
+    window.addEventListener('revpublish_target_site_changed', onChanged)
+    window.addEventListener('revpublish_existing_page_changed', onChanged)
+    return () => {
+      window.removeEventListener('revpublish_target_site_changed', onChanged)
+      window.removeEventListener('revpublish_existing_page_changed', onChanged)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchTemplate()
+  }, [refresh])
+
+  const handleCopy = async () => {
+    if (!templateText) return
+    try {
+      await navigator.clipboard.writeText(templateText)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (_) {
+      setError('Copy failed')
     }
   }
 
@@ -437,29 +470,33 @@ function ContentTemplateBuilderElement({ element }) {
       border: '1px solid rgba(59,130,246,0.25)',
       background: 'rgba(15, 23, 42, 0.5)',
       ...element.style
-    }}>
+    }} title={tooltips.section}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <h4 style={{ margin: 0, color: '#fff' }}>{element.title || 'Page Content Template'}</h4>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <h4 style={{ margin: 0, color: '#fff' }} title={tooltips.section}>{element.title || 'Step 1: Generate Page Slot Template'}</h4>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <button
             type="button"
-            onClick={handleGenerate}
-            disabled={loading}
-            style={{ padding: '0.55rem 0.95rem', border: 'none', borderRadius: '6px', background: loading ? '#475569' : '#2563eb', color: '#fff', cursor: loading ? 'not-allowed' : 'pointer' }}
+            onClick={handleCopy}
+            disabled={!templateText || loading}
+            title={tooltips.copy || 'Copy template to clipboard'}
+            style={{ padding: '0.5rem 0.75rem', border: 'none', borderRadius: '6px', background: templateText && !loading ? '#334155' : '#475569', color: '#fff', cursor: templateText && !loading ? 'pointer' : 'not-allowed', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
           >
-            {loading ? 'Generating...' : 'Generate Template'}
+            <span style={{ fontSize: '1rem' }} aria-hidden>{copied ? '✓' : '📋'}</span>
+            <span>{copied ? 'Copied!' : 'Copy'}</span>
           </button>
           <button
             type="button"
             onClick={handleDownload}
             disabled={!templateText}
+            title={tooltips.download || 'Download template as text file'}
             style={{ padding: '0.55rem 0.95rem', border: 'none', borderRadius: '6px', background: templateText ? '#16a34a' : '#475569', color: '#fff', cursor: templateText ? 'pointer' : 'not-allowed' }}
           >
             Download Template
           </button>
         </div>
       </div>
-      {slotCount > 0 && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Detected slots: {slotCount}</div>}
+      {loading && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Generating template…</div>}
+      {slotCount > 0 && !loading && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Detected slots: {slotCount}</div>}
       {error && <div style={{ color: '#fca5a5', marginTop: '0.6rem' }}>Error: {error}</div>}
       {templateText && (
         <pre style={{ marginTop: '0.75rem', maxHeight: element.maxHeight || '320px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.9rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>

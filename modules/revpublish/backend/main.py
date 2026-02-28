@@ -687,11 +687,11 @@ def fetch_elementor_template_from_site(site_url: str, page_id: int) -> Optional[
         except Exception:
             continue
 
-    # Connector fallback endpoint
+    # Connector fallback endpoint (plugin exposes elementor-json, not elementor-template)
     fallback_candidates = [
-        f"{wp_json_base}/revpublish/v1/elementor-template/{page_id}",
-        f"{site_base}/index.php?rest_route=/revpublish/v1/elementor-template/{page_id}",
-        f"{site_base}/?rest_route=/revpublish/v1/elementor-template/{page_id}",
+        f"{wp_json_base}/revpublish/v1/elementor-json?page_id={page_id}",
+        f"{site_base}/index.php?rest_route=/revpublish/v1/elementor-json&page_id={page_id}",
+        f"{site_base}/?rest_route=/revpublish/v1/elementor-json&page_id={page_id}",
     ]
     for url in fallback_candidates:
         try:
@@ -716,8 +716,8 @@ def _strip_html_to_text(value: str) -> str:
     return text
 
 
-_HEADING_KEYS = {"title", "heading", "subtitle", "sub_title", "heading_title"}
-_PARAGRAPH_KEYS = {"editor", "description", "content", "text", "paragraph", "caption", "desc"}
+_HEADING_KEYS = {"title", "heading", "subtitle", "sub_title", "heading_title", "title_text"}
+_PARAGRAPH_KEYS = {"editor", "description", "content", "text", "paragraph", "caption", "desc", "description_text"}
 _BUTTON_KEYS = {"button_text", "btn_text", "cta_text", "label", "button_label", "text"}
 _IGNORE_KEY_FRAGMENTS = {
     "color", "typography", "font", "margin", "padding", "background", "border",
@@ -754,13 +754,38 @@ def _extract_slot_value_map_from_html(content_html: str) -> Dict[str, str]:
     normalized = re.sub(r"<[^>]+>", "", normalized)
     normalized = re.sub(r"\r\n?", "\n", normalized)
     slot_map: Dict[str, str] = {}
-    pattern = r"(?ims)(?:^|\n)\s*(SLOT_\d{3})\s*:\s*(.*?)(?=(?:\n\s*SLOT_\d{3}\s*:)|\Z)"
+    # Allow optional [Label] after slot ID so "SLOT_001 [About US]:" is recognized
+    pattern = r"(?ims)(?:^|\n)\s*(SLOT_\d{3})\s*(?:\[[^\]]*\])?\s*:\s*(.*?)(?=(?:\n\s*SLOT_\d{3}\s*(?:\[[^\]]*\])?\s*:)|\Z)"
     for m in re.finditer(pattern, normalized):
         slot_id = str(m.group(1)).strip().upper()
         value = _strip_html_to_text(m.group(2))
+        # Strip optional "Page content:" line (template label only) — never included in deployed content
+        if value:
+            value = re.sub(r"(?im)^\s*page\s+content\s*:?\s*[\r\n]+", "", value, count=1).strip()
         if value:
             slot_map[slot_id] = value
     return slot_map
+
+
+def _slot_label_from_page_content(current_value: str, widget_type: str, field_key: str, max_length: int = 42) -> str:
+    """
+    Derive slot label from the page JSON content only (dynamic, no static strings).
+    Uses the slot's current text, cleaned and truncated. Fallback to widget/field when empty.
+    """
+    raw = _strip_html_to_text(current_value or "")
+    # Decode common HTML entities so label is readable
+    raw = raw.replace("&hellip;", "…").replace("&mdash;", "—").replace("&ldquo;", '"').replace("&rdquo;", '"')
+    raw = raw.replace("&rsquo;", "'").replace("&amp;", "&").replace("&#10024;", "✨")
+    raw = re.sub(r"&#\d+;", " ", raw)  # numeric entities -> space
+    raw = re.sub(r"\s+", " ", raw).strip()
+    if raw and len(raw) > max_length:
+        raw = raw[: max_length - 1].rstrip() + "…"
+    if raw:
+        return raw
+    # Empty slot: use widget/field from page JSON so it's still dynamic
+    w = (widget_type or "").strip() or "widget"
+    f = (field_key or "").strip() or "content"
+    return f"{w} ({f})"
 
 
 def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
@@ -774,12 +799,15 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
         nonlocal slot_counter
         slot_counter += 1
         slot_id = f"SLOT_{slot_counter:03d}"
+        stripped = _strip_html_to_text(current_value or "")
+        label = _slot_label_from_page_content(current_value or "", widget_type, field_key)
         slots.append({
             "slot_id": slot_id,
             "kind": kind,
             "widget_type": widget_type or "unknown",
             "field_key": field_key,
-            "current_value": _strip_html_to_text(current_value or "")
+            "current_value": stripped,
+            "label": label,
         })
 
     def walk(node: Any) -> None:
@@ -800,21 +828,39 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
                     add_slot("paragraph", widget_type, "editor", settings.get("editor", ""))
                 elif widget_type == "button" and isinstance(settings.get("text"), str):
                     add_slot("button", widget_type, "text", settings.get("text", ""))
+                elif widget_type == "dit-button" and isinstance(settings.get("button_text"), str):
+                    add_slot("button", widget_type, "button_text", settings.get("button_text", ""))
+                elif widget_type == "iconbox":
+                    if isinstance(settings.get("title_text"), str) and settings.get("title_text", "").strip():
+                        add_slot("heading", widget_type, "title_text", settings.get("title_text", ""))
+                    if isinstance(settings.get("description_text"), str) and settings.get("description_text", "").strip():
+                        add_slot("paragraph", widget_type, "description_text", settings.get("description_text", ""))
+                elif widget_type == "section-title":
+                    for key in ("title", "subtitle", "title_two", "highlight_text", "description"):
+                        if isinstance(settings.get(key), str) and settings.get(key, "").strip():
+                            add_slot("heading" if key != "description" else "paragraph", widget_type, key, settings.get(key, ""))
+                elif widget_type == "service":
+                    for key in ("title_text", "title_tex_two", "description_text", "button_text"):
+                        if isinstance(settings.get(key), str) and settings.get(key, "").strip():
+                            add_slot("button" if key == "button_text" else ("heading" if "title" in key else "paragraph"), widget_type, key, settings.get(key, ""))
 
-                for k, v in settings.items():
-                    if isinstance(v, str) and v.strip():
-                        kind = _classify_text_key(k, v)
-                        if kind:
-                            add_slot(kind, widget_type, k, v)
-                    elif isinstance(v, list):
-                        for item in v:
-                            if not isinstance(item, dict):
-                                continue
-                            for rk, rv in item.items():
-                                if isinstance(rv, str) and rv.strip():
-                                    kind = _classify_text_key(rk, rv)
-                                    if kind:
-                                        add_slot(kind, widget_type, rk, rv)
+                # Generic loop for widgets not handled above, and for repeater list items (e.g. ditaccordion)
+                handled_types = ("heading", "text-editor", "button", "dit-button", "iconbox", "section-title", "service")
+                if widget_type not in handled_types:
+                    for k, v in settings.items():
+                        if isinstance(v, str) and v.strip():
+                            kind = _classify_text_key(k, v)
+                            if kind:
+                                add_slot(kind, widget_type, k, v)
+                        elif isinstance(v, list):
+                            for item in v:
+                                if not isinstance(item, dict):
+                                    continue
+                                for rk, rv in item.items():
+                                    if isinstance(rv, str) and rv.strip() and rk != "_id":
+                                        kind = _classify_text_key(rk, rv)
+                                        if kind:
+                                            add_slot(kind, widget_type, rk, rv)
 
         for value in node.values():
             walk(value)
@@ -826,12 +872,16 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
 def _build_slot_template_text(slots: List[Dict[str, Any]]) -> str:
     lines = [
         "Fill content using exact SLOT labels. Do not rename slot IDs.",
-        "After updating this template in your doc, put doc URL in CSV and import.",
+        "Each slot has a heading (slot ID + preview) and page content from the selected page.",
+        "Replace the page content with your new text; after updating this template in your doc, put doc URL in CSV and import.",
         ""
     ]
     for s in slots:
-        lines.append(f"{s['slot_id']}:")
-        lines.append(s.get("current_value") or "[PLACE CONTENT HERE]")
+        label = (s.get("label") or "Content").strip()
+        lines.append(f"{s['slot_id']} [{label}]:")
+        lines.append("Page content:")
+        current = (s.get("current_value") or "").strip()
+        lines.append(current if current else "[No content on page - add your text here]")
         lines.append("")
     return "\n".join(lines).strip() + "\n"
 
@@ -1162,6 +1212,15 @@ def _replace_elementor_content_only(
                 replacement = next_slot_value() if use_slot_mode else next_content("button")
                 if replacement:
                     settings["text"] = replacement
+                    replaced["button"] += 1
+            elif widget_type == "dit-button":
+                found["button"] += 1
+                replacement = next_slot_value() if use_slot_mode else next_content("button")
+                if replacement:
+                    if "button_text" in settings:
+                        settings["button_text"] = replacement
+                    else:
+                        settings["text"] = replacement
                     replaced["button"] += 1
             # Secondary path: generic text fields in settings for other widget types.
             for k, v in list(settings.items()):

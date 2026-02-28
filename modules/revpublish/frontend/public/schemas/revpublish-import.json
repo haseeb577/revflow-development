@@ -188,30 +188,16 @@
             }
           },
           {
-            "type": "jsonViewer",
-            "title": "🧬 Selected Page Elementor JSON",
-            "dataSource": {
-              "endpoint": "/api/page-elementor-json?site_url={target_site}&page_id={target_page_id}"
-            },
-            "maxHeight": "380px",
-            "style": {
-              "marginTop": "1rem"
-            }
-          },
-          {
             "type": "contentTemplateBuilder",
             "title": "🧩 Step 1: Generate Page Slot Template",
             "maxHeight": "320px",
             "style": {
               "marginTop": "1rem"
-            }
-          },
-          {
-            "type": "contentMappingPreview",
-            "title": "🔄 Step 2: Preview Mapping Against Selected Page",
-            "maxHeight": "420px",
-            "style": {
-              "marginTop": "1rem"
+            },
+            "tooltips": {
+              "section": "Slot template is generated automatically when you select a site and target page. Copy or download to use in your doc, then put the doc URL in your CSV.",
+              "copy": "Copy template to clipboard",
+              "download": "Download template as text file"
             }
           }
         ]
