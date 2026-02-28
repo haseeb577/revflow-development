@@ -1,0 +1,145 @@
+{
+  "status": "success",
+  "message": "Page updated successfully",
+  "id": 2449,
+  "link": "https://snow-penguin-241136.hostingersite.com/?page_id=2449",
+  "edit_url": "https://snow-penguin-241136.hostingersite.com/wp-admin/post.php?post=2449&action=edit",
+  "used_existing_layout": true,
+  "updated_text_widgets": 21,
+  "found_text_widgets": 21,
+  "appended_content_widget": false,
+  "plugin_version": "1.1.14",
+  "mapping_debug": {
+    "parsed_sections": [
+      {
+        "title": "Testimonials SectionSmall Label: TestimonialsMain",
+        "values": 3
+      },
+      {
+        "title": "Testimonial 1",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 1",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 1",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 2",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 2",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 2",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 3",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 3",
+        "values": 1
+      },
+      {
+        "title": "Testimonial 3",
+        "values": 20
+      }
+    ],
+    "structured_keys": [
+      "testimonials"
+    ],
+    "sections": [
+      {
+        "index": 0,
+        "detected_key": "hero",
+        "widgets": [
+          "slider"
+        ]
+      },
+      {
+        "index": 1,
+        "detected_key": "about",
+        "widgets": [
+          "iconbox",
+          "image",
+          "section-title",
+          "dit-button"
+        ]
+      },
+      {
+        "index": 2,
+        "detected_key": "services",
+        "widgets": [
+          "section-title",
+          "image",
+          "service",
+          "dit-button"
+        ]
+      },
+      {
+        "index": 3,
+        "detected_key": "team",
+        "widgets": [
+          "section-title",
+          "team"
+        ]
+      },
+      {
+        "index": 4,
+        "detected_key": "projects",
+        "widgets": [
+          "section-title"
+        ]
+      },
+      {
+        "index": 5,
+        "detected_key": "projects",
+        "widgets": [
+          "casestudy"
+        ]
+      },
+      {
+        "index": 6,
+        "detected_key": "testimonials",
+        "widgets": [
+          "section-title",
+          "testimonial",
+          "dreamit-counter"
+        ],
+        "input_values": 29,
+        "updated_delta": 21
+      },
+      {
+        "index": 7,
+        "detected_key": "blog",
+        "widgets": [
+          "section-title",
+          "blogpost"
+        ]
+      },
+      {
+        "index": 8,
+        "detected_key": "cta",
+        "widgets": [
+          "videobox",
+          "section-title",
+          "shortcode"
+        ]
+      },
+      {
+        "index": 9,
+        "detected_key": "",
+        "widgets": [
+          "brand"
+        ]
+      }
+    ]
+  }
+}

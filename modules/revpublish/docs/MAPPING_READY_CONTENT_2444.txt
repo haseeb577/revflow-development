@@ -1,0 +1,88 @@
+1. Hero Section
+Subtitle: Professional Cleaning Services
+Heading: Cleaning You Can Trust
+Description: Reliable and affordable cleaning for homes, offices, and commercial spaces. We deliver spotless results with professional care every time.
+Button: Book Appointment Now
+
+2. About Section
+Small Label: About Cleeny
+Main Heading: Your Trusted Cleaning
+Secondary Heading: Service Partner
+Paragraph: At Cleeny, we believe a clean space creates a better life. Our experienced team delivers dependable, high-quality cleaning services tailored to your needs using safe products and modern equipment.
+Feature 1 Title: Customer-Focused Service
+Feature 1 Text: We prioritize your satisfaction and customize every cleaning plan to your expectations.
+Feature 2 Title: Flexible Scheduling
+Feature 2 Text: Choose weekly, bi-weekly, or monthly plans that fit your routine.
+Button: Explore More
+
+3. Services Section
+Small Label: Our Cleaning Services
+Main Heading: Comprehensive Cleaning
+Secondary Heading: Solutions for Every Space
+Intro Text: We provide complete residential and commercial cleaning. No project is too small or too large for our expert team.
+Service 1 Title: Resort Cleaning
+Service 1 Description: Professional cleaning for hotels and hospitality spaces to maintain guest satisfaction.
+Service 2 Title: Window Cleaning
+Service 2 Description: Safe and efficient interior and exterior window cleaning for clear, streak-free results.
+Service 3 Title: Kitchen Cleaning
+Service 3 Description: Deep cleaning and sanitizing of kitchen surfaces, appliances, and high-touch areas.
+Service 4 Title: Garden Cleaning
+Service 4 Description: Outdoor area cleaning, patio care, and exterior surface washing for a fresh look.
+Button: Learn More
+
+4. Team Section
+Small Label: Expert Team
+Main Heading: Meet Our Professional
+Secondary Heading: Cleaning Specialists
+Paragraph: Our team is trained, background-checked, and committed to reliability, professionalism, and attention to detail.
+Member 1 Name: Adam Anderson
+Member 1 Role: Senior Cleaning Specialist
+Member 2 Name: John Alexon
+Member 2 Role: Maintenance Specialist
+Member 3 Name: Richard Powell
+Member 3 Role: Quality Supervisor
+Member 4 Name: Jonson Charles
+Member 4 Role: Commercial Expert
+
+5. Projects Section
+Small Label: Latest Work
+Main Heading: Recently Completed
+Secondary Heading: Cleaning Projects
+Paragraph: We take pride in transforming spaces and consistently exceeding client expectations.
+
+6. Testimonials Section
+Small Label: Testimonials
+Main Heading: What Our Clients
+Secondary Heading: Say About Cleeny
+Paragraph: Trusted by homeowners and businesses for consistent, high-quality cleaning services.
+Testimonial 1 Name: Eshanth Sharma
+Testimonial 1 Role: Homeowner
+Testimonial 1 Text: Cleeny transformed my home completely. The team was punctual, professional, and extremely thorough.
+Testimonial 2 Name: Cameron Delpot
+Testimonial 2 Role: Business Owner
+Testimonial 2 Text: We have used Cleeny for office cleaning for over a year. Excellent service and consistent quality.
+Testimonial 3 Name: Sarah Johnson
+Testimonial 3 Role: Property Manager
+Testimonial 3 Text: Dependable team, great communication, and spotless results every visit.
+Counter 1 Number: 500
+Counter 1 Suffix: +
+Counter 1 Label: Happy Clients
+Counter 2 Number: 25
+Counter 2 Suffix: +
+Counter 2 Label: Expert Team
+Counter 3 Number: 1200
+Counter 3 Suffix: +
+Counter 3 Label: Projects Done
+Counter 4 Number: 8
+Counter 4 Suffix: +
+Counter 4 Label: Years Experience
+
+7. Blog Section
+Small Label: Latest News
+Main Heading: Cleaning Tips & Blog
+Paragraph: Get practical cleaning guides, maintenance tips, and expert advice from our team.
+Button: Explore More
+
+8. Quote Section
+Small Label: Contact With Us
+Main Heading: Request A Quote

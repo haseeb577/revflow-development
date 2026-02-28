@@ -1,0 +1,1880 @@
+{
+  "status": "success",
+  "page_id": 1195,
+  "page_title": "Home 03",
+  "plugin_version": "1.1.16",
+  "elementor_data": [
+    {
+      "id": "432dc2c",
+      "elType": "section",
+      "settings": {
+        "layout": "full_width",
+        "gap": "no",
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "a5f2b5e",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "70594d2",
+              "elType": "widget",
+              "settings": {
+                "list": [
+                  {
+                    "_id": "403e02f",
+                    "subtitle": "BEST CLEENYNG SERVICES",
+                    "title": "Bringing <span>Profession</span> <br> Cleanliness You.",
+                    "description": "Need Clean of your home or office Feel Free contact us based service. We try to Help you as soon as possible clean.",
+                    "title_two": "",
+                    "btn1": "Appointment Now",
+                    "video_icon": {
+                      "value": "",
+                      "library": ""
+                    },
+                    "single_image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/hero-thumb2.png",
+                      "id": 1416,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "bg_image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/hero-bg-2.png",
+                      "id": 1417,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "shape_subtitle": "Help Line",
+                    "shape_title": " 246900",
+                    "btn1_url": {
+                      "url": "https://wp.ditsolution.net/cleeny/appointment/",
+                      "is_external": "",
+                      "nofollow": "",
+                      "custom_attributes": ""
+                    },
+                    "slider_style": "style_03"
+                  }
+                ]
+              },
+              "elements": [],
+              "widgetType": "slider"
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "5a2b05a",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "background_color": "#F3F4F8",
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "80",
+          "left": "0",
+          "isLinked": false
+        },
+        "padding_mobile": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "90",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "4394d73",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "0984f51",
+              "elType": "section",
+              "settings": {
+                "structure": "30"
+              },
+              "elements": [
+                {
+                  "id": "d4784eb",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 33,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "3bd034a",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/feature-icon-4.png",
+                          "id": 1513,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "title_text": "House Cleaning",
+                        "description_text": "Competently repurpose clean conveniently target",
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "iconbox"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "f03b93b",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 33,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "300cb86",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/feature-icon-5.png",
+                          "id": 1514,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "title_text": "Windwo Cleaning",
+                        "description_text": "Competently repurpose clean conveniently target",
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "iconbox"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "497b194",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 33,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "bef292f",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/feature-icon-6.png",
+                          "id": 1515,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "title_text": "Office Cleaning",
+                        "description_text": "Competently repurpose clean conveniently target",
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "iconbox"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            },
+            {
+              "id": "06edd0c",
+              "elType": "section",
+              "settings": {
+                "structure": "20",
+                "padding": {
+                  "unit": "px",
+                  "top": "90",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": false
+                }
+              },
+              "elements": [
+                {
+                  "id": "6ffd828",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [
+                    {
+                      "id": "5fc5c71",
+                      "elType": "widget",
+                      "settings": {
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/about-thumb3.png",
+                          "id": 1454,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "align": "left",
+                        "_margin": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "-24",
+                          "isLinked": false
+                        },
+                        "align_tablet": "center",
+                        "_margin_tablet": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "0",
+                          "isLinked": false
+                        }
+                      },
+                      "elements": [],
+                      "widgetType": "image"
+                    },
+                    {
+                      "id": "c6b1b50",
+                      "elType": "widget",
+                      "settings": {
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/about-shape5.png",
+                          "id": 1488,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "_element_width": "auto",
+                        "_position": "absolute",
+                        "_offset_x": {
+                          "unit": "px",
+                          "size": -20,
+                          "sizes": []
+                        },
+                        "_offset_orientation_v": "end",
+                        "_offset_y_end": {
+                          "unit": "px",
+                          "size": 100,
+                          "sizes": []
+                        },
+                        "_css_classes": "about-shape-home03",
+                        "_offset_x_tablet": {
+                          "unit": "px",
+                          "size": 80,
+                          "sizes": []
+                        },
+                        "hide_mobile": "hidden-mobile"
+                      },
+                      "elements": [],
+                      "widgetType": "image"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "e49e7a1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "content_position": "center",
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [
+                    {
+                      "id": "4354d83",
+                      "elType": "widget",
+                      "settings": {
+                        "subtitle": "ABOUT CLEENY",
+                        "title": "Your Trusted <span>Cleaning</span>",
+                        "title_two": "Service Partner",
+                        "highlight_text": "",
+                        "description": "Need Clean of your home or office Just Feel Free contact us based web services we try to Help you as soon as possible your home or office Just Feel Free contact us based web develop.",
+                        "subtitle_color_background": "classic",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "12",
+                          "left": "0",
+                          "isLinked": false
+                        },
+                        "select_style": "two"
+                      },
+                      "elements": [],
+                      "widgetType": "section-title"
+                    },
+                    {
+                      "id": "e0fcda6",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/about-icon.png",
+                          "id": 1458,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "title_text": "Customer Focused Reviews",
+                        "description_text": "Need Clean of your home or Feel Free contact us based web services we to you as soon as possible trusted.",
+                        "select_style": "five"
+                      },
+                      "elements": [],
+                      "widgetType": "iconbox"
+                    },
+                    {
+                      "id": "96aed59",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/about-icon2.png",
+                          "id": 1459,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "title_text": "Regular & Monthly Cleaning",
+                        "description_text": "Need Clean of your home or Feel Free contact us based web services we to you as soon as possible trusted.",
+                        "select_style": "five"
+                      },
+                      "elements": [],
+                      "widgetType": "iconbox"
+                    },
+                    {
+                      "id": "7d0e66c",
+                      "elType": "widget",
+                      "settings": {
+                        "button_text": "EXPLORE MORE ",
+                        "button_url": {
+                          "url": "https://wp.ditsolution.net/cleeny/about-us/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "_padding": {
+                          "unit": "px",
+                          "top": "20",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "0",
+                          "isLinked": false
+                        },
+                        "text_align": "left",
+                        "text_align_tablet": "left",
+                        "text_align_mobile": "center",
+                        "_padding_mobile": {
+                          "unit": "px",
+                          "top": "20",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "0",
+                          "isLinked": false
+                        }
+                      },
+                      "elements": [],
+                      "widgetType": "dit-button"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "e7abb0d",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "background_image": {
+          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-bg3.png",
+          "id": 1537,
+          "size": "",
+          "alt": "",
+          "source": "library"
+        },
+        "background_position": "center center",
+        "background_attachment": "scroll",
+        "background_repeat": "no-repeat",
+        "background_size": "cover",
+        "padding": {
+          "unit": "px",
+          "top": "95",
+          "right": "0",
+          "bottom": "100",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "ebcec28",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "592add1",
+              "elType": "section",
+              "settings": {
+                "structure": "20"
+              },
+              "elements": [
+                {
+                  "id": "cc32f66",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "content_position": "center",
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [
+                    {
+                      "id": "7c57e00",
+                      "elType": "widget",
+                      "settings": {
+                        "subtitle": "Cleaning SERVICES",
+                        "title": "Your Trusted <span>Cleaning</span>",
+                        "title_two": "Service Partner",
+                        "highlight_text": "",
+                        "description": "Services we partners you as soon as possible your home or ofice Just Feel Free contact us based web develop.",
+                        "subtitle_color_background": "classic",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "37",
+                          "left": "0",
+                          "isLinked": false
+                        },
+                        "select_style": "three",
+                        "title_color": "#FFFFFF",
+                        "title_two_color": "#FFFFFF",
+                        "description_color": "#FFFFFF"
+                      },
+                      "elements": [],
+                      "widgetType": "section-title"
+                    },
+                    {
+                      "id": "84c0b21",
+                      "elType": "widget",
+                      "settings": {
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-thumb.png",
+                          "id": 1551,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        }
+                      },
+                      "elements": [],
+                      "widgetType": "image"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "1190521",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "content_position": "center",
+                    "padding": {
+                      "unit": "px",
+                      "top": "0",
+                      "right": "10",
+                      "bottom": "0",
+                      "left": "105",
+                      "isLinked": false
+                    },
+                    "_inline_size_tablet": 100,
+                    "margin_tablet": {
+                      "unit": "px",
+                      "top": "40",
+                      "right": "0",
+                      "bottom": "0",
+                      "left": "0",
+                      "isLinked": false
+                    },
+                    "padding_tablet": {
+                      "unit": "px",
+                      "top": "10",
+                      "right": "50",
+                      "bottom": "10",
+                      "left": "10",
+                      "isLinked": false
+                    },
+                    "padding_mobile": {
+                      "unit": "px",
+                      "top": "10",
+                      "right": "10",
+                      "bottom": "0",
+                      "left": "10",
+                      "isLinked": false
+                    }
+                  },
+                  "elements": [
+                    {
+                      "id": "e005021",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-icon7.png",
+                          "id": 1583,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "single_img": {
+                          "url": "",
+                          "id": "",
+                          "size": ""
+                        },
+                        "title_number": "01",
+                        "title_text": "Resort Cleaning",
+                        "title_tex_two": "",
+                        "description_text": "",
+                        "button_text": "Read More",
+                        "link": {
+                          "url": "https://wp.ditsolution.net/cleeny/service/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "service"
+                    },
+                    {
+                      "id": "46eff47",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-icon8.png",
+                          "id": 1584,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "single_img": {
+                          "url": "",
+                          "id": "",
+                          "size": ""
+                        },
+                        "title_number": "02",
+                        "title_text": "Window Cleaning",
+                        "title_tex_two": "",
+                        "description_text": "",
+                        "button_text": "Read More",
+                        "link": {
+                          "url": "https://wp.ditsolution.net/cleeny/service/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "service"
+                    },
+                    {
+                      "id": "3b27dfd",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-icon9.png",
+                          "id": 1585,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "single_img": {
+                          "url": "",
+                          "id": "",
+                          "size": ""
+                        },
+                        "title_number": "03",
+                        "title_text": "Kitchen Cleaning",
+                        "title_tex_two": "",
+                        "description_text": "",
+                        "button_text": "Read More",
+                        "link": {
+                          "url": "https://wp.ditsolution.net/cleeny/service/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "service"
+                    },
+                    {
+                      "id": "1821ea2",
+                      "elType": "widget",
+                      "settings": {
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/service-icon10.png",
+                          "id": 1586,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "single_img": {
+                          "url": "",
+                          "id": "",
+                          "size": ""
+                        },
+                        "title_number": "04",
+                        "title_text": "Garden Cleaning",
+                        "title_tex_two": "",
+                        "description_text": "",
+                        "button_text": "Read More",
+                        "link": {
+                          "url": "https://wp.ditsolution.net/cleeny/service/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "select_style": "six"
+                      },
+                      "elements": [],
+                      "widgetType": "service"
+                    },
+                    {
+                      "id": "dfa95ef",
+                      "elType": "widget",
+                      "settings": {
+                        "button_text": "LEARN MORE ",
+                        "button_url": {
+                          "url": "https://wp.ditsolution.net/cleeny/about-us/",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "button_icon": {
+                          "value": "flaticon flaticon-right-arrow",
+                          "library": "restly-flaticon"
+                        },
+                        "_padding": {
+                          "unit": "px",
+                          "top": "20",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "0",
+                          "isLinked": false
+                        },
+                        "text_align": "left",
+                        "text_align_tablet": "left",
+                        "text_align_mobile": "center",
+                        "_padding_mobile": {
+                          "unit": "px",
+                          "top": "20",
+                          "right": "0",
+                          "bottom": "0",
+                          "left": "0",
+                          "isLinked": false
+                        }
+                      },
+                      "elements": [],
+                      "widgetType": "dit-button"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "6c6a675",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "background_color": "#F3F4F8",
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "90",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "55dfc5f",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "f513af5",
+              "elType": "widget",
+              "settings": {
+                "subtitle": "EXPERT TEAM",
+                "title": "Our Expert <span>Workers</span>",
+                "title_two": "Service Partner",
+                "highlight_text": "",
+                "description": "Services we partners you as soon as possible your home or ofice Just member Feel Free contact us based web develop expert.",
+                "subtitle_color_background": "classic",
+                "_padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "37",
+                  "left": "0",
+                  "isLinked": false
+                },
+                "select_style": "four",
+                "text_align": "center"
+              },
+              "elements": [],
+              "widgetType": "section-title"
+            },
+            {
+              "id": "887d8ee",
+              "elType": "section",
+              "settings": {
+                "structure": "40"
+              },
+              "elements": [
+                {
+                  "id": "ba6da05",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "3f33a81",
+                      "elType": "widget",
+                      "settings": {
+                        "team_name": "Adam Andeson",
+                        "team_designation": "Home Cleaner",
+                        "list": [
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-facebook-4",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "2657a32",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-pinterest-1",
+                              "library": "restly-flaticon"
+                            },
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            },
+                            "_id": "68f6b55"
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-instagram-logo",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "746ccd8",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          }
+                        ],
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/team-thumb5.png",
+                          "id": 1617,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "select_style": "three"
+                      },
+                      "elements": [],
+                      "widgetType": "team"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "bb877c7",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "a99f545",
+                      "elType": "widget",
+                      "settings": {
+                        "team_name": "John D. Alexon",
+                        "team_designation": "Electrician",
+                        "list": [
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-facebook-4",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "2657a32",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-pinterest-1",
+                              "library": "restly-flaticon"
+                            },
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            },
+                            "_id": "68f6b55"
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-instagram-logo",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "746ccd8",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          }
+                        ],
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/team-thumb6.png",
+                          "id": 1616,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "select_style": "three"
+                      },
+                      "elements": [],
+                      "widgetType": "team"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "8c8eff3",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "9af6497",
+                      "elType": "widget",
+                      "settings": {
+                        "team_name": "Richard Powel",
+                        "team_designation": "UI Designer",
+                        "list": [
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-facebook-4",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "2657a32",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-pinterest-1",
+                              "library": "restly-flaticon"
+                            },
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            },
+                            "_id": "68f6b55"
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-instagram-logo",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "746ccd8",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          }
+                        ],
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/team-thumb7.png",
+                          "id": 1615,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "select_style": "three"
+                      },
+                      "elements": [],
+                      "widgetType": "team"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "6a524cf",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "b738c68",
+                      "elType": "widget",
+                      "settings": {
+                        "team_name": "Jonson Charles",
+                        "team_designation": "Office Cleaner",
+                        "list": [
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-facebook-4",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "2657a32",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-pinterest-1",
+                              "library": "restly-flaticon"
+                            },
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            },
+                            "_id": "68f6b55"
+                          },
+                          {
+                            "social_icon": {
+                              "value": "flaticon flaticon-instagram-logo",
+                              "library": "restly-flaticon"
+                            },
+                            "_id": "746ccd8",
+                            "social_link": {
+                              "url": "#",
+                              "is_external": "",
+                              "nofollow": "",
+                              "custom_attributes": ""
+                            }
+                          }
+                        ],
+                        "image": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/team-thumb8.png",
+                          "id": 1614,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "select_style": "three"
+                      },
+                      "elements": [],
+                      "widgetType": "team"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "e754ac4",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "1fdf022",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "62b9973",
+              "elType": "widget",
+              "settings": {
+                "subtitle": "LATEST WORK",
+                "title": "Recently Finished <span>Projects</span>",
+                "title_two": "Visit Our Works",
+                "highlight_text": "",
+                "description": "Services we partners you as soon as possible your home or ofice Just member Feel Free contact us based web develop expert.",
+                "subtitle_color_background": "classic",
+                "_padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "39",
+                  "left": "0",
+                  "isLinked": false
+                },
+                "select_style": "four",
+                "text_align": "center"
+              },
+              "elements": [],
+              "widgetType": "section-title"
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "f2abe54",
+      "elType": "section",
+      "settings": {
+        "layout": "full_width",
+        "gap": "no",
+        "padding": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "120",
+          "left": "0",
+          "isLinked": false
+        },
+        "padding_tablet": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "80",
+          "left": "0",
+          "isLinked": false
+        },
+        "padding_mobile": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "100",
+          "left": "0",
+          "isLinked": false
+        }
+      },
+      "elements": [
+        {
+          "id": "535b564",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "5ce9bd4",
+              "elType": "widget",
+              "settings": {
+                "youtube_video_url": {
+                  "url": "",
+                  "is_external": "",
+                  "nofollow": "",
+                  "custom_attributes": ""
+                },
+                "select_style": "three"
+              },
+              "elements": [],
+              "widgetType": "casestudy"
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "26ddd07",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "background_image": {
+          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-bg3.png",
+          "id": 1677,
+          "size": "",
+          "alt": "",
+          "source": "library"
+        },
+        "background_position": "center center",
+        "background_attachment": "scroll",
+        "background_repeat": "no-repeat",
+        "background_size": "cover",
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "90",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "c2f2771",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "c5c8726",
+              "elType": "section",
+              "settings": {
+                "structure": "20"
+              },
+              "elements": [
+                {
+                  "id": "6c73ff8",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [
+                    {
+                      "id": "368edd0",
+                      "elType": "widget",
+                      "settings": {
+                        "subtitle": "TESTIMONIALS",
+                        "title": "Our Client’s <span>Reviews.</span>",
+                        "title_two": "",
+                        "highlight_text": "",
+                        "description": "",
+                        "subtitle_color_background": "classic",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "37",
+                          "left": "0",
+                          "isLinked": false
+                        },
+                        "select_style": "three",
+                        "title_color": "#FFFFFF",
+                        "title_two_color": "#FFFFFF",
+                        "description_color": "#FFFFFF"
+                      },
+                      "elements": [],
+                      "widgetType": "section-title"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "6cc51cc",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            },
+            {
+              "id": "c45bdd8",
+              "elType": "widget",
+              "settings": {
+                "slides": [
+                  {
+                    "name": "Cameron Delpot",
+                    "quote_text": "Sometimes goods can arrive early when the being brought into the solution creative for design have space needs.",
+                    "_id": "375d442",
+                    "image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-thumb-3.png",
+                      "id": 1684,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "title": "",
+                    "designation": "Home Cleaner",
+                    "rating": 5,
+                    "quote_image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-icon3.png",
+                      "id": 1685,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    }
+                  },
+                  {
+                    "name": "Anuska Sharma",
+                    "quote_text": "Sometimes goods can arrive early when the being brought into the solution creative for design have space needs.",
+                    "image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-thumb-4.png",
+                      "id": 1686,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "title": "",
+                    "designation": "Office Cleaner",
+                    "rating": 5,
+                    "quote_image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-icon3.png",
+                      "id": 1685,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "ad8b3b3"
+                  },
+                  {
+                    "name": "Eshanth Sharma",
+                    "quote_text": "Sometimes goods can arrive early when the being brought into the solution creative for design have space needs.",
+                    "image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-thumb-5.png",
+                      "id": 1687,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "title": "",
+                    "designation": "House Cleaner",
+                    "rating": 5,
+                    "quote_image": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/testi-icon3.png",
+                      "id": 1685,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "07175c6"
+                  }
+                ],
+                "select_style": "two"
+              },
+              "elements": [],
+              "widgetType": "testimonial"
+            },
+            {
+              "id": "db7b90e",
+              "elType": "section",
+              "settings": {
+                "structure": "40",
+                "padding": {
+                  "unit": "px",
+                  "top": "80",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": false
+                }
+              },
+              "elements": [
+                {
+                  "id": "912b3d9",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "42be5d6",
+                      "elType": "widget",
+                      "settings": {
+                        "serial_number": "01",
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/counter-icon2.png",
+                          "id": 1699,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "number": 520,
+                        "suffix": "+",
+                        "title": "HAPPY CLIENTS"
+                      },
+                      "elements": [],
+                      "widgetType": "dreamit-counter"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "bfd426c",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "70b861f",
+                      "elType": "widget",
+                      "settings": {
+                        "serial_number": "01",
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/counter-icon3.png",
+                          "id": 1700,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "number": 22,
+                        "suffix": "+",
+                        "title": "EXPERT TEAM"
+                      },
+                      "elements": [],
+                      "widgetType": "dreamit-counter"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "00606b1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "b49a351",
+                      "elType": "widget",
+                      "settings": {
+                        "serial_number": "01",
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/counter-icon4.png",
+                          "id": 1701,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "number": 218,
+                        "suffix": "+",
+                        "title": "PROJECT DONE"
+                      },
+                      "elements": [],
+                      "widgetType": "dreamit-counter"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "c7c32f9",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 25,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 50
+                  },
+                  "elements": [
+                    {
+                      "id": "5fa785d",
+                      "elType": "widget",
+                      "settings": {
+                        "serial_number": "01",
+                        "icons_type": "img",
+                        "select_img": {
+                          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/05/counter-icon5.png",
+                          "id": 1702,
+                          "size": "",
+                          "alt": "",
+                          "source": "library"
+                        },
+                        "number": 600,
+                        "suffix": "+",
+                        "title": "WORK EXPERIENCE"
+                      },
+                      "elements": [],
+                      "widgetType": "dreamit-counter"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "e16f517",
+      "elType": "section",
+      "settings": {
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "0",
+          "bottom": "80",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "0d846cd",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "c94146a",
+              "elType": "widget",
+              "settings": {
+                "subtitle": "LATEST NEWS",
+                "title": "Latest News <span>& Blog</span>",
+                "title_two": "",
+                "highlight_text": "",
+                "description": "Services we partners you as soon as possible your home or office Just member Feel Free contact us based web develop expert.",
+                "subtitle_color_background": "classic",
+                "_padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "30",
+                  "left": "0",
+                  "isLinked": false
+                },
+                "select_style": "four",
+                "text_align": "center"
+              },
+              "elements": [],
+              "widgetType": "section-title"
+            },
+            {
+              "id": "f324438",
+              "elType": "widget",
+              "settings": {
+                "button_text": "EXPLORE MORE ",
+                "button_icon": {
+                  "value": "flaticon flaticon-right-arrow",
+                  "library": "restly-flaticon"
+                },
+                "select_style": "three",
+                "blog_image": {
+                  "url": "",
+                  "id": "",
+                  "size": ""
+                }
+              },
+              "elements": [],
+              "widgetType": "blogpost"
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "6b29c29",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "background_image": {
+          "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/contact-bg2.png",
+          "id": 1165,
+          "size": "",
+          "alt": "",
+          "source": "library"
+        },
+        "background_position": "center center",
+        "background_position_tablet": "center right",
+        "background_attachment": "scroll",
+        "background_repeat": "no-repeat",
+        "background_size": "cover",
+        "padding": {
+          "unit": "px",
+          "top": "90",
+          "right": "0",
+          "bottom": "73",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden",
+        "padding_tablet": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "73",
+          "left": "0",
+          "isLinked": false
+        }
+      },
+      "elements": [
+        {
+          "id": "d4418ba",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "7de37b8",
+              "elType": "section",
+              "settings": {
+                "structure": "20"
+              },
+              "elements": [
+                {
+                  "id": "68b8018",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 100
+                  },
+                  "elements": [
+                    {
+                      "id": "6c1bd4f",
+                      "elType": "widget",
+                      "settings": {
+                        "youtube_video_url": {
+                          "url": "https://www.youtube.com/watch?v=22Q7Jv2b6jw",
+                          "is_external": "",
+                          "nofollow": "",
+                          "custom_attributes": ""
+                        },
+                        "youtube_video_icon": {
+                          "value": "flaticon flaticon-play-button-2",
+                          "library": "restly-flaticon"
+                        },
+                        "vimeo_video_icon": {
+                          "value": "",
+                          "library": ""
+                        },
+                        "background_image": {
+                          "url": "",
+                          "id": "",
+                          "size": ""
+                        },
+                        "select_style": "four",
+                        "_element_width": "auto",
+                        "_position": "absolute",
+                        "_offset_orientation_h": "end",
+                        "_offset_x_end": {
+                          "size": 150,
+                          "unit": "px"
+                        },
+                        "_offset_y": {
+                          "size": -65,
+                          "unit": "px"
+                        },
+                        "hide_tablet": "hidden-tablet",
+                        "hide_mobile": "hidden-mobile"
+                      },
+                      "elements": [],
+                      "widgetType": "videobox"
+                    }
+                  ],
+                  "isInner": true
+                },
+                {
+                  "id": "0ba2e21",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "_inline_size": null,
+                    "_inline_size_tablet": 100,
+                    "content_position": "center"
+                  },
+                  "elements": [
+                    {
+                      "id": "313a04a",
+                      "elType": "widget",
+                      "settings": {
+                        "subtitle": "CONTACT WITH US",
+                        "title": "Request A Quote",
+                        "title_two": "",
+                        "highlight_text": "",
+                        "description": "",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "0",
+                          "bottom": "37",
+                          "left": "0",
+                          "isLinked": false
+                        }
+                      },
+                      "elements": [],
+                      "widgetType": "section-title"
+                    },
+                    {
+                      "id": "b2eb331",
+                      "elType": "widget",
+                      "settings": {
+                        "shortcode": "[contact-form-7 id=\"84fcaad\" title=\"Main Contact\"]"
+                      },
+                      "elements": [],
+                      "widgetType": "shortcode"
+                    }
+                  ],
+                  "isInner": true
+                }
+              ],
+              "isInner": true
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    },
+    {
+      "id": "46e09bf",
+      "elType": "section",
+      "settings": {
+        "background_background": "classic",
+        "padding": {
+          "unit": "px",
+          "top": "60",
+          "right": "0",
+          "bottom": "70",
+          "left": "0",
+          "isLinked": false
+        },
+        "overflow": "hidden"
+      },
+      "elements": [
+        {
+          "id": "c7264f1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          },
+          "elements": [
+            {
+              "id": "41e3d58",
+              "elType": "widget",
+              "settings": {
+                "brand_list": [
+                  {
+                    "brand_name": "Brand",
+                    "list_content": "Item content. Click the edit button to change this text.",
+                    "_id": "93549be",
+                    "brand_logo": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/brand-img.png",
+                      "id": 582,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    }
+                  },
+                  {
+                    "brand_name": "Brand",
+                    "list_content": "Item content. Click the edit button to change this text.",
+                    "brand_logo": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/brand-img2.png",
+                      "id": 583,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "c37e30f"
+                  },
+                  {
+                    "brand_name": "Brand",
+                    "list_content": "Item content. Click the edit button to change this text.",
+                    "brand_logo": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/brand-img3.png",
+                      "id": 584,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "b651199"
+                  },
+                  {
+                    "brand_name": "Brand",
+                    "list_content": "Item content. Click the edit button to change this text.",
+                    "brand_logo": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/brand-img4.png",
+                      "id": 585,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "8581d51"
+                  },
+                  {
+                    "brand_name": "Brand",
+                    "list_content": "Item content. Click the edit button to change this text.",
+                    "brand_logo": {
+                      "url": "https://wp.ditsolution.net/cleeny/wp-content/uploads/2024/04/brand-img5.png",
+                      "id": 586,
+                      "size": "",
+                      "alt": "",
+                      "source": "library"
+                    },
+                    "_id": "bf7f693"
+                  }
+                ],
+                "select_style": "two"
+              },
+              "elements": [],
+              "widgetType": "brand"
+            }
+          ],
+          "isInner": false
+        }
+      ],
+      "isInner": false
+    }
+  ]
+}

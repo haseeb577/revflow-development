@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import ImageUploadBrowser from './ImageUploadBrowser'
 
+function normalizeApiUrl(url, basePath = '/') {
+  const raw = String(url || '').trim()
+  const bp = basePath || '/'
+  if (!raw || raw === '/' || raw === bp) return null
+  if (raw.startsWith('/api/')) return raw
+  if (raw.startsWith('/')) return `${bp}${raw.slice(1)}`
+  return `${bp}${raw}`
+}
+
 /**
  * Dynamic Select Component - Fetches options from API
  */
 function DynamicSelect({ field, basePath }) {
   const [options, setOptions] = useState(field.options || [])
   const [loading, setLoading] = useState(false)
+  const [dependencyValue, setDependencyValue] = useState('')
   
   // Get last selected site from localStorage if this is a site selector
   const getInitialValue = () => {
@@ -32,6 +42,20 @@ function DynamicSelect({ field, basePath }) {
   const [selectedValue, setSelectedValue] = useState(getInitialValue())
 
   useEffect(() => {
+    if (!field.dependsOn) return undefined
+
+    const readDependencyValue = () => {
+      const dependencyEl = document.querySelector(`[name="${field.dependsOn}"]`)
+      const nextValue = dependencyEl ? String(dependencyEl.value || '').trim() : ''
+      setDependencyValue(prev => (prev === nextValue ? prev : nextValue))
+    }
+
+    readDependencyValue()
+    const intervalId = window.setInterval(readDependencyValue, 400)
+    return () => window.clearInterval(intervalId)
+  }, [field.dependsOn])
+
+  useEffect(() => {
     if (field.dataSource) {
       setLoading(true)
 
@@ -45,6 +69,13 @@ function DynamicSelect({ field, basePath }) {
       // For other paths, prepend basePath
       let apiUrl = url
       const basePathValue = import.meta.env.BASE_URL || '/'
+
+      // Support dynamic URLs like /api/site-pages?site_url={target_site}
+      // so one select can depend on another field value.
+      apiUrl = String(apiUrl).replace(/\{([^}]+)\}/g, (_, key) => {
+        const sourceEl = document.querySelector(`[name="${key}"]`)
+        return sourceEl ? encodeURIComponent(String(sourceEl.value || '').trim()) : ''
+      })
       
       // Strip any existing basePath if url already has it
       if (url.startsWith(basePathValue) && url.includes('/api/')) {
@@ -65,8 +96,25 @@ function DynamicSelect({ field, basePath }) {
         }
       }
       // If apiUrl starts with /api/, use it as-is (Vite proxy handles it)
+      apiUrl = normalizeApiUrl(apiUrl, basePathValue)
+      if (!apiUrl) {
+        console.warn('⚠️ DynamicSelect skipped invalid URL:', url)
+        setOptions([{ label: 'Invalid data source URL', value: '' }])
+        setLoading(false)
+        return
+      }
 
       console.log('📥 DynamicSelect fetching from:', apiUrl, '(url was:', url, ')')
+
+      // If dependency is required and still not selected, keep select empty.
+      if (field.dependsOn && !dependencyValue) {
+        setOptions([{
+          label: field.dependsOnPlaceholder || 'Select site first',
+          value: ''
+        }])
+        setLoading(false)
+        return
+      }
 
       fetch(apiUrl)
         .then(res => {
@@ -182,10 +230,23 @@ function DynamicSelect({ field, basePath }) {
           setLoading(false)
         })
     }
-  }, [field.dataSource, basePath, field.dataPath, field.labelField, field.valueField])
+  }, [field.dataSource, basePath, field.dataPath, field.labelField, field.valueField, field.dependsOn, dependencyValue])
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value)
+    if (field.name === 'target_site') {
+      try {
+        const selectedOption = e.target.options[e.target.selectedIndex]
+        localStorage.setItem('revpublish_last_selected_site', JSON.stringify({
+          site_url: e.target.value,
+          site_name: selectedOption?.text || ''
+        }))
+      } catch (_) {}
+      window.dispatchEvent(new Event('revpublish_target_site_changed'))
+    }
+    if (field.name === 'existing_page_id' || field.name === 'target_page_id') {
+      window.dispatchEvent(new Event('revpublish_existing_page_changed'))
+    }
   }
 
   return (
@@ -211,6 +272,338 @@ function DynamicSelect({ field, basePath }) {
         <option key={j} value={opt.value}>{opt.label}</option>
       ))}
     </select>
+  )
+}
+
+/**
+ * JSON Viewer element for selected page Elementor data
+ */
+function JsonViewerElement({ element }) {
+  const [jsonText, setJsonText] = useState('Select a site and page to view Elementor JSON.')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    const onChanged = () => setRefresh(v => v + 1)
+    window.addEventListener('revpublish_target_site_changed', onChanged)
+    window.addEventListener('revpublish_existing_page_changed', onChanged)
+    return () => {
+      window.removeEventListener('revpublish_target_site_changed', onChanged)
+      window.removeEventListener('revpublish_existing_page_changed', onChanged)
+    }
+  }, [])
+
+  useEffect(() => {
+    const endpoint = element?.dataSource?.endpoint
+    if (!endpoint) return
+
+    let apiUrl = String(endpoint).replace(/\{([^}]+)\}/g, (_, key) => {
+      const sourceEl = document.querySelector(`[name="${key}"]`)
+      return sourceEl ? encodeURIComponent(String(sourceEl.value || '').trim()) : ''
+    })
+    apiUrl = normalizeApiUrl(apiUrl, import.meta.env.BASE_URL || '/')
+    if (!apiUrl) {
+      setJsonText('Select a site and page to view Elementor JSON.')
+      setError(null)
+      return
+    }
+
+    if (apiUrl.includes('site_url=&') || apiUrl.endsWith('site_url=') || apiUrl.includes('page_id=&') || apiUrl.endsWith('page_id=')) {
+      setJsonText('Select a site and page to view Elementor JSON.')
+      setError(null)
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    fetch(apiUrl, { headers: { Accept: 'application/json' } })
+      .then(async (res) => {
+        const txt = await res.text()
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${txt.substring(0, 180)}`)
+        }
+        try {
+          return JSON.parse(txt)
+        } catch (_) {
+          throw new Error(`Invalid JSON response: ${txt.substring(0, 180)}`)
+        }
+      })
+      .then((payload) => {
+        const display = payload?.elementor_data ?? payload
+        setJsonText(JSON.stringify(display, null, 2))
+      })
+      .catch((err) => {
+        setError(err.message)
+      })
+      .finally(() => setLoading(false))
+  }, [element?.dataSource?.endpoint, refresh])
+
+  return (
+    <div style={{
+      marginTop: '1rem',
+      padding: '1rem',
+      borderRadius: '8px',
+      border: '1px solid rgba(99, 102, 241, 0.25)',
+      background: 'rgba(15, 23, 42, 0.5)',
+      ...element.style
+    }}>
+      {element.title && <h4 style={{ margin: '0 0 0.75rem 0', color: '#fff' }}>{element.title}</h4>}
+      {loading && <div style={{ color: '#94a3b8', marginBottom: '0.75rem' }}>Loading JSON...</div>}
+      {error && <div style={{ color: '#fca5a5', marginBottom: '0.75rem' }}>Error: {error}</div>}
+      <pre style={{
+        margin: 0,
+        maxHeight: element.maxHeight || '420px',
+        overflow: 'auto',
+        background: '#0b1220',
+        color: '#e2e8f0',
+        padding: '0.9rem',
+        borderRadius: '6px',
+        border: '1px solid #1e293b',
+        fontSize: '0.8rem',
+        lineHeight: 1.4,
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word'
+      }}>
+        {jsonText}
+      </pre>
+    </div>
+  )
+}
+
+/**
+ * Build and download a page-specific slot template.
+ */
+function ContentTemplateBuilderElement({ element }) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [templateText, setTemplateText] = useState('')
+  const [slotCount, setSlotCount] = useState(0)
+  const [fileName, setFileName] = useState('content-template.txt')
+
+  const handleGenerate = async () => {
+    const siteEl = document.querySelector('[name="target_site"]')
+    const pageEl = document.querySelector('[name="target_page_id"]')
+    const site = siteEl ? String(siteEl.value || '').trim() : ''
+    const pageId = pageEl ? String(pageEl.value || '').trim() : ''
+    if (!site || !pageId) {
+      setError('Select site and target page first.')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    try {
+      const basePath = import.meta.env.BASE_URL || '/'
+      const endpoint = `/api/page-content-template?site_url=${encodeURIComponent(site)}&page_id=${encodeURIComponent(pageId)}`
+      const apiUrl = normalizeApiUrl(endpoint, basePath)
+      const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } })
+      const txt = await res.text()
+      let payload = {}
+      try {
+        payload = JSON.parse(txt)
+      } catch (_) {
+        throw new Error(`Invalid JSON response: ${txt.substring(0, 180)}`)
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${payload?.detail || txt.substring(0, 200)}`)
+      setTemplateText(payload.template_text || '')
+      setSlotCount(Number(payload.slot_count || 0))
+      setFileName(payload.template_filename || 'content-template.txt')
+    } catch (e) {
+      setError(e.message || 'Template generation failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDownload = () => {
+    if (!templateText) return
+    const blob = new Blob([templateText], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = fileName
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  return (
+    <div style={{
+      marginTop: '1rem',
+      padding: '1rem',
+      borderRadius: '8px',
+      border: '1px solid rgba(59,130,246,0.25)',
+      background: 'rgba(15, 23, 42, 0.5)',
+      ...element.style
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <h4 style={{ margin: 0, color: '#fff' }}>{element.title || 'Page Content Template'}</h4>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={loading}
+            style={{ padding: '0.55rem 0.95rem', border: 'none', borderRadius: '6px', background: loading ? '#475569' : '#2563eb', color: '#fff', cursor: loading ? 'not-allowed' : 'pointer' }}
+          >
+            {loading ? 'Generating...' : 'Generate Template'}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={!templateText}
+            style={{ padding: '0.55rem 0.95rem', border: 'none', borderRadius: '6px', background: templateText ? '#16a34a' : '#475569', color: '#fff', cursor: templateText ? 'pointer' : 'not-allowed' }}
+          >
+            Download Template
+          </button>
+        </div>
+      </div>
+      {slotCount > 0 && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Detected slots: {slotCount}</div>}
+      {error && <div style={{ color: '#fca5a5', marginTop: '0.6rem' }}>Error: {error}</div>}
+      {templateText && (
+        <pre style={{ marginTop: '0.75rem', maxHeight: element.maxHeight || '320px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.9rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>
+          {templateText}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Content Mapping Preview element:
+ * compares selected page JSON with CSV doc content JSON.
+ */
+function ContentMappingPreviewElement({ element }) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [result, setResult] = useState(null)
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    const onChanged = () => {
+      setRefresh(v => v + 1)
+      setResult(null)
+      setError(null)
+    }
+    window.addEventListener('revpublish_target_site_changed', onChanged)
+    window.addEventListener('revpublish_existing_page_changed', onChanged)
+    return () => {
+      window.removeEventListener('revpublish_target_site_changed', onChanged)
+      window.removeEventListener('revpublish_existing_page_changed', onChanged)
+    }
+  }, [])
+
+  const handleGeneratePreview = async () => {
+    const siteEl = document.querySelector('[name="target_site"]')
+    const pageEl = document.querySelector('[name="target_page_id"]')
+    const csvEl = document.querySelector('input[name="csv_file"]')
+    const site = siteEl ? String(siteEl.value || '').trim() : ''
+    const pageId = pageEl ? String(pageEl.value || '').trim() : ''
+    const csvFile = csvEl?.files?.[0]
+
+    if (!site || !pageId) {
+      setError('Select a site and target page first.')
+      return
+    }
+    if (!csvFile) {
+      setError('Upload a CSV file first.')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    setResult(null)
+    try {
+      const basePath = import.meta.env.BASE_URL || '/'
+      const apiUrl = normalizeApiUrl('/api/content-json-preview', basePath)
+      const form = new FormData()
+      form.append('site_url', site)
+      form.append('target_page_id', pageId)
+      form.append('csv_file', csvFile)
+
+      const res = await fetch(apiUrl, { method: 'POST', body: form })
+      const txt = await res.text()
+      let payload = null
+      try {
+        payload = JSON.parse(txt)
+      } catch (_) {
+        throw new Error(`Invalid JSON response: ${txt.substring(0, 180)}`)
+      }
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${payload?.detail || txt.substring(0, 180)}`)
+      }
+      setResult(payload)
+    } catch (e) {
+      setError(e.message || 'Failed to generate preview')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const cmp = result?.comparison || null
+  return (
+    <div key={`content-preview-${refresh}`} style={{
+      marginTop: '1rem',
+      padding: '1rem',
+      borderRadius: '8px',
+      border: '1px solid rgba(34, 197, 94, 0.3)',
+      background: 'rgba(15, 23, 42, 0.55)',
+      ...element.style
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        {element.title && <h4 style={{ margin: 0, color: '#fff' }}>{element.title}</h4>}
+        <button
+          type="button"
+          onClick={handleGeneratePreview}
+          disabled={loading}
+          style={{
+            padding: '0.6rem 1rem',
+            borderRadius: '6px',
+            border: 'none',
+            background: loading ? '#475569' : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+            color: '#fff',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontWeight: 600
+          }}
+        >
+          {loading ? 'Generating...' : 'Generate Content Mapping Preview'}
+        </button>
+      </div>
+
+      {error && <div style={{ color: '#fca5a5', marginTop: '0.75rem' }}>Error: {error}</div>}
+
+      {cmp && (
+        <div style={{ marginTop: '0.9rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.6rem' }}>
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.7rem', borderRadius: '6px', color: '#e2e8f0' }}>
+            Template Match: <strong>{cmp.template_match_percent}%</strong>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.7rem', borderRadius: '6px', color: '#e2e8f0' }}>
+            Content Usage: <strong>{cmp.content_usage_percent}%</strong>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.7rem', borderRadius: '6px', color: '#e2e8f0' }}>
+            Replaced: <strong>{cmp.replaced_total}</strong> / {cmp.found_total}
+          </div>
+        </div>
+      )}
+
+      {result && (
+        <div style={{ marginTop: '0.9rem', display: 'grid', gridTemplateColumns: '1fr', gap: '0.8rem' }}>
+          <div>
+            <div style={{ color: '#94a3b8', marginBottom: '0.35rem' }}>Content JSON (from docs)</div>
+            <pre style={{ margin: 0, maxHeight: '250px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.75rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>
+              {JSON.stringify(result.content_json, null, 2)}
+            </pre>
+          </div>
+          <div>
+            <div style={{ color: '#94a3b8', marginBottom: '0.35rem' }}>Merged Preview JSON (content replaced, style preserved)</div>
+            <pre style={{ margin: 0, maxHeight: element.maxHeight || '420px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.75rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>
+              {JSON.stringify(result.merged_preview_json, null, 2)}
+            </pre>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -575,6 +968,10 @@ export default function JSONRender({ config }) {
 
   async function loadData(endpoint, shouldSetLoading = true) {
     try {
+      if (!endpoint || !String(endpoint).trim()) {
+        console.warn('⚠️ loadData skipped: empty endpoint')
+        return
+      }
       // For API endpoints, use directly (Vite proxy handles /api -> backend)
       // Vite proxy is configured to forward /api/* to backend, so we don't need basePath
       let apiUrl = endpoint
@@ -601,6 +998,11 @@ export default function JSONRender({ config }) {
         }
       }
 
+      apiUrl = normalizeApiUrl(apiUrl, basePath)
+      if (!apiUrl) {
+        console.warn('⚠️ loadData skipped invalid URL. endpoint:', endpoint)
+        return
+      }
       console.log('📥 Loading data from:', apiUrl, '(endpoint was:', endpoint, ', basePath:', basePath, ')')
       if (shouldSetLoading) {
         setLoading(true)
@@ -754,9 +1156,16 @@ export default function JSONRender({ config }) {
 
       // Prepend base path for API endpoints
       const basePath = import.meta.env.BASE_URL || '/'
+      if (!formConfig.endpoint || !String(formConfig.endpoint).trim()) {
+        throw new Error('Form endpoint is empty or invalid.')
+      }
       let apiUrl = formConfig.endpoint.startsWith('/api/')
         ? formConfig.endpoint
         : (formConfig.endpoint.startsWith('/') ? `${basePath}${formConfig.endpoint.slice(1)}` : `${basePath}${formConfig.endpoint}`)
+      apiUrl = normalizeApiUrl(apiUrl, basePath)
+      if (!apiUrl) {
+        throw new Error('Computed form API URL is invalid.')
+      }
 
       // Replace placeholders in URL with form values (e.g., {site_id} -> actual value)
       const formDataObj = Object.fromEntries(form.entries())
@@ -774,7 +1183,17 @@ export default function JSONRender({ config }) {
         body: form
       })
 
-      const result = await response.json()
+      let result
+      const responseType = response.headers.get('content-type') || ''
+      if (responseType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        const rawText = await response.text()
+        result = {
+          status: 'error',
+          error: `Server returned non-JSON response (HTTP ${response.status}): ${rawText.substring(0, 200)}`
+        }
+      }
       console.log('✅ Form submitted:', result)
 
       setSubmitResult(result)
@@ -1040,7 +1459,7 @@ export default function JSONRender({ config }) {
                   <input
                     type="checkbox"
                     name={field.name}
-                    defaultChecked={field.default}
+                    defaultChecked={field.default ?? field.defaultValue ?? false}
                   />
                 ) : field.type === 'textarea' ? (
                   <textarea
@@ -1394,6 +1813,13 @@ export default function JSONRender({ config }) {
       case 'dataTable':
         // Pass full data context so DataTable can access total, etc.
         return <DataTableElement key={key} element={element} contextData={elementData || data} />
+
+      case 'jsonViewer':
+        return <JsonViewerElement key={key} element={element} />
+      case 'contentTemplateBuilder':
+        return <ContentTemplateBuilderElement key={key} element={element} />
+      case 'contentMappingPreview':
+        return <ContentMappingPreviewElement key={key} element={element} />
 
       case 'alert':
         const alertColors = {

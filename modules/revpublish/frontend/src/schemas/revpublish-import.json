@@ -100,45 +100,33 @@
                 "description": "Select the registered WordPress site where you want to publish all content from the CSV"
               },
               {
+                "type": "select",
+                "name": "target_page_id",
+                "label": "🧩 Target Existing Page (Optional)",
+                "required": false,
+                "dataSource": "/api/site-pages?site_url={target_site}&per_page=100",
+                "dataPath": "pages",
+                "valueField": "id",
+                "labelField": "display_name",
+                "dependsOn": "target_site",
+                "dependsOnPlaceholder": "Select site first, then choose a page to update",
+                "placeholder": "Leave empty to create new pages, or choose one to update",
+                "description": "If selected, import updates this exact page (keeps existing page structure when bridge update succeeds)"
+              },
+              {
+                "type": "checkbox",
+                "name": "update_selected_page_only",
+                "label": "🔒 Update Selected Page Only (No New Page)",
+                "description": "When enabled, import fails instead of creating any new page. Best for strict replace-only workflow.",
+                "defaultValue": true
+              },
+              {
                 "type": "file",
                 "name": "csv_file",
                 "label": "📋 Upload CSV File",
                 "required": true,
                 "accept": ".csv",
-                "description": "Upload your CSV file containing site data and content"
-              },
-              {
-                "type": "select",
-                "name": "animation_style",
-                "label": "🎬 Animation Style",
-                "required": false,
-                "description": "Override default animation style for all pages",
-                "options": [
-                  {
-                    "value": "",
-                    "label": "Use Page Type Default"
-                  },
-                  {
-                    "value": "professional",
-                    "label": "Professional"
-                  },
-                  {
-                    "value": "subtle",
-                    "label": "Subtle"
-                  },
-                  {
-                    "value": "dynamic",
-                    "label": "Dynamic"
-                  },
-                  {
-                    "value": "energetic",
-                    "label": "Energetic"
-                  },
-                  {
-                    "value": "none",
-                    "label": "None"
-                  }
-                ]
+                "description": "Upload CSV with content data. For row-wise page updates, supported columns include existing_page_id, target_page_id, page_id, existing_page_url, target_page_url, page_url, existing_page_slug, target_page_slug."
               },
               {
                 "type": "checkbox",
@@ -156,9 +144,9 @@
               },
               {
                 "type": "checkbox",
-                "name": "use_bridge_plugin",
-                "label": "🌉 Bridge Plugin Mode",
-                "description": "Send HTML content - Bridge Plugin converts to Elementor (Recommended)",
+                "name": "preserve_formatting",
+                "label": "🛡️ Preserve Existing Page Formatting",
+                "description": "For page updates, require bridge-based update so Elementor layout/styles remain intact",
                 "defaultValue": true
               },
               {
@@ -197,6 +185,33 @@
                 "boxShadow": "0 4px 12px rgba(99, 102, 241, 0.3)",
                 "transition": "all 0.2s"
               }
+            }
+          },
+          {
+            "type": "jsonViewer",
+            "title": "🧬 Selected Page Elementor JSON",
+            "dataSource": {
+              "endpoint": "/api/page-elementor-json?site_url={target_site}&page_id={target_page_id}"
+            },
+            "maxHeight": "380px",
+            "style": {
+              "marginTop": "1rem"
+            }
+          },
+          {
+            "type": "contentTemplateBuilder",
+            "title": "🧩 Step 1: Generate Page Slot Template",
+            "maxHeight": "320px",
+            "style": {
+              "marginTop": "1rem"
+            }
+          },
+          {
+            "type": "contentMappingPreview",
+            "title": "🔄 Step 2: Preview Mapping Against Selected Page",
+            "maxHeight": "420px",
+            "style": {
+              "marginTop": "1rem"
             }
           }
         ]

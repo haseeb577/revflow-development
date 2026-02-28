@@ -1,0 +1,104 @@
+Use this exact structure for page template `home-03` (page_id: 1195).
+Rules:
+- Keep each label on its own line as `Label: value`
+- Do not add extra sections
+- Do not add unlabeled paragraphs
+- Keep title/name/button values short (3-10 words)
+- Put long text only in Description/Paragraph/Testimonial Text fields
+
+1. Hero Section
+Hero Subtitle: Trusted Cleaning Services
+Hero Heading: Professional Cleaning You Trust
+Hero Description: Reliable and affordable cleaning for homes, offices, and commercial spaces. We deliver spotless results with consistent quality and care.
+Hero Button: Book Appointment Now
+Hero Shape Subtitle: Help Line
+Hero Shape Number: 9807659000
+
+2. About + Highlights Section
+About Small Label: About Cleeny
+About Main Heading: Your Trusted Cleaning
+About Secondary Heading: Service Partner
+About Paragraph: At Cleeny, we believe clean spaces create better living and working environments. Our trained team uses safe products and proven methods for dependable, high-quality results.
+Highlight 1 Title: House Cleaning
+Highlight 1 Description: Complete home cleaning tailored to your schedule and comfort.
+Highlight 2 Title: Window Cleaning
+Highlight 2 Description: Streak-free interior and exterior window cleaning for brighter spaces.
+Highlight 3 Title: Office Cleaning
+Highlight 3 Description: Professional office cleaning to keep your workplace healthy and organized.
+Feature 1 Title: Customer Focused Care
+Feature 1 Description: We customize each service to your exact needs and priorities.
+Feature 2 Title: Flexible Scheduling
+Feature 2 Description: Weekly, bi-weekly, and monthly cleaning plans are available.
+About Button: Explore More
+
+3. Services Section
+Services Small Label: Our Services
+Services Main Heading: Comprehensive Cleaning
+Services Secondary Heading: For Every Property
+Services Intro Paragraph: We provide complete cleaning solutions for residential and commercial spaces. No job is too small or too complex for our expert crew.
+Service 1 Title: Resort Cleaning
+Service 1 Description: Hospitality-grade cleaning for hotels and guest properties.
+Service 2 Title: Window Cleaning
+Service 2 Description: Safe and effective cleaning for residential and commercial windows.
+Service 3 Title: Kitchen Cleaning
+Service 3 Description: Deep cleaning and sanitizing for kitchens, appliances, and counters.
+Service 4 Title: Garden Cleaning
+Service 4 Description: Outdoor surface, patio, and exterior area cleaning services.
+Services Button: Learn More
+
+4. Team Section
+Team Small Label: Expert Team
+Team Main Heading: Meet Our Professionals
+Team Secondary Heading: Cleaning Specialists
+Team Paragraph: Our background-checked team delivers dependable service with professionalism, punctuality, and close attention to detail.
+Member 1 Name: Adam Anderson
+Member 1 Role: Senior Cleaner
+Member 2 Name: John Alexon
+Member 2 Role: Maintenance Specialist
+Member 3 Name: Richard Powell
+Member 3 Role: Quality Supervisor
+Member 4 Name: Jonson Charles
+Member 4 Role: Commercial Cleaner
+
+5. Projects Section
+Projects Small Label: Latest Work
+Projects Main Heading: Recently Finished
+Projects Secondary Heading: Client Projects
+Projects Paragraph: We take pride in transforming spaces and delivering consistent, high-quality cleaning outcomes across residential and commercial projects.
+
+6. Testimonials + Counters Section
+Testimonials Small Label: Testimonials
+Testimonials Main Heading: What Clients Say
+Testimonials Secondary Heading: About Our Service
+Testimonials Paragraph: Homeowners and businesses trust Cleeny for reliable, thorough, and professional cleaning support.
+Testimonial 1 Name: Cameron Delpot
+Testimonial 1 Role: Homeowner
+Testimonial 1 Text: Cleeny transformed our home. The team was punctual, friendly, and extremely thorough.
+Testimonial 2 Name: Anuska Sharma
+Testimonial 2 Role: Office Manager
+Testimonial 2 Text: We rely on Cleeny for office cleaning every week. Quality is always consistent.
+Testimonial 3 Name: Eshanth Sharma
+Testimonial 3 Role: Property Owner
+Testimonial 3 Text: Great communication, fair pricing, and spotless results every single visit.
+Counter 1 Number: 500
+Counter 1 Suffix: +
+Counter 1 Label: Happy Clients
+Counter 2 Number: 25
+Counter 2 Suffix: +
+Counter 2 Label: Expert Team
+Counter 3 Number: 1200
+Counter 3 Suffix: +
+Counter 3 Label: Projects Done
+Counter 4 Number: 8
+Counter 4 Suffix: +
+Counter 4 Label: Years Experience
+
+7. Blog Section
+Blog Small Label: Latest News
+Blog Main Heading: Cleaning Tips And Blog
+Blog Paragraph: Stay updated with practical cleaning guides, maintenance tips, and expert advice from our team.
+Blog Button: Explore More
+
+8. Quote Section
+Quote Small Label: Contact With Us
+Quote Main Heading: Request A Quote

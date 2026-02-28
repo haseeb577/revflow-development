@@ -231,7 +231,7 @@ services:
     environment:
       - PORT=8550
       - MODULE_NUMBER=9
-    command: uvicorn main:app --host 0.0.0.0 --port 8550
+    command: sh -c "pip install --quiet -r /app/requirements.txt && uvicorn main:app --host 0.0.0.0 --port 8550"
 
   # ==========================================================================
   # Module 10: RevMetrics™

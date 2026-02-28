@@ -43,11 +43,43 @@
         "enctype": "multipart/form-data",
         "fields": [
           {
+            "type": "select",
+            "name": "target_site",
+            "label": "🌐 Select WordPress Site",
+            "required": true,
+            "dataSource": "/api/sites?per_page=100",
+            "dataPath": "sites",
+            "valueField": "site_url",
+            "labelField": "site_name",
+            "placeholder": "Choose a WordPress site..."
+          },
+          {
+            "type": "select",
+            "name": "target_page_id",
+            "label": "🧩 Target Existing Page (Optional)",
+            "required": false,
+            "dataSource": "/api/site-pages?site_url={target_site}&per_page=100",
+            "dataPath": "pages",
+            "valueField": "id",
+            "labelField": "display_name",
+            "dependsOn": "target_site",
+            "dependsOnPlaceholder": "Select site first, then choose page",
+            "placeholder": "Leave empty to create new pages"
+          },
+          {
+            "type": "checkbox",
+            "name": "update_selected_page_only",
+            "label": "🔒 Update Selected Page Only (No New Page)",
+            "description": "When enabled, import fails instead of creating any new page.",
+            "defaultValue": true
+          },
+          {
             "type": "file",
             "name": "csv_file",
             "label": "\ud83d\udccb Site Registry & Content (CSV with everything)",
             "required": true,
-            "accept": ".csv"
+            "accept": ".csv",
+            "description": "Supports row-wise page update columns: existing_page_id, target_page_id, page_id, existing_page_url, target_page_url, page_url, existing_page_slug, target_page_slug."
           },
           {
             "type": "select",
@@ -99,6 +131,13 @@
             "name": "use_bridge_plugin",
             "label": "\ud83c\udf09 Bridge Plugin Mode",
             "description": "Send HTML content - Bridge Plugin converts to Elementor (Recommended)",
+            "defaultValue": true
+          },
+          {
+            "type": "checkbox",
+            "name": "preserve_formatting",
+            "label": "🛡️ Preserve Existing Page Formatting",
+            "description": "For page updates, require bridge-based update to keep Elementor layout/styles",
             "defaultValue": true
           },
           {
