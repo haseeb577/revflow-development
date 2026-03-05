@@ -17,6 +17,12 @@ export default defineConfig({
       '/api': {
         target: 'http://127.0.0.1:8550',
         changeOrigin: true
+      },
+      // When app is served at base path, API may be requested as /revflow_os/revpublish/api/...
+      '/revflow_os/revpublish/api': {
+        target: 'http://127.0.0.1:8550',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/revflow_os\/revpublish/, '')
       }
     }
   }

@@ -719,6 +719,64 @@ def _strip_html_to_text(value: str) -> str:
 _HEADING_KEYS = {"title", "heading", "subtitle", "sub_title", "heading_title", "title_text"}
 _PARAGRAPH_KEYS = {"editor", "description", "content", "text", "paragraph", "caption", "desc", "description_text"}
 _BUTTON_KEYS = {"button_text", "btn_text", "cta_text", "label", "button_label", "text"}
+
+# Instructional labels that appear in user raw content as guides only — never place these as slot content.
+_INSTRUCTIONAL_PHRASES = frozenset({
+    "page content:", "hero section", "headline:", "short paragraph:", "button:",
+    "main heading:", "paragraph:", "small label:", "intro text:", "services list:",
+    "feature 1:", "feature 2:", "example:", "project titles:", "testimonial 1:", "testimonial 2:",
+    "counters (update properly):", "blog titles (improved):", "left side:", "right side:",
+    "about section", "detailed services section (blue background)", "expert team section",
+    "projects section", "testimonials section", "blog section", "quote section",
+    "call to action section", "service highlights (3 boxes section)", "read more", "learn more",
+    "submit request", "heading:", "label:", "small label", "main heading", "paragraph",
+    "intro text", "services list", "button", "headline", "short paragraph",
+})
+# Lines that are only a section/label (e.g. "Hero Section (Main Banner)", "Headline:") — treat as instructional
+_INSTRUCTIONAL_LINE_PATTERN = re.compile(
+    r"^(?:hero\s+section|headline|short\s+paragraph|button|main\s+heading|paragraph|small\s+label|intro\s+text|services\s+list|feature\s+[12]|example|project\s+titles|testimonial\s+[12]|about\s+section|expert\s+team\s+section|projects\s+section|testimonials\s+section|blog\s+section|quote\s+section|call\s+to\s+action|service\s+highlights|page\s+content)(?:\s*\([^)]*\))?\s*:?\s*$",
+    re.IGNORECASE
+)
+
+def _is_instructional_only(text: str) -> bool:
+    """True if the text is empty or is only an instructional label (e.g. 'Headline:', 'Hero Section (Main Banner)')."""
+    t = (text or "").strip()
+    if not t:
+        return True
+    t_lower = t.lower()
+    if t_lower in _INSTRUCTIONAL_PHRASES:
+        return True
+    if _INSTRUCTIONAL_LINE_PATTERN.match(t):
+        return True
+    # Single line that is only a label: ends with colon or "Label (Something)" and is short (e.g. "Main Heading:", "Hero Section (Main Banner)")
+    if len(t) < 60 and (t.rstrip().endswith(":") or re.search(r"\([^)]+\)\s*:?\s*$", t)):
+        if re.match(r"^[A-Za-z][A-Za-z0-9\s\-&']*(?:\s*\([^)]*\))?\s*:?\s*$", t):
+            return True
+    return False
+
+
+def _strip_instructional_from_content(content: str) -> str:
+    """
+    Remove instructional lines from content so only actual copy remains.
+    Used so 'Headline:', 'Short Paragraph:', 'Hero Section' etc. never end up as slot values.
+    """
+    if not (content or "").strip():
+        return ""
+    lines = []
+    for line in (content or "").splitlines():
+        stripped = line.strip()
+        if not stripped:
+            lines.append(line)
+            continue
+        if _is_instructional_only(stripped):
+            continue
+        lines.append(line)
+    result = "\n".join(lines).strip()
+    # Also strip leading "Page content:" line if present
+    result = re.sub(r"(?im)^\s*page\s+content\s*:?\s*[\r\n]+", "", result, count=1).strip()
+    return result
+
+
 _IGNORE_KEY_FRAGMENTS = {
     "color", "typography", "font", "margin", "padding", "background", "border",
     "size", "icon", "image", "url", "link", "class", "id", "align", "width", "height",
@@ -759,9 +817,9 @@ def _extract_slot_value_map_from_html(content_html: str) -> Dict[str, str]:
     for m in re.finditer(pattern, normalized):
         slot_id = str(m.group(1)).strip().upper()
         value = _strip_html_to_text(m.group(2))
-        # Strip optional "Page content:" line (template label only) — never included in deployed content
         if value:
             value = re.sub(r"(?im)^\s*page\s+content\s*:?\s*[\r\n]+", "", value, count=1).strip()
+            value = re.sub(r"(?im)^\s*page\s+image\s+url\s*:?\s*[\r\n]+", "", value, count=1).strip()
         if value:
             slot_map[slot_id] = value
     return slot_map
@@ -790,7 +848,9 @@ def _slot_label_from_page_content(current_value: str, widget_type: str, field_ke
 
 def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
     """
-    Collect editable text slots from selected page JSON in stable traversal order.
+    Collect editable text slots from Elementor JSON using depth-first search (DFS).
+    Elementor data is a recursive tree: Document -> Section -> Column -> Widget -> Inner Section -> ...
+    DFS ensures we find every content field at any depth (e.g. a button inside a nested inner section).
     """
     slots: List[Dict[str, Any]] = []
     slot_counter = 0
@@ -810,17 +870,18 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
             "label": label,
         })
 
-    def walk(node: Any) -> None:
-        if isinstance(node, list):
-            for child in node:
-                walk(child)
+    def process_elementor_data(data: Any) -> None:
+        """DFS: process list of elements; for each, read settings content then recurse into elements."""
+        if isinstance(data, list):
+            for element in data:
+                process_elementor_data(element)
             return
-        if not isinstance(node, dict):
+        if not isinstance(data, dict):
             return
-
-        if node.get("elType") == "widget":
-            widget_type = (node.get("widgetType") or "").strip()
-            settings = node.get("settings")
+        # 1. If this node is a widget, extract content from settings (title, editor, text, etc.)
+        if data.get("elType") == "widget":
+            widget_type = (data.get("widgetType") or "").strip()
+            settings = data.get("settings")
             if isinstance(settings, dict):
                 if widget_type == "heading" and isinstance(settings.get("title"), str):
                     add_slot("heading", widget_type, "title", settings.get("title", ""))
@@ -828,6 +889,14 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
                     add_slot("paragraph", widget_type, "editor", settings.get("editor", ""))
                 elif widget_type == "button" and isinstance(settings.get("text"), str):
                     add_slot("button", widget_type, "text", settings.get("text", ""))
+                elif widget_type == "image":
+                    img_url = None
+                    if isinstance(settings.get("image"), dict) and (settings.get("image") or {}).get("url"):
+                        img_url = (settings["image"].get("url") or "").strip()
+                    if not img_url and isinstance(settings.get("url"), str):
+                        img_url = (settings.get("url") or "").strip()
+                    if img_url:
+                        add_slot("image", widget_type, "image", img_url)
                 elif widget_type == "dit-button" and isinstance(settings.get("button_text"), str):
                     add_slot("button", widget_type, "button_text", settings.get("button_text", ""))
                 elif widget_type == "iconbox":
@@ -843,10 +912,7 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
                     for key in ("title_text", "title_tex_two", "description_text", "button_text"):
                         if isinstance(settings.get(key), str) and settings.get(key, "").strip():
                             add_slot("button" if key == "button_text" else ("heading" if "title" in key else "paragraph"), widget_type, key, settings.get(key, ""))
-
-                # Generic loop for widgets not handled above, and for repeater list items (e.g. ditaccordion)
-                handled_types = ("heading", "text-editor", "button", "dit-button", "iconbox", "section-title", "service")
-                if widget_type not in handled_types:
+                else:
                     for k, v in settings.items():
                         if isinstance(v, str) and v.strip():
                             kind = _classify_text_key(k, v)
@@ -861,29 +927,282 @@ def _collect_template_slots(template_data: Any) -> List[Dict[str, Any]]:
                                         kind = _classify_text_key(rk, rv)
                                         if kind:
                                             add_slot(kind, widget_type, rk, rv)
+        # 2. Recurse into children (Section -> Column -> Widget | Inner Section -> ...)
+        elements = data.get("elements")
+        if isinstance(elements, list) and elements:
+            process_elementor_data(elements)
 
-        for value in node.values():
-            walk(value)
-
-    walk(template_data)
+    process_elementor_data(template_data)
     return slots
 
 
 def _build_slot_template_text(slots: List[Dict[str, Any]]) -> str:
     lines = [
         "Fill content using exact SLOT labels. Do not rename slot IDs.",
-        "Each slot has a heading (slot ID + preview) and page content from the selected page.",
-        "Replace the page content with your new text; after updating this template in your doc, put doc URL in CSV and import.",
+        "Text slots: replace 'Page content' with your text. Image slots: replace 'Page image URL' with your image URL.",
         ""
     ]
     for s in slots:
         label = (s.get("label") or "Content").strip()
+        kind = (s.get("kind") or "paragraph").lower()
         lines.append(f"{s['slot_id']} [{label}]:")
-        lines.append("Page content:")
-        current = (s.get("current_value") or "").strip()
-        lines.append(current if current else "[No content on page - add your text here]")
+        if kind == "image":
+            lines.append("Page image URL:")
+            current = (s.get("current_value") or "").strip()
+            lines.append(current if current else "[No image URL - add image URL here]")
+        else:
+            lines.append("Page content:")
+            current = (s.get("current_value") or "").strip()
+            lines.append(current if current else "[No content on page - add your text here]")
         lines.append("")
     return "\n".join(lines).strip() + "\n"
+
+
+def _build_filled_slot_template_text(slots: List[Dict[str, Any]], slot_value_map: Dict[str, str]) -> str:
+    """
+    Build template text with slot values filled. No instructional header lines;
+    only SLOT_xxx blocks so the same text can be sent to deploy without stripping.
+    """
+    lines = []
+    for s in slots:
+        slot_id = (s.get("slot_id") or "").strip().upper()
+        label = (s.get("label") or "Content").strip()
+        kind = (s.get("kind") or "paragraph").lower()
+        lines.append(f"{s['slot_id']} [{label}]:")
+        raw_filled = (slot_value_map or {}).get(slot_id, "") or ""
+        if kind == "image":
+            value = (raw_filled or "").strip()
+            if not value or not (value.startswith("http://") or value.startswith("https://")):
+                value = (s.get("current_value") or "").strip() or "[No image URL - add URL here]"
+        else:
+            filled = _clean_slot_value(raw_filled)
+            current = (s.get("current_value") or "").strip()
+            value = filled if filled else (current if current else "[No content - add your text here]")
+        lines.append(value)
+        lines.append("")
+    return "\n".join(lines).strip() + "\n"
+
+
+def _chunks_to_slot_value_map(slots: List[Dict[str, Any]], content_chunks: Dict[str, List[str]]) -> Dict[str, str]:
+    """Map content chunks to slots by kind and order (same logic as _replace_elementor_content_only)."""
+    headings = list(content_chunks.get("headings", []))
+    paragraphs = list(content_chunks.get("paragraphs", []))
+    buttons = list(content_chunks.get("buttons", []))
+    slot_value_map: Dict[str, str] = {}
+    hi, pi, bi = 0, 0, 0
+    for s in slots:
+        slot_id = (s.get("slot_id") or "").strip().upper()
+        kind = (s.get("kind") or "paragraph").lower()
+        if not slot_id:
+            continue
+        if kind == "heading":
+            if hi < len(headings):
+                slot_value_map[slot_id] = headings[hi].strip()
+                hi += 1
+            elif pi < len(paragraphs) and len(paragraphs[pi].split()) <= 12:
+                slot_value_map[slot_id] = paragraphs[pi].strip()
+                pi += 1
+        elif kind == "button":
+            if bi < len(buttons):
+                slot_value_map[slot_id] = buttons[bi].strip()
+                bi += 1
+            elif hi < len(headings) and len(headings[hi].split()) <= 8:
+                slot_value_map[slot_id] = headings[hi].strip()
+                hi += 1
+        else:
+            if pi < len(paragraphs):
+                slot_value_map[slot_id] = paragraphs[pi].strip()
+                pi += 1
+            elif hi < len(headings):
+                slot_value_map[slot_id] = headings[hi].strip()
+                hi += 1
+    return slot_value_map
+
+
+def _clean_slot_value(val: str) -> str:
+    """Remove 'Page content:' and instructional-only lines from a slot value so it never appears on the page."""
+    if not (val or "").strip():
+        return ""
+    val = re.sub(r"(?im)^\s*page\s+content\s*:?\s*[\r\n]*", "", val, count=1).strip()
+    val = re.sub(r"(?im)^\s*page\s+image\s+url\s*:?\s*[\r\n]*", "", val, count=1).strip()
+    val = _strip_instructional_from_content(val)
+    return val.strip() if not _is_instructional_only(val) else ""
+
+
+def _normalize_for_similarity(text: str) -> str:
+    """Normalize text for duplicate/similarity check."""
+    if not text:
+        return ""
+    t = re.sub(r"\s+", " ", _strip_html_to_text(text)).strip().lower()
+    return t[:500]
+
+
+def _is_similar_content(a: str, b: str, threshold: float = 0.85) -> bool:
+    """
+    Return True if the two strings are similar enough to avoid duplication.
+    When template already has this content, we skip re-adding it.
+    """
+    na, nb = _normalize_for_similarity(a), _normalize_for_similarity(b)
+    if not na or not nb:
+        return False
+    if na == nb:
+        return True
+    if len(na) < 10 or len(nb) < 10:
+        return na == nb
+    # One contains the other (e.g. same phrase)
+    if na in nb or nb in na:
+        return True
+    # Simple word overlap: majority of words in shorter string appear in longer
+    wa, wb = set(na.split()), set(nb.split())
+    if not wa:
+        return False
+    overlap = len(wa & wb) / len(wa)
+    return overlap >= threshold
+
+
+def _enforce_slot_kind(slot_id: str, kind: str, value: str) -> str:
+    """
+    Ensure value matches slot kind: heading = short phrase, button = short text,
+    paragraph = can be long. Prevents putting a full paragraph into a heading slot.
+    """
+    if not (value or "").strip():
+        return ""
+    v = (value or "").strip()
+    words = v.split()
+    kind = (kind or "paragraph").lower()
+    if kind == "heading":
+        # Max ~15 words or first sentence so it stays a heading
+        if len(words) > 15:
+            first_sentence = re.split(r"[.!?]\s+", v, maxsplit=1)[0].strip()
+            if len(first_sentence.split()) <= 15:
+                return first_sentence
+            return " ".join(words[:15]).strip()
+        if len(v) > 120 and " " in v:
+            return " ".join(words[:15]).strip()
+        return v
+    if kind == "button":
+        if len(words) > 8 or len(v) > 60:
+            return " ".join(words[:8]).strip()
+        return v
+    return v
+
+
+def _enforce_slot_length_by_template(
+    slots: List[Dict[str, Any]],
+    slot_value_map: Dict[str, str],
+    slot_kind: Dict[str, str],
+) -> None:
+    """
+    Strict: cap each slot's mapped value to template length (current_value word count + 2 max).
+    So if the page had 50 words in a slot, we never send more than 52 — layout stays the same.
+    """
+    for s in slots:
+        sid = (s.get("slot_id") or "").strip().upper()
+        if not sid or sid not in slot_value_map:
+            continue
+        current = (s.get("current_value") or "").strip()
+        current_words = len(current.split())
+        max_extra = 2
+        max_words = current_words + max_extra if current_words else 999
+        kind = slot_kind.get(sid, "paragraph")
+        if kind == "heading":
+            max_words = min(max_words, 15)
+        elif kind == "button":
+            max_words = min(max_words, 8)
+        val = (slot_value_map.get(sid) or "").strip()
+        if not val or len(val.split()) <= max_words:
+            continue
+        words = val.split()
+        truncated = " ".join(words[:max_words])
+        for sep in (". ", "! ", "? "):
+            last = truncated.rfind(sep)
+            if last != -1:
+                truncated = truncated[: last + 1].strip()
+                break
+        slot_value_map[sid] = truncated
+
+
+def _content_to_slot_value_map(
+    slots: List[Dict[str, Any]],
+    template_data: Any,
+    content: str,
+    use_llm: bool = False,
+) -> Tuple[Dict[str, str], Dict[str, Any]]:
+    """
+    Build slot_value_map from raw content. Tries: (1) SLOT_xxx in content, (2) Groq LLM if use_llm, (3) chunk-based.
+    All slot values are cleaned so 'Page content:' and instructional labels never appear as content.
+    Returns (slot_value_map, diagnostics).
+    """
+    slot_value_map = _extract_slot_value_map_from_html(content)
+    source = "slot_labels_in_content" if slot_value_map else None
+    if not slot_value_map and use_llm:
+        try:
+            from integrations.groq_slot_mapper import map_content_to_slots
+            content_for_llm = _strip_instructional_from_content(content)
+            llm_map = map_content_to_slots(slots, content_for_llm or content)
+            if llm_map:
+                slot_value_map = llm_map
+                source = "groq_llm"
+        except Exception as e:
+            print(f"[WARN] LLM slot mapping failed: {e}", flush=True)
+    if not slot_value_map:
+        raw_chunks = _extract_content_chunks_from_html(content)
+        adjusted_chunks, _ = _adjust_content_chunks_for_template(raw_chunks, template_data)
+        slot_value_map = _chunks_to_slot_value_map(slots, adjusted_chunks)
+        source = "chunk_based"
+    judge_corrections = 0
+    if use_llm and slot_value_map:
+        try:
+            from integrations.groq_slot_mapper import judge_and_adjust_slots
+            corrections = judge_and_adjust_slots(slots, slot_value_map, content)
+            for sid, new_val in (corrections or {}).items():
+                if sid and new_val:
+                    slot_value_map[sid] = new_val
+                    judge_corrections += 1
+        except Exception as e:
+            print(f"[WARN] LLM judge step skipped: {e}", flush=True)
+    # Clean every slot value so "Page content:" and instructional labels never end up on the page
+    cleaned = {}
+    for sid, v in (slot_value_map or {}).items():
+        cleaned[sid] = _clean_slot_value(str(v or ""))
+    slot_value_map = cleaned
+
+    # Build slot lookup for kind (and current_value only for optional logic)
+    slot_kind = { (s.get("slot_id") or "").strip().upper(): (s.get("kind") or "paragraph").lower() for s in slots }
+
+    # Deduplication only when we did NOT use LLM (e.g. chunk-based): if mapped value is same as template, avoid duplicate. When LLM is used, it may keep or slightly adjust template so we do not blank similar content.
+    if source != "groq_llm":
+        slot_current = { (s.get("slot_id") or "").strip().upper(): (s.get("current_value") or "").strip() for s in slots }
+        for sid, val in list(slot_value_map.items()):
+            if not val:
+                continue
+            current = slot_current.get(sid) or ""
+            if current and _is_similar_content(val, current):
+                slot_value_map[sid] = ""
+
+    # Enforce slot kind: heading slots get short phrases only, not full paragraphs; button slots get short text
+    for sid in slot_value_map:
+        kind = slot_kind.get(sid, "paragraph")
+        slot_value_map[sid] = _enforce_slot_kind(sid, kind, slot_value_map.get(sid) or "")
+
+    # Strict length: cap each slot to template's current word count + 2 so layout stays the same as the existing page
+    _enforce_slot_length_by_template(slots, slot_value_map, slot_kind)
+
+    # Whenever a slot is empty, use the template's existing content so we never leave "[No content - add your text here]" when the page already has text (template-first, fill all slots)
+    slot_current = { (s.get("slot_id") or "").strip().upper(): (s.get("current_value") or "").strip() for s in slots }
+    for sid, current in slot_current.items():
+        if not sid:
+            continue
+        if not (slot_value_map.get(sid) or "").strip() and (current or "").strip():
+            slot_value_map[sid] = current
+
+    diagnostics = {
+        "source": source or "none",
+        "slots_filled": sum(1 for v in slot_value_map.values() if (v or "").strip()),
+    }
+    if judge_corrections:
+        diagnostics["judge_corrections_applied"] = judge_corrections
+    return slot_value_map, diagnostics
 
 
 def _extract_content_chunks_from_html(content_html: str) -> Dict[str, List[str]]:
@@ -896,17 +1215,17 @@ def _extract_content_chunks_from_html(content_html: str) -> Dict[str, List[str]]
 
     for tag_match in re.finditer(r"<h[1-6][^>]*>(.*?)</h[1-6]>", html, flags=re.IGNORECASE | re.DOTALL):
         txt = _strip_html_to_text(tag_match.group(1))
-        if txt:
+        if txt and not _is_instructional_only(txt):
             chunks["headings"].append(txt)
 
     for tag_match in re.finditer(r"<p[^>]*>(.*?)</p>", html, flags=re.IGNORECASE | re.DOTALL):
         txt = _strip_html_to_text(tag_match.group(1))
-        if txt:
+        if txt and not _is_instructional_only(txt):
             chunks["paragraphs"].append(txt)
 
     for tag_match in re.finditer(r"<li[^>]*>(.*?)</li>", html, flags=re.IGNORECASE | re.DOTALL):
         txt = _strip_html_to_text(tag_match.group(1))
-        if txt:
+        if txt and not _is_instructional_only(txt):
             chunks["paragraphs"].append(f"• {txt}")
 
     for label, value in re.findall(
@@ -915,12 +1234,12 @@ def _extract_content_chunks_from_html(content_html: str) -> Dict[str, List[str]]
         flags=re.IGNORECASE
     ):
         v = str(value).strip()
-        if v:
+        if v and not _is_instructional_only(v):
             chunks["buttons"].append(v)
 
     for tag_match in re.finditer(r"<a[^>]*>(.*?)</a>", html, flags=re.IGNORECASE | re.DOTALL):
         txt = _strip_html_to_text(tag_match.group(1))
-        if txt and len(txt.split()) <= 8:
+        if txt and len(txt.split()) <= 8 and not _is_instructional_only(txt):
             chunks["buttons"].append(txt)
 
     # Labeled-text fallback for plain-doc outputs.
@@ -938,7 +1257,7 @@ def _extract_content_chunks_from_html(content_html: str) -> Dict[str, List[str]]
     for pattern, target in labeled_patterns:
         for m in re.finditer(pattern, plain_text, flags=re.DOTALL):
             txt = _strip_html_to_text(m.group(1))
-            if txt:
+            if txt and not _is_instructional_only(txt):
                 chunks[target].append(txt)
 
     # If no paragraph tags were found, split plain text into useful lines.
@@ -946,7 +1265,7 @@ def _extract_content_chunks_from_html(content_html: str) -> Dict[str, List[str]]
         rough_lines = [seg.strip(" -\t") for seg in re.split(r"[\r\n]+|\s{2,}", plain_with_breaks)]
         for line in rough_lines:
             txt = _strip_html_to_text(line)
-            if not txt:
+            if not txt or _is_instructional_only(txt):
                 continue
             if len(txt) < 30:
                 continue
@@ -988,25 +1307,23 @@ def _split_paragraph_for_mapping(text: str, max_words: int = 28) -> List[str]:
 
 def _count_template_text_capacity(template_data: Any) -> Dict[str, int]:
     """
-    Count text-capable slots from selected page JSON.
-    This helps format imported content according to the selected template structure.
+    Count text-capable slots from Elementor JSON using same DFS as _collect_template_slots.
     """
     counts = {"heading": 0, "paragraph": 0, "button": 0}
 
     def classify_key(key: str, value: str) -> Optional[str]:
         return _classify_text_key(key, value)
 
-    def walk(node: Any) -> None:
-        if isinstance(node, list):
-            for child in node:
-                walk(child)
+    def process_elementor_data(data: Any) -> None:
+        if isinstance(data, list):
+            for element in data:
+                process_elementor_data(element)
             return
-        if not isinstance(node, dict):
+        if not isinstance(data, dict):
             return
-
-        if node.get("elType") == "widget":
-            widget_type = (node.get("widgetType") or "").strip()
-            settings = node.get("settings")
+        if data.get("elType") == "widget":
+            widget_type = (data.get("widgetType") or "").strip()
+            settings = data.get("settings")
             if isinstance(settings, dict):
                 if widget_type == "heading":
                     counts["heading"] += 1
@@ -1014,25 +1331,25 @@ def _count_template_text_capacity(template_data: Any) -> Dict[str, int]:
                     counts["paragraph"] += 1
                 elif widget_type == "button":
                     counts["button"] += 1
-                for k, v in settings.items():
-                    if isinstance(v, str) and v.strip():
-                        kind = classify_key(k, v)
-                        if kind:
-                            counts[kind] += 1
-                    elif isinstance(v, list):
-                        for item in v:
-                            if not isinstance(item, dict):
-                                continue
-                            for rk, rv in item.items():
-                                if isinstance(rv, str) and rv.strip():
-                                    kind = classify_key(rk, rv)
-                                    if kind:
-                                        counts[kind] += 1
+                else:
+                    for k, v in settings.items():
+                        if isinstance(v, str) and v.strip():
+                            kind = classify_key(k, v)
+                            if kind:
+                                counts[kind] += 1
+                        elif isinstance(v, list):
+                            for item in v:
+                                if isinstance(item, dict):
+                                    for rk, rv in item.items():
+                                        if isinstance(rv, str) and rv.strip():
+                                            kind = classify_key(rk, rv)
+                                            if kind:
+                                                counts[kind] += 1
+        elements = data.get("elements")
+        if isinstance(elements, list) and elements:
+            process_elementor_data(elements)
 
-        for value in node.values():
-            walk(value)
-
-    walk(template_data)
+    process_elementor_data(template_data)
     return counts
 
 
@@ -1116,14 +1433,16 @@ def _replace_elementor_content_only(
     slot_value_map: Optional[Dict[str, str]] = None
 ) -> Tuple[Any, Dict[str, Any]]:
     """
-    Preserve structure/style/ids and replace only textual content fields.
+    Preserve Elementor structure (recursive tree: Section -> Column -> Widget | Inner Section -> ...)
+    and replace only textual content in settings (title, editor, text). Uses same DFS as
+    _collect_template_slots so slot order matches and no data is lost or corrupted.
     """
     merged = copy.deepcopy(template_data)
     heading_idx = 0
     paragraph_idx = 0
     button_idx = 0
-    replaced = {"heading": 0, "paragraph": 0, "button": 0}
-    found = {"heading": 0, "paragraph": 0, "button": 0}
+    replaced = {"heading": 0, "paragraph": 0, "button": 0, "image": 0}
+    found = {"heading": 0, "paragraph": 0, "button": 0, "image": 0}
 
     headings = content_chunks.get("headings", [])
     paragraphs = content_chunks.get("paragraphs", [])
@@ -1178,23 +1497,23 @@ def _replace_elementor_content_only(
             return val
         return None
 
-    def walk(node: Any, in_widget_settings: bool = False) -> None:
+    def process_elementor_data(data: Any) -> None:
+        """DFS: same order as _collect_template_slots. Process settings (replace content), then recurse into elements."""
         nonlocal heading_idx, paragraph_idx, button_idx
-        if isinstance(node, list):
-            for child in node:
-                walk(child, in_widget_settings=in_widget_settings)
+        if isinstance(data, list):
+            for element in data:
+                process_elementor_data(element)
             return
-        if not isinstance(node, dict):
+        if not isinstance(data, dict):
             return
 
-        if node.get("elType") == "widget":
-            widget_type = (node.get("widgetType") or "").strip()
-            settings = node.get("settings")
+        if data.get("elType") == "widget":
+            widget_type = (data.get("widgetType") or "").strip()
+            settings = data.get("settings")
             if not isinstance(settings, dict):
                 settings = {}
-                node["settings"] = settings
+                data["settings"] = settings
 
-            # Primary path: known widget types
             if widget_type == "heading":
                 found["heading"] += 1
                 replacement = next_slot_value() if use_slot_mode else next_content("heading")
@@ -1222,35 +1541,46 @@ def _replace_elementor_content_only(
                     else:
                         settings["text"] = replacement
                     replaced["button"] += 1
-            # Secondary path: generic text fields in settings for other widget types.
-            for k, v in list(settings.items()):
-                if isinstance(v, str) and v.strip():
-                    kind = classify_key(k, v)
-                    if kind:
-                        found[kind] += 1
-                        replacement = next_slot_value() if use_slot_mode else next_content(kind)
-                        if replacement:
-                            settings[k] = f"<p>{replacement}</p>" if (k in {"editor", "content", "description"} and "<" in v) else replacement
-                            replaced[kind] += 1
-                elif isinstance(v, list):
-                    # Handle repeater/list fields common in sliders, accordions, icon lists.
-                    for item in v:
-                        if not isinstance(item, dict):
-                            continue
-                        for rk, rv in list(item.items()):
-                            if isinstance(rv, str) and rv.strip():
-                                kind = classify_key(rk, rv)
-                                if kind:
-                                    found[kind] += 1
-                                    replacement = next_slot_value() if use_slot_mode else next_content(kind)
-                                    if replacement:
-                                        item[rk] = replacement
-                                        replaced[kind] += 1
+            elif widget_type == "image":
+                found["image"] += 1
+                replacement = next_slot_value() if use_slot_mode else None
+                if replacement and isinstance(replacement, str) and replacement.strip() and (replacement.startswith("http://") or replacement.startswith("https://")):
+                    if "image" in settings and isinstance(settings["image"], dict):
+                        settings["image"]["url"] = replacement.strip()
+                        if "id" in settings["image"]:
+                            settings["image"]["id"] = ""
+                    else:
+                        settings["url"] = replacement.strip()
+                    replaced["image"] += 1
+            else:
+                for k, v in list(settings.items()):
+                    if isinstance(v, str) and v.strip():
+                        kind = classify_key(k, v)
+                        if kind:
+                            found[kind] += 1
+                            replacement = next_slot_value() if use_slot_mode else next_content(kind)
+                            if replacement:
+                                settings[k] = f"<p>{replacement}</p>" if (k in {"editor", "content", "description"} and "<" in v) else replacement
+                                replaced[kind] += 1
+                    elif isinstance(v, list):
+                        for item in v:
+                            if not isinstance(item, dict):
+                                continue
+                            for rk, rv in list(item.items()):
+                                if isinstance(rv, str) and rv.strip():
+                                    kind = classify_key(rk, rv)
+                                    if kind:
+                                        found[kind] += 1
+                                        replacement = next_slot_value() if use_slot_mode else next_content(kind)
+                                        if replacement:
+                                            item[rk] = replacement
+                                            replaced[kind] += 1
 
-        for key, value in node.items():
-            walk(value, in_widget_settings=(in_widget_settings or key == "settings"))
+        elements = data.get("elements")
+        if isinstance(elements, list) and elements:
+            process_elementor_data(elements)
 
-    walk(merged)
+    process_elementor_data(merged)
 
     found_total = sum(found.values())
     replaced_total = sum(replaced.values())
@@ -1282,9 +1612,18 @@ async def get_page_content_template(site_url: str, page_id: int):
     Build a downloadable slot template from selected page JSON.
     Users fill this template in their doc for exact placement mapping.
     """
+    creds = get_wordpress_credentials(site_url)
+    if not creds:
+        raise HTTPException(
+            status_code=400,
+            detail=f"No WordPress credentials for this site. Add the site in the Sites tab with WordPress username and Application Password (not regular password)."
+        )
     selected_json = fetch_elementor_template_from_site(site_url, page_id)
     if not selected_json:
-        raise HTTPException(status_code=404, detail=f"Elementor data not found for page {page_id}")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Elementor data not found for page {page_id}. Ensure: 1) The page is built with Elementor, 2) Your user has edit permission, 3) RevPublish Connector plugin is active on the site (if required)."
+        )
 
     slots = _collect_template_slots(selected_json)
     template_text = _build_slot_template_text(slots)
@@ -1296,6 +1635,275 @@ async def get_page_content_template(site_url: str, page_id: int):
         "slots": slots,
         "template_text": template_text,
         "template_filename": f"page-{page_id}-content-template.txt"
+    }
+
+
+def _normalize_content_source_columns(rows: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[str], Optional[str], Optional[str], Optional[str]]:
+    """
+    Normalize rows from CSV/Sheet: lowercase keys, map common names to doc_url, site_url, page_id.
+    Returns (rows_with_normalized_keys, column_list, doc_url_col, site_url_col, page_id_col).
+    """
+    if not rows:
+        return [], [], None, None, None
+    import csv as csv_module
+    from io import StringIO
+    # Build mapping from various column names to standard names
+    doc_url_aliases = ["doc_url", "doc link", "google_doc_url", "document url", "doc_link", "content_url", "page_content_doc_url", "doc"]
+    site_url_aliases = ["site_url", "site", "site url", "wordpress_url", "wp_url", "url"]
+    page_id_aliases = ["page_id", "page id", "target_page_id", "page", "pageid"]
+    def find_standard_key(keys: List[str], aliases: List[str]) -> Optional[str]:
+        keys_lower = {k.strip().lower(): k for k in keys}
+        for a in aliases:
+            for k, orig in keys_lower.items():
+                if a in k or k in a:
+                    return orig
+        return None
+    first_row = rows[0]
+    orig_keys = list(first_row.keys())
+    doc_url_col = find_standard_key(orig_keys, doc_url_aliases)
+    site_url_col = find_standard_key(orig_keys, site_url_aliases)
+    page_id_col = find_standard_key(orig_keys, page_id_aliases)
+    normalized = []
+    for row in rows:
+        out = {}
+        for k, v in row.items():
+            key = (k or "").strip()
+            val = v if v is None else (str(v).strip() if isinstance(v, str) else str(v))
+            out[key] = val
+        # Add standard keys if we detected them
+        if doc_url_col and doc_url_col in out:
+            out["doc_url"] = out.get(doc_url_col) or ""
+        if site_url_col and site_url_col in out:
+            out["site_url"] = out.get(site_url_col) or ""
+        if page_id_col and page_id_col in out:
+            out["page_id"] = out.get(page_id_col) or ""
+        normalized.append(out)
+    columns = list(normalized[0].keys()) if normalized else []
+    return normalized, columns, doc_url_col or "doc_url", site_url_col or "site_url", page_id_col or "page_id"
+
+
+@app.post("/api/parse-content-source")
+async def parse_content_source(
+    csv_file: Optional[UploadFile] = File(None),
+    sheet_url: str = Form(""),
+):
+    """
+    Parse CSV upload or Google Spreadsheet URL into rows. Doc URLs (and site_url, page_id) are read from the sheet/CSV.
+    Use this to load rows, then pick a row and pass its doc_url (and site_url, page_id) to map-doc-to-template.
+    """
+    sheet_url = (sheet_url or "").strip()
+    csv_content: Optional[str] = None
+    if csv_file and csv_file.filename:
+        try:
+            raw = await csv_file.read()
+            csv_content = raw.decode("utf-8-sig", errors="replace")
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Could not read CSV file: {e}")
+    elif sheet_url:
+        match = re.search(r"/spreadsheets/d/([a-zA-Z0-9-_]+)", sheet_url)
+        if not match:
+            raise HTTPException(status_code=400, detail="Invalid Google Spreadsheet URL.")
+        sheet_id = match.group(1)
+        csv_export_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+        try:
+            resp = requests.get(csv_export_url, timeout=15)
+            if resp.status_code != 200:
+                raise HTTPException(status_code=400, detail=f"Could not export sheet as CSV: {resp.status_code}")
+            csv_content = resp.text
+        except requests.RequestException as e:
+            raise HTTPException(status_code=400, detail=f"Could not fetch Google Sheet: {e}")
+    else:
+        raise HTTPException(status_code=400, detail="Provide either a CSV file upload or a Google Spreadsheet URL.")
+    if not csv_content or not csv_content.strip():
+        raise HTTPException(status_code=400, detail="No data in CSV or sheet.")
+    import csv as csv_module
+    from io import StringIO
+    try:
+        reader = csv_module.DictReader(StringIO(csv_content))
+        rows = list(reader)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid CSV: {e}")
+    if not rows:
+        raise HTTPException(status_code=400, detail="CSV or sheet has no data rows.")
+    normalized_rows, columns, doc_col, site_col, page_col = _normalize_content_source_columns(rows)
+    return {
+        "status": "success",
+        "rows": normalized_rows,
+        "columns": columns,
+        "doc_url_column": doc_col,
+        "site_url_column": site_col,
+        "page_id_column": page_col,
+        "row_count": len(normalized_rows),
+    }
+
+
+@app.post("/api/map-doc-to-template")
+async def map_doc_to_template(
+    site_url: str = Form(...),
+    page_id: str = Form(...),
+    doc_content: str = Form(""),
+    doc_url: str = Form(""),
+    use_llm_assistance: bool = Form(False),
+):
+    """
+    Map doc content into the page slot template. Content can be pasted (doc_content)
+    or fetched from a Google Doc URL (doc_url). Returns filled template for preview/copy.
+    Uses: SLOT_xxx in content, else Groq LLM (if use_llm_assistance) + optional judge step, else chunk-based.
+    """
+    page_id_str = (page_id or "").strip()
+    if not page_id_str or not page_id_str.isdigit():
+        raise HTTPException(
+            status_code=400,
+            detail="page_id must be a number (WordPress page ID). If you loaded a row from CSV/Sheet, ensure that row has a numeric page_id column and the sheet column order is correct (doc_url, site_url, page_id)."
+        )
+    page_id_int = int(page_id_str)
+    creds = get_wordpress_credentials(site_url)
+    if not creds:
+        raise HTTPException(
+            status_code=400,
+            detail="No WordPress credentials for this site. Add the site in the Sites tab with WordPress username and Application Password."
+        )
+    selected_json = fetch_elementor_template_from_site(site_url, page_id_int)
+    if not selected_json:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Elementor data not found for page {page_id_int}. Ensure the page is built with Elementor and your user has edit permission."
+        )
+    slots = _collect_template_slots(selected_json)
+    if not slots:
+        template_text = _build_slot_template_text(slots)
+        return {
+            "status": "success",
+            "site_url": site_url,
+            "page_id": page_id_int,
+            "slot_count": 0,
+            "template_text": template_text,
+            "template_filename": f"page-{page_id_int}-content-filled.txt",
+            "slot_value_map": {},
+            "diagnostics": {"source": "none", "slots_filled": 0, "message": "No editable slots on this page."},
+        }
+    content_fetched_from_url = False
+    doc_content_clean = (doc_content or "").strip()
+    if not doc_content_clean and (doc_url or "").strip():
+        try:
+            from integrations.google_integrations import GoogleDocsClient
+            fetched = GoogleDocsClient().extract_from_url((doc_url or "").strip())
+            doc_content_clean = (fetched.get("content_html") or fetched.get("content") or "").strip()
+            content_fetched_from_url = bool(doc_content_clean)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Could not fetch Google Doc: {e}")
+    if not doc_content_clean:
+        template_text = _build_slot_template_text(slots)
+        return {
+            "status": "success",
+            "site_url": site_url,
+            "page_id": page_id_int,
+            "slot_count": len(slots),
+            "template_text": template_text,
+            "template_filename": f"page-{page_id_int}-content-filled.txt",
+            "slot_value_map": {},
+            "diagnostics": {"source": "none", "slots_filled": 0, "message": "Provide pasted content or a Google Doc URL."},
+        }
+    slot_value_map, diagnostics = _content_to_slot_value_map(
+        slots, selected_json, doc_content_clean, use_llm=use_llm_assistance
+    )
+    filled_text = _build_filled_slot_template_text(slots, slot_value_map)
+    out = {
+        "status": "success",
+        "site_url": site_url,
+        "page_id": page_id_int,
+        "slot_count": len(slots),
+        "slots": slots,
+        "template_text": filled_text,
+        "template_filename": f"page-{page_id_int}-content-filled.txt",
+        "slot_value_map": slot_value_map,
+        "diagnostics": diagnostics,
+    }
+    if content_fetched_from_url:
+        out["content_fetched_from_url"] = True
+    return out
+
+
+def _strip_filled_template_headers(text: str) -> str:
+    """Remove instructional header lines from filled template so only SLOT_xxx blocks remain."""
+    if not text or not text.strip():
+        return text
+    lines = text.strip().split("\n")
+    for i, line in enumerate(lines):
+        if line.strip().startswith("SLOT_"):
+            return "\n".join(lines[i:]).strip()
+    return text.strip()
+
+
+@app.post("/api/deploy-filled-template")
+@app.post("/revflow_os/revpublish/api/deploy-filled-template")
+async def deploy_filled_template(
+    site_url: str = Form(...),
+    page_id: str = Form(...),
+    filled_content: str = Form(...),
+    post_status: str = Form("draft"),
+    preview_mode: bool = Form(False),
+):
+    """
+    Deploy the filled template content directly to the WordPress page.
+    Uses same pipeline as Start Import (Bridge Plugin, content-only replace).
+    Options: post_status (draft, publish, pending), preview_mode (no deploy, dry run).
+    """
+    page_id_str = (page_id or "").strip()
+    if not page_id_str or not page_id_str.isdigit():
+        raise HTTPException(status_code=400, detail="page_id must be a number (WordPress page ID).")
+    target_page_id = int(page_id_str)
+    content = _strip_filled_template_headers((filled_content or "").strip())
+    if not content:
+        raise HTTPException(status_code=400, detail="filled_content is required (the filled template text).")
+    status = (post_status or "draft").strip().lower()
+    if status not in ("draft", "publish", "pending", "private"):
+        status = "draft"
+    creds = get_wordpress_credentials(site_url)
+    if not creds:
+        raise HTTPException(
+            status_code=400,
+            detail="No WordPress credentials for this site. Add the site in the Sites tab first."
+        )
+    if preview_mode:
+        selected_json = fetch_elementor_template_from_site(site_url, target_page_id)
+        if not selected_json:
+            raise HTTPException(status_code=404, detail=f"Elementor data not found for page {target_page_id}.")
+        slot_value_map = _extract_slot_value_map_from_html(content)
+        slots = _collect_template_slots(selected_json)
+        return {
+            "status": "success",
+            "preview_mode": True,
+            "message": "Preview only — no changes were made to WordPress.",
+            "site_url": site_url,
+            "page_id": target_page_id,
+            "post_status_requested": status,
+            "slots_matched": len(slot_value_map),
+            "total_slots": len(slots),
+        }
+    success, error_msg, wp_post_id, wp_edit_url, wp_permalink, diagnostics = deploy_to_wordpress(
+        site_url=site_url,
+        title="",
+        content=content,
+        status=status,
+        use_bridge_plugin=True,
+        use_elementor=True,
+        target_page_id=target_page_id,
+        preserve_existing_title=True,
+        use_llm_assistance=False,
+    )
+    if not success:
+        raise HTTPException(status_code=400, detail=error_msg or "Deployment failed.")
+    return {
+        "status": "success",
+        "message": f"Content deployed to WordPress as '{status}'.",
+        "site_url": site_url,
+        "page_id": target_page_id,
+        "post_status": status,
+        "wp_post_id": wp_post_id,
+        "edit_url": wp_edit_url,
+        "permalink": wp_permalink,
+        "diagnostics": diagnostics,
     }
 
 
@@ -1814,7 +2422,8 @@ def deploy_to_wordpress(
     use_elementor: bool = True,
     target_page_id: Optional[int] = None,
     preserve_formatting: bool = True,
-    preserve_existing_title: bool = False
+    preserve_existing_title: bool = False,
+    use_llm_assistance: bool = False,
 ) -> Tuple[bool, Optional[str], Optional[int], Optional[str], Optional[str], Optional[Dict[str, Any]]]:
     """
     Deploy content to WordPress site with Elementor support.
@@ -1870,6 +2479,16 @@ def deploy_to_wordpress(
                 selected_json = fetch_elementor_template_from_site(site_url, target_page_id)
                 if selected_json:
                     slot_value_map = _extract_slot_value_map_from_html(content)
+                    if not slot_value_map and use_llm_assistance:
+                        try:
+                            from integrations.groq_slot_mapper import map_content_to_slots
+                            slots = _collect_template_slots(selected_json)
+                            llm_map = map_content_to_slots(slots, content)
+                            if llm_map:
+                                slot_value_map = llm_map
+                                print("[OK] LLM (Groq) mapped raw content to template slots for accuracy", flush=True)
+                        except Exception as llm_err:
+                            print(f"[WARN] LLM slot mapping skipped: {llm_err}", flush=True)
                     slot_mode_requested = bool(slot_value_map)
                     raw_content_json = _extract_content_chunks_from_html(content)
                     adjusted_content_json, formatting_plan = _adjust_content_chunks_for_template(raw_content_json, selected_json)
@@ -2365,7 +2984,8 @@ async def bulk_import_csv_template(
                     use_elementor=True,  # Create Elementor page
                     target_page_id=active_target_page_id,
                     preserve_formatting=preserve_formatting,
-                    preserve_existing_title=preserve_existing_title
+                    preserve_existing_title=preserve_existing_title,
+                    use_llm_assistance=use_llm_assistance,
                 )
                 
                 if not success:

@@ -224,12 +224,17 @@ class RevPublishConnector {
                 $existing_data = $decoded;
             }
         }
+
+        // If page has no Elementor layout yet, return a minimal structure so any page works (dynamic for all pages)
         if (!is_array($existing_data)) {
-            return new WP_Error(
-                'missing_existing_layout',
-                'No Elementor data found for this page.',
-                array('status' => 404)
-            );
+            $title = get_the_title($page_id);
+            $content = $post->post_content;
+            if (is_string($content)) {
+                $content = wp_kses_post($content);
+            } else {
+                $content = '';
+            }
+            $existing_data = $this->build_basic_elementor_data($title, $content);
         }
 
         return array(
@@ -1294,34 +1299,126 @@ class RevPublishConnector {
         }
     }
 
+    /**
+     * Parse post HTML into blocks (headings and paragraphs) so we can build one slot per block.
+     * Returns array of [ 'type' => 'heading'|'paragraph', 'content' => string ] in order.
+     */
+    private function parse_html_to_content_blocks($html) {
+        $blocks = array();
+        $html = (string) $html;
+        if (trim($html) === '') {
+            return $blocks;
+        }
+        // Find all h1-h6 and p tags in order (case-insensitive, allow attributes)
+        $pattern = '/<(h[1-6]|p)(\s[^>]*)?>([\s\S]*?)<\/\1\s*>/i';
+        if (preg_match_all($pattern, $html, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $m) {
+                $tag = strtolower($m[1]);
+                $content = wp_kses_post(trim($m[3]));
+                $content = preg_replace('/\s+/', ' ', $content);
+                if ($content === '') {
+                    continue;
+                }
+                if (strpos($tag, 'h') === 0) {
+                    $blocks[] = array('type' => 'heading', 'content' => $content);
+                } else {
+                    $blocks[] = array('type' => 'paragraph', 'content' => '<p>' . $content . '</p>');
+                }
+            }
+        }
+        // If no blocks found, treat whole content as one paragraph (fallback)
+        if (empty($blocks)) {
+            $content = wp_kses_post($html);
+            if (trim($content) !== '') {
+                if (preg_match('/^<\s*p\s*>/i', $content)) {
+                    $blocks[] = array('type' => 'paragraph', 'content' => $content);
+                } else {
+                    $blocks[] = array('type' => 'paragraph', 'content' => '<p>' . $content . '</p>');
+                }
+            }
+        }
+        return $blocks;
+    }
+
+    /**
+     * Build Elementor JSON from title + HTML by parsing content into blocks; one slot per heading/paragraph.
+     * So "kafi content" yields many slots instead of just 2.
+     */
     private function build_basic_elementor_data($title, $html) {
+        $blocks = $this->parse_html_to_content_blocks($html);
+        $sections = array();
+        $has_title = false;
+        if (!empty($title) && trim($title) !== '') {
+            $has_title = true;
+        }
+        if (empty($blocks)) {
+            $sections[] = $this->make_section_with_heading($has_title ? $title : __('Content', 'revpublish-connector'));
+            if ($html && trim(wp_strip_all_tags($html)) !== '') {
+                $sections[] = $this->make_section_with_paragraph('<p>' . wp_kses_post($html) . '</p>');
+            }
+            return $sections;
+        }
+        $first = $blocks[0];
+        if ($has_title && $first['type'] !== 'heading') {
+            $sections[] = $this->make_section_with_heading($title);
+        }
+        foreach ($blocks as $block) {
+            if ($block['type'] === 'heading') {
+                $sections[] = $this->make_section_with_heading($block['content']);
+            } else {
+                $sections[] = $this->make_section_with_paragraph($block['content']);
+            }
+        }
+        if (empty($sections)) {
+            $sections[] = $this->make_section_with_heading($title);
+            $sections[] = $this->make_section_with_paragraph($html ? '<p>' . wp_kses_post($html) . '</p>' : '<p></p>');
+        }
+        return $sections;
+    }
+
+    private function make_section_with_heading($title) {
         return array(
-            array(
-                'id' => 'revpublish-section-' . wp_generate_password(8, false, false),
-                'elType' => 'section',
-                'settings' => new stdClass(),
-                'elements' => array(
-                    array(
-                        'id' => 'revpublish-column-' . wp_generate_password(8, false, false),
-                        'elType' => 'column',
-                        'settings' => new stdClass(),
-                        'elements' => array(
-                            array(
-                                'id' => 'revpublish-heading-' . wp_generate_password(8, false, false),
-                                'elType' => 'widget',
-                                'widgetType' => 'heading',
-                                'settings' => array(
-                                    'title' => $title,
-                                    'header_size' => 'h1',
-                                ),
+            'id' => 'revpublish-section-' . wp_generate_password(8, false, false),
+            'elType' => 'section',
+            'settings' => new stdClass(),
+            'elements' => array(
+                array(
+                    'id' => 'revpublish-column-' . wp_generate_password(8, false, false),
+                    'elType' => 'column',
+                    'settings' => new stdClass(),
+                    'elements' => array(
+                        array(
+                            'id' => 'revpublish-heading-' . wp_generate_password(8, false, false),
+                            'elType' => 'widget',
+                            'widgetType' => 'heading',
+                            'settings' => array(
+                                'title' => is_string($title) ? $title : '',
+                                'header_size' => 'h2',
                             ),
-                            array(
-                                'id' => 'revpublish-content-' . wp_generate_password(8, false, false),
-                                'elType' => 'widget',
-                                'widgetType' => 'text-editor',
-                                'settings' => array(
-                                    'editor' => $html,
-                                ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    private function make_section_with_paragraph($html) {
+        return array(
+            'id' => 'revpublish-section-' . wp_generate_password(8, false, false),
+            'elType' => 'section',
+            'settings' => new stdClass(),
+            'elements' => array(
+                array(
+                    'id' => 'revpublish-column-' . wp_generate_password(8, false, false),
+                    'elType' => 'column',
+                    'settings' => new stdClass(),
+                    'elements' => array(
+                        array(
+                            'id' => 'revpublish-content-' . wp_generate_password(8, false, false),
+                            'elType' => 'widget',
+                            'widgetType' => 'text-editor',
+                            'settings' => array(
+                                'editor' => is_string($html) ? $html : '<p></p>',
                             ),
                         ),
                     ),

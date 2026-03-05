@@ -2,6 +2,11 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Environment and secrets (never commit)
+.env
+.env.local
+*.env
+
 # Local backup artifacts
 *.backup
 *.backup_*
