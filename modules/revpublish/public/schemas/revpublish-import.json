@@ -1,169 +1,122 @@
 {
   "name": "RevPublish Import",
-  "version": "16.3.0",
+  "version": "16.5.0",
   "layout": {
     "type": "container",
     "style": {
-      "padding": "2rem"
+      "padding": "2rem",
+      "maxWidth": "1600px",
+      "margin": "0 auto"
     },
     "children": [
       {
         "type": "header",
         "level": 2,
-        "text": "\ud83d\udce5 Bulk Import"
+        "text": "📥 Content Import",
+        "style": {
+          "marginBottom": "0.5rem",
+          "color": "#fff",
+          "fontSize": "2rem",
+          "fontWeight": "700"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Select a WordPress site and page, then provide content (paste, Google Doc URL, or load from CSV/Sheet). Map content into the page template and deploy to WordPress.",
+        "style": {
+          "color": "#94a3b8",
+          "marginBottom": "2rem",
+          "lineHeight": "1.6",
+          "fontSize": "1rem"
+        }
       },
       {
         "type": "container",
         "style": {
-          "background": "#1e293b",
-          "padding": "1.5rem",
-          "borderRadius": "8px",
-          "marginBottom": "2rem"
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(34, 197, 94, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
         },
         "children": [
           {
             "type": "header",
             "level": 3,
-            "text": "\ud83d\udce6 Download Test Files",
+            "text": "📋 Download CSV Template",
             "style": {
-              "marginBottom": "1rem"
+              "marginBottom": "1rem",
+              "color": "#22c55e",
+              "fontSize": "1.25rem",
+              "fontWeight": "600"
             }
           },
           {
             "type": "text",
             "dangerouslySetInnerHTML": true,
-            "content": "<div style='display:flex;gap:1rem;flex-wrap:wrap;'><a href='https://automation.smarketsherpa.ai/revflow_os/revpublish/templates/Sample_12_Sites.csv' download='Sample_12_Sites.csv' style='display:inline-block;background:#22c55e;color:#fff;padding:0.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;'>\u2b07\ufe0f CSV Template (Includes ALL Content)</a></div>"
+            "content": "<div style='display:flex;gap:1rem;flex-wrap:wrap;'><a href='https://automation.smarketsherpa.ai/revflow_os/revpublish/templates/Sample_12_Sites.csv' download='Sample_12_Sites.csv' style='display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg, #22c55e 0%, #16a34a 100%);color:#fff;padding:0.875rem 1.75rem;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 4px 12px rgba(34, 197, 94, 0.3);transition:all 0.2s;'>⬇️ CSV Template (Complete Example)</a></div>"
           }
         ]
       },
       {
-        "type": "form",
-        "action": "/api/import",
-        "method": "POST",
-        "enctype": "multipart/form-data",
-        "fields": [
+        "type": "container",
+        "style": {
+          "background": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          "padding": "2rem",
+          "borderRadius": "12px",
+          "marginBottom": "2rem",
+          "border": "1px solid rgba(99, 102, 241, 0.2)",
+          "boxShadow": "0 4px 12px rgba(0,0,0,0.15)"
+        },
+        "children": [
           {
-            "type": "select",
-            "name": "target_site",
-            "label": "🌐 Select WordPress Site",
-            "required": true,
-            "dataSource": "/api/sites?per_page=100",
-            "dataPath": "sites",
-            "valueField": "site_url",
-            "labelField": "site_name",
-            "placeholder": "Choose a WordPress site..."
-          },
-          {
-            "type": "select",
-            "name": "target_page_id",
-            "label": "🧩 Target Existing Page (Optional)",
-            "required": false,
-            "dataSource": "/api/site-pages?site_url={target_site}&per_page=100",
-            "dataPath": "pages",
-            "valueField": "id",
-            "labelField": "display_name",
-            "dependsOn": "target_site",
-            "dependsOnPlaceholder": "Select site first, then choose page",
-            "placeholder": "Leave empty to create new pages"
-          },
-          {
-            "type": "checkbox",
-            "name": "update_selected_page_only",
-            "label": "🔒 Update Selected Page Only (No New Page)",
-            "description": "When enabled, import fails instead of creating any new page.",
-            "defaultValue": true
-          },
-          {
-            "type": "file",
-            "name": "csv_file",
-            "label": "\ud83d\udccb Site Registry & Content (CSV with everything)",
-            "required": true,
-            "accept": ".csv",
-            "description": "Supports row-wise page update columns: existing_page_id, target_page_id, page_id, existing_page_url, target_page_url, page_url, existing_page_slug, target_page_slug."
-          },
-          {
-            "type": "select",
-            "name": "animation_style",
-            "label": "\ud83c\udfac Animation Style (Level 3 Override)",
-            "required": false,
-            "options": [
+            "type": "form",
+            "action": "#",
+            "method": "GET",
+            "fields": [
               {
-                "value": "",
-                "label": "Use Page Type Default"
+                "type": "select",
+                "name": "target_site",
+                "label": "🌐 Select WordPress Site",
+                "required": true,
+                "dataSource": "/api/sites?per_page=100",
+                "dataPath": "sites",
+                "valueField": "site_url",
+                "labelField": "site_name",
+                "placeholder": "Choose a WordPress site...",
+                "description": "Site where the target page lives"
               },
               {
-                "value": "professional",
-                "label": "Professional"
-              },
-              {
-                "value": "subtle",
-                "label": "Subtle"
-              },
-              {
-                "value": "dynamic",
-                "label": "Dynamic"
-              },
-              {
-                "value": "energetic",
-                "label": "Energetic"
-              },
-              {
-                "value": "none",
-                "label": "None"
+                "type": "select",
+                "name": "target_page_id",
+                "label": "🧩 Target Page",
+                "required": true,
+                "dataSource": "/api/site-pages?site_url={target_site}&per_page=100",
+                "dataPath": "pages",
+                "valueField": "id",
+                "labelField": "display_name",
+                "dependsOn": "target_site",
+                "dependsOnPlaceholder": "Select site first",
+                "placeholder": "Choose a page to update",
+                "description": "Page whose template will be filled with your content"
               }
             ]
           },
           {
-            "type": "checkbox",
-            "name": "enable_smart_corrections",
-            "label": "\u2728 Smart Corrections",
-            "defaultValue": true
-          },
-          {
-            "type": "checkbox",
-            "name": "preview_mode",
-            "label": "\ud83d\udc41\ufe0f Preview Mode",
-            "description": "Preview only - don't deploy to WordPress",
-            "defaultValue": true
-          },
-          {
-            "type": "checkbox",
-            "name": "use_bridge_plugin",
-            "label": "\ud83c\udf09 Bridge Plugin Mode",
-            "description": "Send HTML content - Bridge Plugin converts to Elementor (Recommended)",
-            "defaultValue": true
-          },
-          {
-            "type": "checkbox",
-            "name": "preserve_formatting",
-            "label": "🛡️ Preserve Existing Page Formatting",
-            "description": "For page updates, require bridge-based update to keep Elementor layout/styles",
-            "defaultValue": true
-          },
-          {
-            "type": "select",
-            "name": "post_status",
-            "label": "\ud83d\udccb Status",
-            "defaultValue": "draft",
-            "options": [
-              {
-                "value": "draft",
-                "label": "Draft"
-              },
-              {
-                "value": "publish",
-                "label": "Publish"
-              },
-              {
-                "value": "pending",
-                "label": "Pending Review"
-              }
-            ]
+            "type": "contentTemplateBuilder",
+            "title": "Map content & deploy",
+            "maxHeight": "320px",
+            "style": {
+              "marginTop": "1rem"
+            },
+            "tooltips": {
+              "section": "Slot template is generated when you select site and page. Load content from CSV/Sheet, Doc URL, or paste; then generate filled template and deploy.",
+              "copy": "Copy template to clipboard",
+              "download": "Download template as text file"
+            }
           }
-        ],
-        "submitButton": {
-          "text": "\ud83d\ude80 Import"
-        }
+        ]
       }
     ]
   }

@@ -3,11 +3,15 @@ import ImageUploadBrowser from './ImageUploadBrowser'
 
 function normalizeApiUrl(url, basePath = '/') {
   const raw = String(url || '').trim()
-  const bp = basePath || '/'
+  const bp = (basePath || '/').replace(/\/$/, '') || '/'
   if (!raw || raw === '/' || raw === bp) return null
-  if (raw.startsWith('/api/')) return raw
-  if (raw.startsWith('/')) return `${bp}${raw.slice(1)}`
-  return `${bp}${raw}`
+  // When app is served at a base path (e.g. /revflow_os/revpublish/), send API requests there so proxy can forward
+  if (raw.startsWith('/api/')) {
+    if (bp !== '/' && bp !== '') return `${bp}${raw}`
+    return raw
+  }
+  if (raw.startsWith('/')) return `${bp}${raw}`
+  return `${bp}/${raw}`
 }
 
 /**
@@ -374,6 +378,7 @@ function JsonViewerElement({ element }) {
 /**
  * Build and download a page-specific slot template.
  * Auto-fetches when site + target page are selected. Copy icon and tooltips supported.
+ * Includes "Put-in" section: paste doc content, generate filled template, preview + copy/download.
  */
 function ContentTemplateBuilderElement({ element }) {
   const [loading, setLoading] = useState(false)
@@ -383,6 +388,21 @@ function ContentTemplateBuilderElement({ element }) {
   const [fileName, setFileName] = useState('content-template.txt')
   const [copied, setCopied] = useState(false)
   const [refresh, setRefresh] = useState(0)
+  const [docContent, setDocContent] = useState('')
+  const [docUrl, setDocUrl] = useState('')
+  const [fillLoading, setFillLoading] = useState(false)
+  const [fillMessage, setFillMessage] = useState(null)
+  const [useLlmForFill, setUseLlmForFill] = useState(false)
+  const [sourceRows, setSourceRows] = useState([])
+  const [selectedRowIndex, setSelectedRowIndex] = useState(-1)
+  const [sheetUrl, setSheetUrl] = useState('')
+  const [parseLoading, setParseLoading] = useState(false)
+  const [parseError, setParseError] = useState(null)
+  const [deployLoading, setDeployLoading] = useState(false)
+  const [deployMessage, setDeployMessage] = useState(null)
+  const [deployStatus, setDeployStatus] = useState('draft')
+  const [deployPreviewMode, setDeployPreviewMode] = useState(false)
+  const csvInputRef = React.useRef(null)
   const tooltips = element.tooltips || {}
 
   const fetchTemplate = async () => {
@@ -462,6 +482,171 @@ function ContentTemplateBuilderElement({ element }) {
     URL.revokeObjectURL(url)
   }
 
+  const handleLoadSource = async () => {
+    const url = (sheetUrl || '').trim()
+    const file = csvInputRef.current?.files?.[0]
+    if (!url && !file) {
+      setParseError('Upload a CSV file or enter a Google Spreadsheet URL.')
+      return
+    }
+    setParseLoading(true)
+    setParseError(null)
+    setSourceRows([])
+    setSelectedRowIndex(-1)
+    try {
+      const basePath = import.meta.env.BASE_URL || '/'
+      const apiUrl = normalizeApiUrl('/api/parse-content-source', basePath)
+      const form = new FormData()
+      if (url) form.append('sheet_url', url)
+      if (file) form.append('csv_file', file)
+      const res = await fetch(apiUrl, { method: 'POST', body: form })
+      const txt = await res.text()
+      let payload = {}
+      try {
+        payload = JSON.parse(txt)
+      } catch (_) {
+        throw new Error(txt ? txt.substring(0, 200) : 'Invalid response')
+      }
+      if (!res.ok) throw new Error(payload?.detail || `HTTP ${res.status}`)
+      const rows = payload.rows || []
+      setSourceRows(rows)
+      if (rows.length > 0) setSelectedRowIndex(0)
+    } catch (e) {
+      setParseError(e.message || 'Failed to load CSV/Sheet')
+    } finally {
+      setParseLoading(false)
+    }
+  }
+
+  const selectedRow = sourceRows.length && selectedRowIndex >= 0 && selectedRowIndex < sourceRows.length ? sourceRows[selectedRowIndex] : null
+  const hasDocSource = (docContent || '').trim() || (docUrl || '').trim() || (selectedRow?.doc_url || '').trim()
+
+  const handleFillTemplate = async () => {
+    let site = ''
+    let pageId = ''
+    let urlToUse = (docUrl || '').trim()
+    let content = (docContent || '').trim()
+    if (selectedRow) {
+      if ((selectedRow.site_url || '').trim()) site = String(selectedRow.site_url).trim()
+      const rowPageId = String(selectedRow.page_id || '').trim()
+      if (rowPageId && /^\d+$/.test(rowPageId)) pageId = rowPageId
+      if ((selectedRow.doc_url || '').trim()) urlToUse = String(selectedRow.doc_url).trim()
+    }
+    if (!site || !pageId) {
+      const siteEl = document.querySelector('[name="target_site"]')
+      const pageEl = document.querySelector('[name="target_page_id"]')
+      site = siteEl ? String(siteEl.value || '').trim() : site
+      pageId = pageEl ? String(pageEl.value || '').trim() : pageId
+    }
+    if (!site || !pageId) {
+      setFillMessage({ type: 'error', text: 'Select a site and target page, or load a CSV/Sheet with site_url and page_id columns.' })
+      return
+    }
+    if (!content && !urlToUse) {
+      setFillMessage({ type: 'error', text: 'Paste content, enter a Doc URL, or select a row from CSV/Sheet that has doc_url.' })
+      return
+    }
+    setFillLoading(true)
+    setFillMessage(null)
+    try {
+      const basePath = import.meta.env.BASE_URL || '/'
+      const apiUrl = normalizeApiUrl('/api/map-doc-to-template', basePath)
+      const form = new FormData()
+      form.append('site_url', site)
+      form.append('page_id', pageId)
+      form.append('doc_content', content)
+      if (urlToUse) form.append('doc_url', urlToUse)
+      form.append('use_llm_assistance', useLlmForFill ? 'true' : 'false')
+      const res = await fetch(apiUrl, { method: 'POST', body: form })
+      const txt = await res.text()
+      let payload = {}
+      try {
+        payload = JSON.parse(txt)
+      } catch (_) {
+        throw new Error(`Invalid response: ${txt.substring(0, 200)}`)
+      }
+      if (!res.ok) throw new Error(payload?.detail || `HTTP ${res.status}`)
+      setTemplateText(payload.template_text || '')
+      setFileName(payload.template_filename || fileName)
+      const diag = payload.diagnostics || {}
+      const slotsFilled = diag.slots_filled ?? 0
+      const source = diag.source || 'unknown'
+      let msg = `Filled ${slotsFilled} slot(s) (source: ${source}).`
+      if (payload.content_fetched_from_url) msg += ' Content was fetched from the Google Doc URL.'
+      if (diag.judge_corrections_applied) msg += ` LLM judge applied ${diag.judge_corrections_applied} correction(s) for accuracy.`
+      msg += ' Preview below — then click "Deploy to WordPress" or copy and run Import.'
+      setFillMessage({ type: 'success', text: msg })
+      setDeployMessage(null)
+    } catch (e) {
+      setFillMessage({ type: 'error', text: e.message || 'Failed to fill template' })
+    } finally {
+      setFillLoading(false)
+    }
+  }
+
+  const handleDeployTemplate = async () => {
+    let site = ''
+    let pageId = ''
+    if (selectedRow) {
+      if ((selectedRow.site_url || '').trim()) site = String(selectedRow.site_url).trim()
+      const rowPageId = String(selectedRow.page_id || '').trim()
+      if (rowPageId && /^\d+$/.test(rowPageId)) pageId = rowPageId
+    }
+    if (!site || !pageId) {
+      const siteEl = document.querySelector('[name="target_site"]')
+      const pageEl = document.querySelector('[name="target_page_id"]')
+      site = siteEl ? String(siteEl.value || '').trim() : site
+      pageId = pageEl ? String(pageEl.value || '').trim() : pageId
+    }
+    if (!site || !pageId) {
+      setDeployMessage({ type: 'error', text: 'Select site and target page (or use a row with site_url and page_id).' })
+      return
+    }
+    if (!(templateText || '').trim()) {
+      setDeployMessage({ type: 'error', text: 'Generate a filled template first.' })
+      return
+    }
+    setDeployLoading(true)
+    setDeployMessage(null)
+    try {
+      const basePath = import.meta.env.BASE_URL || '/'
+      const apiUrl = normalizeApiUrl('/api/deploy-filled-template', basePath)
+      const form = new FormData()
+      form.append('site_url', site)
+      form.append('page_id', pageId)
+      form.append('filled_content', templateText)
+      form.append('post_status', deployStatus)
+      form.append('preview_mode', deployPreviewMode ? 'true' : 'false')
+      const res = await fetch(apiUrl, { method: 'POST', body: form })
+      const txt = await res.text()
+      let payload = {}
+      try {
+        payload = JSON.parse(txt)
+      } catch (_) {
+        throw new Error(txt ? txt.substring(0, 200) : 'Invalid response')
+      }
+      if (!res.ok) throw new Error(payload?.detail || `HTTP ${res.status}`)
+      const link = payload.edit_url || payload.permalink
+      if (payload.preview_mode) {
+        setDeployMessage({
+          type: 'success',
+          text: payload.message || 'Preview only — no changes made to WordPress.',
+          link: null
+        })
+      } else {
+        setDeployMessage({
+          type: 'success',
+          text: payload.message || 'Content deployed to WordPress.',
+          link: link || null
+        })
+      }
+    } catch (e) {
+      setDeployMessage({ type: 'error', text: e.message || 'Deploy failed' })
+    } finally {
+      setDeployLoading(false)
+    }
+  }
+
   return (
     <div style={{
       marginTop: '1rem',
@@ -498,10 +683,133 @@ function ContentTemplateBuilderElement({ element }) {
       {loading && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Generating template…</div>}
       {slotCount > 0 && !loading && <div style={{ color: '#94a3b8', marginTop: '0.6rem' }}>Detected slots: {slotCount}</div>}
       {error && <div style={{ color: '#fca5a5', marginTop: '0.6rem' }}>Error: {error}</div>}
+
+      {/* Load from CSV or Google Sheet — doc URLs live inside the sheet/CSV */}
+      <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(59,130,246,0.2)' }}>
+        <div style={{ color: '#94a3b8', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Load rows from a CSV file or Google Spreadsheet. Your sheet/CSV should have columns like <code style={{ background: '#1e293b', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>doc_url</code>, <code style={{ background: '#1e293b', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>site_url</code>, <code style={{ background: '#1e293b', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>page_id</code>.</div>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+          <input
+            type="file"
+            ref={csvInputRef}
+            accept=".csv"
+            style={{ fontSize: '0.85rem', color: '#e2e8f0' }}
+          />
+          <span style={{ color: '#64748b' }}>or</span>
+          <input
+            type="url"
+            value={sheetUrl}
+            onChange={e => { setSheetUrl(e.target.value); setParseError(null); }}
+            placeholder="Google Spreadsheet URL"
+            style={{ flex: 1, minWidth: '200px', padding: '0.5rem 0.75rem', borderRadius: '6px', background: '#0f172a', border: '1px solid #334155', color: '#e2e8f0', fontSize: '0.85rem' }}
+          />
+          <button
+            type="button"
+            onClick={handleLoadSource}
+            disabled={parseLoading}
+            style={{ padding: '0.5rem 1rem', border: 'none', borderRadius: '6px', background: parseLoading ? '#475569' : '#6366f1', color: '#fff', cursor: parseLoading ? 'not-allowed' : 'pointer' }}
+          >
+            {parseLoading ? 'Loading…' : 'Load rows'}
+          </button>
+        </div>
+        {parseError && <div style={{ color: '#fca5a5', fontSize: '0.85rem', marginBottom: '0.5rem' }}>{parseError}</div>}
+        {sourceRows.length > 0 && (
+          <div style={{ marginTop: '0.5rem' }}>
+            <label style={{ color: '#cbd5e1', fontSize: '0.85rem' }}>Select row ({sourceRows.length} loaded): </label>
+            <select
+              value={selectedRowIndex}
+              onChange={e => setSelectedRowIndex(Number(e.target.value))}
+              style={{ marginLeft: '0.5rem', padding: '0.35rem 0.5rem', borderRadius: '6px', background: '#0f172a', border: '1px solid #334155', color: '#e2e8f0', fontSize: '0.85rem' }}
+            >
+              {sourceRows.map((row, i) => (
+                <option key={i} value={i}>
+                  Row {i + 1}: {row.site_url ? String(row.site_url).replace(/^https?:\/\//, '').slice(0, 25) + '…' : ''} page {row.page_id || '—'} | doc {row.doc_url ? '✓' : '—'}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Put-in: paste content or single Doc URL → generate filled template → preview & copy */}
+      <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(59,130,246,0.15)' }}>
+        <div style={{ color: '#94a3b8', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Or paste content below or enter a single Google Doc URL. Then generate a filled template to preview before import.</div>
+        <input
+          type="url"
+          value={docUrl}
+          onChange={e => setDocUrl(e.target.value)}
+          placeholder="Optional: single Google Doc URL (e.g. https://docs.google.com/document/d/...)"
+          style={{ width: '100%', marginBottom: '0.5rem', padding: '0.5rem 0.75rem', borderRadius: '6px', background: '#0f172a', border: '1px solid #334155', color: '#e2e8f0', fontSize: '0.85rem' }}
+        />
+        <textarea
+          value={docContent}
+          onChange={e => setDocContent(e.target.value)}
+          placeholder="Or paste raw content here (with or without SLOT_001 labels). Headings, paragraphs, buttons will be mapped into the page template."
+          style={{ width: '100%', minHeight: '100px', padding: '0.75rem', borderRadius: '6px', background: '#0f172a', border: '1px solid #334155', color: '#e2e8f0', fontSize: '0.85rem', resize: 'vertical' }}
+        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.6rem', flexWrap: 'wrap' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#cbd5e1', cursor: 'pointer' }}>
+            <input type="checkbox" checked={useLlmForFill} onChange={e => setUseLlmForFill(e.target.checked)} />
+            <span>Use LLM for accurate mapping + auto-review (Groq)</span>
+          </label>
+          <button
+            type="button"
+            onClick={handleFillTemplate}
+            disabled={fillLoading || !hasDocSource}
+            style={{ padding: '0.5rem 1rem', border: 'none', borderRadius: '6px', background: (fillLoading || !hasDocSource) ? '#475569' : '#3b82f6', color: '#fff', cursor: (fillLoading || !hasDocSource) ? 'not-allowed' : 'pointer' }}
+          >
+            {fillLoading ? 'Generating…' : 'Generate filled template'}
+          </button>
+        </div>
+        {fillMessage && (
+          <div style={{ marginTop: '0.6rem', color: fillMessage.type === 'error' ? '#fca5a5' : '#86efac', fontSize: '0.9rem' }}>
+            {fillMessage.text}
+          </div>
+        )}
+      </div>
+
       {templateText && (
-        <pre style={{ marginTop: '0.75rem', maxHeight: element.maxHeight || '320px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.9rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>
-          {templateText}
-        </pre>
+        <>
+          <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: 'rgba(22, 163, 74, 0.08)', borderRadius: '8px', border: '1px solid rgba(22, 163, 74, 0.25)' }}>
+            <div style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Deploy this content to WordPress (no need to copy to Google Doc):</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#cbd5e1', fontSize: '0.9rem' }}>
+                <span>Status:</span>
+                <select
+                  value={deployStatus}
+                  onChange={e => setDeployStatus(e.target.value)}
+                  style={{ padding: '0.35rem 0.5rem', borderRadius: '6px', background: '#0f172a', border: '1px solid #334155', color: '#e2e8f0', fontSize: '0.85rem' }}
+                >
+                  <option value="draft">Draft</option>
+                  <option value="publish">Publish</option>
+                  <option value="pending">Pending Review</option>
+                </select>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#cbd5e1', cursor: 'pointer', fontSize: '0.9rem' }}>
+                <input type="checkbox" checked={deployPreviewMode} onChange={e => setDeployPreviewMode(e.target.checked)} />
+                <span>Preview only (no deploy)</span>
+              </label>
+              <button
+                type="button"
+                onClick={handleDeployTemplate}
+                disabled={deployLoading}
+                style={{ padding: '0.5rem 1rem', border: 'none', borderRadius: '6px', background: deployLoading ? '#475569' : (deployPreviewMode ? '#6366f1' : '#16a34a'), color: '#fff', cursor: deployLoading ? 'not-allowed' : 'pointer', fontWeight: 600 }}
+              >
+                {deployLoading ? '…' : (deployPreviewMode ? 'Preview' : 'Deploy to WordPress')}
+              </button>
+            </div>
+          </div>
+          {deployMessage && (
+            <div style={{ marginTop: '0.5rem', color: deployMessage.type === 'error' ? '#fca5a5' : '#86efac', fontSize: '0.9rem' }}>
+              {deployMessage.text}
+              {deployMessage.link && (
+                <a href={deployMessage.link} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '0.35rem', color: '#67e8f9', textDecoration: 'underline' }}>Open in WordPress</a>
+              )}
+            </div>
+          )}
+          <pre style={{ marginTop: '0.75rem', maxHeight: element.maxHeight || '320px', overflow: 'auto', background: '#0b1220', color: '#e2e8f0', padding: '0.9rem', borderRadius: '6px', border: '1px solid #1e293b', fontSize: '0.8rem' }}>
+            {templateText}
+          </pre>
+        </>
       )}
     </div>
   )
@@ -1184,6 +1492,10 @@ export default function JSONRender({ config }) {
 
   async function handleFormSubmit(e, formConfig) {
     e.preventDefault()
+    const endpoint = (formConfig.endpoint || '').trim()
+    if (!endpoint || endpoint === '#') {
+      return
+    }
     setSubmitting(true)
     setSubmitResult(null) // Clear previous result
     setShowAlert(false) // Hide any existing alerts to prevent duplication
@@ -1193,12 +1505,9 @@ export default function JSONRender({ config }) {
 
       // Prepend base path for API endpoints
       const basePath = import.meta.env.BASE_URL || '/'
-      if (!formConfig.endpoint || !String(formConfig.endpoint).trim()) {
-        throw new Error('Form endpoint is empty or invalid.')
-      }
-      let apiUrl = formConfig.endpoint.startsWith('/api/')
-        ? formConfig.endpoint
-        : (formConfig.endpoint.startsWith('/') ? `${basePath}${formConfig.endpoint.slice(1)}` : `${basePath}${formConfig.endpoint}`)
+      let apiUrl = endpoint.startsWith('/api/')
+        ? endpoint
+        : (endpoint.startsWith('/') ? `${basePath}${endpoint.slice(1)}` : `${basePath}${endpoint}`)
       apiUrl = normalizeApiUrl(apiUrl, basePath)
       if (!apiUrl) {
         throw new Error('Computed form API URL is invalid.')
@@ -1568,6 +1877,7 @@ export default function JSONRender({ config }) {
               </div>
             ))}
 
+            {element.submitButton != null && (
             <button
               type="submit"
               disabled={submitting}
@@ -1604,6 +1914,7 @@ export default function JSONRender({ config }) {
             >
               {submitting ? '⏳ Processing...' : formSubmitText}
             </button>
+            )}
 
             {submitResult && showAlert && (
               <div style={{
